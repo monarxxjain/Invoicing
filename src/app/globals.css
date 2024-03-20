@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.triangle{
+    right: 0;
+    width: 0;
+    height: 0;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    position: absolute;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 15px solid rgba(0, 0, 0, 0.322);
+}
+
+.triangle:before{
+    content: "";
+    top: 2px;
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 14px solid white;
+
+}
