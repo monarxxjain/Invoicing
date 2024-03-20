@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128.053" height="120" viewBox="0 0 128.053 120" class=""><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-сustom-style"/><style xmlns="" type="text/css" id="dark-mode-theme-changer-style"/>
+    <defs>
+        <style>
+            .cls-1{fill:#ff7965}.cls-2{filter:url(#Path_75)}
+        </style>
+        <filter id="Path_75" width="128.053" height="94.229" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset dy="-10"/>
+            <feGaussianBlur result="blur" stdDeviation="10"/>
+            <feFlood flood-color="#f79839" flood-opacity=".302"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+    </defs>
+    <g id="transactions_icon" data-name="transactions icon" transform="translate(12.481 36.744)">
+        <g class="cls-2" transform="translate(-12.48 -36.74)">
+            <path id="Path_75-2" d="M20.473 3.256v11.053h57.642v23.176h10.411V3.256z" class="cls-1" data-name="Path 75" transform="translate(9.53 36.74)"/>
+        </g>
+        <path id="Path_76" d="M21.646 24.173H0v32.09h29.926v13.631l-6-6.03-6.015 6.05 16.268 16.36 16.264-16.361-6.014-6.05-6 6.03v-13.63h29.929v-32.09zm12.533 21.464A4.849 4.849 0 1 1 39 40.788a4.84 4.84 0 0 1-4.821 4.849z" class="cls-1" data-name="Path 76" transform="translate(0 -3.018)"/>
+    </g>
+</svg>

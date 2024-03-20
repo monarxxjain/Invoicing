@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150.667" height="140" viewBox="0 0 150.667 140" class=""><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-сustom-style"/><style xmlns="" type="text/css" id="dark-mode-theme-changer-style"/>
+    <defs>
+        <style>
+            .cls-1{fill:#3571f8}.cls-2{filter:url(#blue_chips_icon)}
+        </style>
+        <filter id="blue_chips_icon" width="150.667" height="140" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset dy="-10"/>
+            <feGaussianBlur result="blur" stdDeviation="10"/>
+            <feFlood flood-color="#3069e9" flood-opacity=".502"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+    </defs>
+    <g class="cls-2">
+        <path id="blue_chips_icon-2" d="M445.333 660h32a2.667 2.667 0 0 1 2.667 2.667v74.667a2.667 2.667 0 0 1-2.667 2.666h-32a2.667 2.667 0 0 1-2.667-2.667v-74.666a2.667 2.667 0 0 1 2.667-2.667zm-10.667 66.667a2.667 2.667 0 0 1-5.333 0v-53.334a2.667 2.667 0 0 1 5.333 0zM421.333 716a2.667 2.667 0 1 1-5.333 0v-32a2.667 2.667 0 0 1 5.333 0zm85.333 0a2.667 2.667 0 1 1-5.333 0v-32a2.667 2.667 0 0 1 5.333 0zm-13.333 10.667a2.667 2.667 0 1 1-5.333 0v-53.334a2.667 2.667 0 1 1 5.333 0z" class="cls-1" data-name="blue chips icon" transform="translate(-386 -620)"/>
+    </g>
+</svg>

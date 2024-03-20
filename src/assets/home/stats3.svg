@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="127.368" height="139.999" viewBox="0 0 127.368 139.999" class=""><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-сustom-style"/><style xmlns="" type="text/css" id="dark-mode-theme-changer-style"/>
+    <defs>
+        <style>
+            .cls-1{fill:#34d1bf}.cls-2{filter:url(#Path_77)}
+        </style>
+        <filter id="Path_77" width="127.368" height="139.999" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset dy="-10"/>
+            <feGaussianBlur result="blur" stdDeviation="10"/>
+            <feFlood flood-color="#128da1" flood-opacity=".302"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+    </defs>
+    <g id="invoices_icon" class="cls-2" data-name="invoices icon">
+        <path id="Path_77-2" d="M55.148 67H21.464a6.316 6.316 0 0 1-6.316-6.316V14.367a6.316 6.316 0 0 1 6.316-6.316h33.684a6.316 6.316 0 0 1 6.316 6.316v46.316A6.317 6.317 0 0 1 55.148 67zm10.525 10.524H31.99a6.316 6.316 0 0 1-6.316-6.316h33.683a6.316 6.316 0 0 0 6.316-6.316V18.577a6.316 6.316 0 0 1 6.316 6.316v46.315a6.315 6.315 0 0 1-6.316 6.316zM76.2 88.05H42.517a6.316 6.316 0 0 1-6.317-6.316h33.684a6.316 6.316 0 0 0 6.316-6.316V29.1a6.316 6.316 0 0 1 6.316 6.316v46.318A6.317 6.317 0 0 1 76.2 88.05z" class="cls-1" data-name="Path 77" transform="translate(14.85 31.95)"/>
+    </g>
+</svg>
