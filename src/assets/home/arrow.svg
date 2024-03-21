@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="11.086" viewBox="0 0 20 11.086" class=""><link xmlns="" type="text/css" id="dark-mode" rel="stylesheet" href=""/><style xmlns="" type="text/css" id="dark-mode-сustom-style"/><style xmlns="" type="text/css" id="dark-mode-theme-changer-style"/>
+    <defs>
+        <style>
+            .cls-1{fill:#5cbd70}
+        </style>
+    </defs>
+    <g id="arrow" transform="translate(-42.5 -137.562)">
+        <path id="Path_4" d="M57.556 148.423l4.713-4.75a.8.8 0 0 0 0-1.124l-4.713-4.75a.795.795 0 1 0-1.129 1.12l3.368 3.391H43.3a.8.8 0 1 0 0 1.593h16.49l-3.368 3.391a.794.794 0 0 0 .567 1.354.762.762 0 0 0 .567-.225z" class="cls-1" data-name="Path 4"/>
+    </g>
+</svg>

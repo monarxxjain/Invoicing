@@ -27,3 +27,10 @@
     border-bottom: 14px solid white;
 
 }
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+
+.blurFeat {
+    backdrop-filter: blur(10px);
+}
