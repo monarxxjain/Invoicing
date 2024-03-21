@@ -32,7 +32,7 @@ export default function Header() {
     setIsNotific(!isNotifix);
   };
   return (
-    <header className="py-5 px-5 border border-b-gray-300">
+    <header className="py-5 w-full px-5">
       <div className="flex justify-between">
         <div className="text-4xl font-semibold">
           <h3>{title || "Dashboard"}</h3>
