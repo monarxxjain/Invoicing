@@ -7,11 +7,12 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { PiSquaresFourFill } from "react-icons/pi";
 import { RiHotelFill } from "react-icons/ri";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../../assets/images/logo.png";
+import { usePathname } from 'next/navigation'
+import Link from "next/link";
+import Image from "next/image";
+import logo from "@/assets/logo.png";
 
 export default function Sidebar({ isFull, setIsFull }) {
-  const navigate = useNavigate();
   const menu = [
     {
       name: "dashboard",
@@ -62,15 +63,19 @@ export default function Sidebar({ isFull, setIsFull }) {
   ];
 
   const [activeMenu, setActiveMenu] = useState(menu[0].url);
-  const location = useLocation();
+  const location = usePathname();
 
   useEffect(() => {
     setActiveMenu(location.pathname);
   });
 
   return (
-    <nav className="nav" id="nav">
-      <div className="nav-brand">
+    <nav className={`${isFull ? "-mt-[0.05rem]" : ""} h-screen max-h-[50vh]`} id="nav">
+      <div className={`flex justify-center relative my-auto items-center ${isFull ? "py-2 pb-3" : "py-4"} border-e border-e-gray-300`}>
+        <div className="flex items-center mx-3 ">
+          <Image src={logo} className={`${isFull ? "w-[60px]" : "w-[50px]"} `} />
+          {isFull && <div className="text-2xl font-bold">Investo</div>}
+        </div>
         <button
           style={{
             transform: !isFull
@@ -78,51 +83,45 @@ export default function Sidebar({ isFull, setIsFull }) {
               : "translate(50%, -50%)",
           }}
           onClick={() => setIsFull(!isFull)}
-          className="toggle"
+          className="absolute right-0 rounded-full shadow-md bg-white p-1 mt-5"
         >
-          {<FaAngleLeft />}
+          <FaAngleLeft />
         </button>
-        <Link to="/" className="logo">
-          <img src={logo} alt="" style={{width: isFull ? "100px": "70px"}}/>
-          {isFull && <h1>SwiftStay</h1>}
-        </Link>
+        
       </div>
-      <div className="nav-main">
-        <div className="nav-main-top">
-          <span>home</span>
-          {/* <button>
-            <HiOutlineDotsHorizontal />
-          </button> */}
+
+      <section className={`${isFull ? "px-8" : "px-2"} border-e flex flex-col justify-between  h-full`}>
+        <div className="nav-main">
+          <ul className="nav-menu">
+            {menu.map((d, i) => (
+              <li key={i}>
+                <Link
+                  // onClick={() => setActiveMenu(d.url.replace("/", ""))}
+                  className={(d.url === activeMenu && "active") || ""}
+                  href={d.url}
+                >
+                  {d.icon}
+                  {isFull && <p>{d.name}</p>}
+                  {isFull && d.notific && (
+                    <span className="nofic">{d.notific}</span>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul className="nav-menu">
-          {menu.map((d, i) => (
-            <li key={i}>
-              <Link
-                // onClick={() => setActiveMenu(d.url.replace("/", ""))}
-                className={(d.url === activeMenu && "active") || ""}
-                to={d.url}
-              >
-                {d.icon}
-                {isFull && <p>{d.name}</p>}
-                {isFull && d.notific && (
-                  <span className="nofic">{d.notific}</span>
-                )}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="nav-logout">
-        <button
-          onClick={() => {
-            Cookies.remove("login");
-            navigate("/login");
-          }}
-        >
-          <FiLogOut />
-          {isFull && <span>logout</span>}
-        </button>
-      </div>
+        <div className="nav-logout">
+          <Link href="/ login"
+            onClick={() => {
+              Cookies.remove("login");
+            }}
+          >
+            <FiLogOut />
+            {isFull && <span>logout</span>}
+          </Link>
+        </div>
+      </section>
+
     </nav>
   );
 }

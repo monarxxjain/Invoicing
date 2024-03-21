@@ -1,7 +1,21 @@
+"use client"
+import { useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 
 export default function Search({ search, setSearch, pls,handleSearch }) {
+  useEffect(()=>{
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.code === 'Space') {
+        document.getElementById("searchBox").focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+ 
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  },[])
   return (
     <form
       onSubmit={(e) => {
@@ -13,13 +27,13 @@ export default function Search({ search, setSearch, pls,handleSearch }) {
         <FiSearch />
       </label>
       <input
-        className="outline-none bg-gray-100  font-light"
+        id="searchBox"
+        className="outline-none bg-gray-100  text-sm w-60 font-light"
         value={search}
         onChange={(e) => {
         }}
         type="text"
-        id="search"
-        placeholder={pls || "Quick Search"}
+        placeholder={pls || "Quick Search `` Ctrl + Space ``"}
       />
       <button type="submit" className="text-gray-500 text-xl hover:text-gray-900">
         <HiOutlineAdjustmentsHorizontal />
