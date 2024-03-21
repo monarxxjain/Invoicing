@@ -15,14 +15,14 @@ export default function RootLayout({ children }) {
 
   return (
     <ThemeContext.Provider value={user}>
-      <div className="absolute w-screen h-[1px] z-10 top-20 bg-gray-300"></div>
-      <div className="flex">
-        <Sidebar isFull={isFull} setIsFull={setIsFull} />
-        <div className="w-full">
-          <Header />  
-          <div className={inter.className}>{children}</div>
+        <div className="absolute w-screen h-[0.5px] z-10 top-20 bg-gray-300"></div>
+        <div className="flex overflow-y-hidden h-screen">
+          <Sidebar isFull={isFull} setIsFull={setIsFull} />
+          <div className="w-full">
+            <Header />  
+            <div className={inter.className + " hide-scrollbars overflow-y-scroll"}>{children}</div>
+          </div>
         </div>
-      </div>
     </ThemeContext.Provider>
   );
 }
