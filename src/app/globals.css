@@ -34,3 +34,12 @@ body{
 .blurFeat {
     backdrop-filter: blur(10px);
 }
+
+
+.logout{
+    background-color: #2024399e !important;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
