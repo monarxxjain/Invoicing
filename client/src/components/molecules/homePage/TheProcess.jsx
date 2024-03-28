@@ -8,15 +8,17 @@ import partnerWhite from "@/assets/home/partnerWhite.png";
 
 export default function TheProcess() {
   return (
-    <div className="flex flex-col gap-6">
-      <div className="text-center">
-        <h2>The Process</h2>
-        <h3>Transact on India's largest Invoice Discounting Platform</h3>
+    <div className="flex flex-col gap-3 mt-8 ">
+      <div className="text-center flex flex-col gap-4">
+        <h2 className="font-semibold text-xl text-gray-800">The Process</h2>
+        <h3 className="text-gray-500">
+          Transact on India's largest Invoice Discounting Platform
+        </h3>
       </div>
 
-      <div className="flex justify-around ">
+      <div className="flex flex-col mx-10 lg:flex-row justify-around gap-y-10 flex-wrap gap-4 ">
         <Description
-          title={"Become an Buyer"}
+          title={"Become an Investor"}
           details={
             "Deploy your capital in curated deals & watch your money grow"
           }
@@ -25,7 +27,7 @@ export default function TheProcess() {
           logoAtTop={true}
         />
         <Description
-          title={"Become an Partner"}
+          title={"Become a Partner"}
           details={
             "Deploy your capital in curated deals & watch your money grow"
           }
@@ -34,8 +36,8 @@ export default function TheProcess() {
           logoAtTop={true}
         />
         <Description
-          title={"Become an Seller"}
-          details={"Solve your working capital problems easily"}
+          title={"Become a Seller"}
+          details={"Solve your working capital problems conviently and quickly"}
           logo1={buyerBlack}
           logo2={buyerWhite}
           logoAtTop={true}
