@@ -43,3 +43,6 @@ body{
 ::-webkit-scrollbar {
     display: none;
 }
+.swiper-pagination-bullets {
+    display: none;
+}
