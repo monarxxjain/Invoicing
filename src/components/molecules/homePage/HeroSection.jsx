@@ -6,10 +6,11 @@ import arrow from "@/assets/home/arrow.svg";
 import Image from "next/image";
 import ImageCorousal from "./ImageCorousal";
 import TheProcess from "./TheProcess";
+import FAQS from "./FAQS";
 
 const HeroSection = () => {
   return (
-    <div className="lg:h-screen">
+    <div className="lg:h-screen parentcss">
       <div className="lg:h-[85vh] px-12 sm:px-24 py-10 flex flex-col gap-10 bg-[url('/homeImages/heroImage.png')] bg-cover">
         {/* <Image className="absolute top-0 left-0 h-screen w-full "  width={1000} height={1000}/> */}
 
@@ -53,13 +54,15 @@ const HeroSection = () => {
         </div>
       </div>
       <div className="lg:h-[15vh] flex justify-evenly gap-14 !p-8 bg-gray-100">
-        <div className="ms-10 ">
+        <div className=" ms-0 sm:ms-10">
           <h3 className="text-l !w-32">Listed Brands</h3>
         </div>
         <ImageCorousal />
       </div>
-      <div>
+      <div className="flex flex-col gap-12">
         <TheProcess />
+      
+        <FAQS/>
       </div>
     </div>
   );
