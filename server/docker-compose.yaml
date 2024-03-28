@@ -1,0 +1,19 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: 7410
+      POSTGRES_USER: postgres
+      POSTGRES_DB: invoice
+
+  app:
+    image: my-invoice-app
+    environment:
+      DB_HOST: db  # Set the hostname of the database service
+      DB_PORT: 5432  # Set the port of the database service
+      DB_USER: postgres  # Set the database username
+      DB_PASSWORD: 7410  # Set the database password
+      DB_NAME: invoice  # Set the database name
+    ports: 
+      - 3001:3001
