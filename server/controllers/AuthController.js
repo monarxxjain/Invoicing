@@ -18,13 +18,21 @@ const registerNewUser = async (req, res) => {
 
         const user = await prisma.users.create({
           data: {
-            name,
-            email,
+              ...req.body,
             password: hashedPassword
           }
         });
 
-        res.status(201).json(user);
+        res
+          .cookie("PAN", req.body.panCardNumber,  {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+          })
+          .cookie("EMAIL", req.body.email,  {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+          })
+          .status(201).json(user);
     } catch (error) {
         console.error('Error creating user:', error);
 
@@ -37,18 +45,23 @@ const loginUser = async (req, res) => {
         if(!req.userExists){
             return res.status(404).json({error: "User Does not Exist"})
         }
-        const { email, password } = req.body
+        const { email, password, panCardNumber } = req.body
         const dbPassword = req.user.password
+        const dbPanCardNumber = req.user.panCardNumber
 
-        // Comparing hashed password and request password
+        // Comparing hashed password and request password as well as PAN Card Number
         const isPasswordCorrect = await bcrypt.compare(password, dbPassword)
+        const isPanNumberCorrect = panCardNumber == dbPanCardNumber
 
-        if(isPasswordCorrect){
+        if(isPasswordCorrect && isPanNumberCorrect){
             const token = generateJwtToken(req, res)
-            console.log(token)
 
             res
               .cookie("access_token", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+              })
+              .cookie("ROLE", req.body.role,  {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
               })

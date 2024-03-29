@@ -13,12 +13,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  MANAGER
+  INVESTOR
+  SELLER
+  PARTNER
+}
+
 model Users {
-  id       Int     @id @default(autoincrement())
-  name     String  @db.VarChar(191)
-  email    String  @unique @db.VarChar(191)
-  password String
-  profile  String?
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(191)
+  email           String   @unique @db.VarChar(191)
+  password        String
+  role            Role
+  panCardNumber   String   @unique @db.VarChar(20)
+  aadhaarNumber   String   @unique @db.VarChar(20)
+  mobileNumber    String   @unique
+  dob             DateTime
+  panCardLink     String
+  aadhaarCardLink String
+  refCode         String?
+  profile         String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @default(now())
 }
