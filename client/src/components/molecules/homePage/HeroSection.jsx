@@ -59,11 +59,6 @@ const HeroSection = () => {
         </div>
         <ImageCorousal />
       </div>
-      <div className="flex flex-col gap-12">
-        <TheProcess />
-      
-        <FAQS/>
-      </div>
     </div>
   );
 };
