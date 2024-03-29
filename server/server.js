@@ -1,10 +1,12 @@
 const express = require('express')
+const cookieParser = require("cookie-parser");
 // const client = require('./db')
 const cors = require('cors')
 const authRouter = require('./routes/authRoutes')
 const PORT = process.env.PORT || 3001
 const app = express()
 app.use(express.json())
+app.use(cookieParser());
 
 // cors policy
 app.use(
