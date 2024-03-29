@@ -16,7 +16,7 @@ export default function TheProcess() {
         </h3>
       </div>
 
-      <div className="flex flex-col mx-10 lg:flex-row justify-around gap-y-10 flex-wrap gap-4 ">
+      <div className="flex flex-col mx-3 lg:flex-row justify-around gap-y-10 flex-wrap gap-2 ">
         <Description
           title={"Become an Investor"}
           details={
