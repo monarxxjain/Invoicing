@@ -21,20 +21,66 @@ enum Role {
   PARTNER
 }
 
+enum DealStatus {
+  OPEN
+  FULL
+  CLOSED
+}
+
 model Users {
-  id              Int      @id @default(autoincrement())
-  name            String   @db.VarChar(191)
-  email           String   @unique @db.VarChar(191)
-  password        String
-  role            Role
-  panCardNumber   String   @unique @db.VarChar(20)
-  aadhaarNumber   String   @unique @db.VarChar(20)
-  mobileNumber    String   @unique
-  dob             DateTime
-  panCardLink     String
-  aadhaarCardLink String
-  refCode         String?
-  profile         String?
-  created_at      DateTime @default(now())
-  updated_at      DateTime @default(now())
+  id         Int       @id @default(autoincrement())
+  role       Role
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  seller     Seller?
+  investor   Investor?
+}
+
+model Seller {
+  id            Int      @id @unique
+  user          Users    @relation(fields: [id], references: [id])
+  metaMaskId    String   @unique
+  name          String   @db.VarChar(191)
+  email         String   @unique @db.VarChar(191)
+  password      String
+  panCardNumber String   @unique @db.VarChar(20)
+  gstNumber     String   @unique @db.VarChar(20)
+  contactNumber String   @unique
+  panCardLink   String
+  refCode       String?
+  logo          Bytes
+  deals         Deal[]
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+}
+
+model Deal {
+  id                Int             @id // Custom Id from frontend
+  seller            Seller          @relation(fields: [sellerId], references: [id])
+  sellerId          Int
+  targetAmount      Int
+  status            DealStatus
+  dealAim           String
+  tentativeDuration Int
+  profitPercent     Int
+  investors         InvestorDeals[]
+  created_at    DateTime @default(now())
+}
+
+model Investor {
+  id         Int             @id @unique
+  user       Users           @relation(fields: [id], references: [id])
+  metaMaskId String          @unique
+  deals      InvestorDeals[]
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+}
+
+model InvestorDeals {
+  deal       Deal     @relation(fields: [dealId], references: [id])
+  dealId     Int
+  investor   Investor @relation(fields: [investorId], references: [id])
+  investorId Int
+
+  @@id([dealId, investorId])
 }
