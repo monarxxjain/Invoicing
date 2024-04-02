@@ -34,24 +34,35 @@ model Users {
   updated_at DateTime  @default(now())
   seller     Seller?
   investor   Investor?
+  employee   Employee?
+}
+
+model Employee {
+  id       Int    @id @unique
+  user     Users  @relation(fields: [id], references: [id])
+  name     String
+  email    String @unique
+  role     Role
+  password String
 }
 
 model Seller {
-  id            Int      @id @unique
-  user          Users    @relation(fields: [id], references: [id])
-  metaMaskId    String   @unique
-  name          String   @db.VarChar(191)
-  email         String   @unique @db.VarChar(191)
-  password      String
-  panCardNumber String   @unique @db.VarChar(20)
-  gstNumber     String   @unique @db.VarChar(20)
-  contactNumber String   @unique
-  panCardLink   String
-  refCode       String?
-  logo          Bytes
-  deals         Deal[]
-  created_at    DateTime @default(now())
-  updated_at    DateTime @default(now())
+  id               Int      @id @unique
+  user             Users    @relation(fields: [id], references: [id])
+  metaMaskId       String   @unique
+  name             String   @db.VarChar(191)
+  email            String   @unique @db.VarChar(191)
+  password         String
+  panCardNumber    String   @unique @db.VarChar(20)
+  gstNumber        String   @unique @db.VarChar(20)
+  contactNumber    String   @unique
+  panCardLink      String
+  isSellerApproved Boolean
+  refCode          String?
+  logo             Bytes?
+  deals            Deal[]
+  created_at       DateTime @default(now())
+  updated_at       DateTime @default(now())
 }
 
 model Deal {
@@ -64,7 +75,7 @@ model Deal {
   tentativeDuration Int
   profitPercent     Int
   investors         InvestorDeals[]
-  created_at    DateTime @default(now())
+  created_at        DateTime        @default(now())
 }
 
 model Investor {
@@ -72,8 +83,8 @@ model Investor {
   user       Users           @relation(fields: [id], references: [id])
   metaMaskId String          @unique
   deals      InvestorDeals[]
-  created_at    DateTime @default(now())
-  updated_at    DateTime @default(now())
+  created_at DateTime        @default(now())
+  updated_at DateTime        @default(now())
 }
 
 model InvestorDeals {

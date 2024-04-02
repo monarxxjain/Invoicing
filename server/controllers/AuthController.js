@@ -1,89 +1,90 @@
 const prisma = require('../db')
-const UserModel = require('../models/UserModel')
 const jwt = require("jsonwebtoken");
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const saltRounds = 12
 
-const registerNewUser = async (req, res) => {
-    try {
-        // If user Exists then returs the response accordingly
-        if(req.userExists){
-            return res.status(403).json({error: "User Already Exists with this EmailID"})
-        }
+const generateJwtToken = (req, res, role) => {
+    const { name, email } = req.body
+    const userObj = { name, email, role }
+    const token = jwt.sign(userObj, process.env.JWT_SECRET)
+    return token
+}
 
-        const { name, email, password } = req.body
+const addEmployee = async (req, res) => {
+    try {
+        
+        const user = await prisma.users.create({
+            data: {
+                role: req.body.role
+            }
+        })
+
+        const userId = user.id
 
         // Hashing password coming from frontend and then storing it 
         const hashedPassword = await bcrypt.hash(password, saltRounds)
-
-        const user = await prisma.users.create({
-          data: {
-              ...req.body,
-            password: hashedPassword
-          }
+    
+        const employee = await prisma.employee.create({
+            data: {
+                ...req.body,
+                password: hashedPassword,
+                user: {
+                    connect: { id: userId }
+                }
+            }
         });
 
         res
-          .cookie("PAN", req.body.panCardNumber,  {
+          .cookie("ROLE", req.body.role,  {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
-          .cookie("EMAIL", req.body.email,  {
+          .cookie("METAMASKID", req.body.metaMaskId,  {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
-          .status(201).json(user);
+          .status(201).json({message: "Employee Added Successfully"})
+          
     } catch (error) {
-        console.error('Error creating user:', error);
+        console.log("Error Creating Employee: ", error)
 
-        res.status(500).json({ error: 'Could not create user' });
+        res.status(401).json({error: "Error Creating Employee"})
     }
 }
 
-const loginUser = async (req, res) => {
+const loginEmployee = async (req, res) => {
     try {
-        if(!req.userExists){
-            return res.status(404).json({error: "User Does not Exist"})
+        if(!req.employee){
+            return res.status(404).json({error: "Employee Does not Exist"})
         }
-        const { email, password, panCardNumber } = req.body
-        const dbPassword = req.user.password
-        const dbPanCardNumber = req.user.panCardNumber
+        const { password } = req.body
+        const dbPassword = req.employee.password
 
         // Comparing hashed password and request password as well as PAN Card Number
         const isPasswordCorrect = await bcrypt.compare(password, dbPassword)
-        const isPanNumberCorrect = panCardNumber == dbPanCardNumber
-
-        if(isPasswordCorrect && isPanNumberCorrect){
-            const token = generateJwtToken(req, res)
-
+        if(isPasswordCorrect) {
+            const expiryTime = process.env.JWT_EXPIRY || '1d';
+            const token = generateJwtToken(req, res, req.employee.role)
             res
               .cookie("access_token", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
               })
-              .cookie("ROLE", req.body.role,  {
+              .cookie("ROLE", req.employee.role,  {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
               })
               .status(201)
-              .json({message: "Logged in Successfully"})
+              .json({message: "Employee Logged in Successfully"})
         }
-
-        else 
-        res.status(401).json({message: "Wrong Password"})
-
+        else{
+            res.status(403).json({error: "Incorrect Password"})
+        }
     } catch (error) {
-        console.error('Error logging in user:', error);
+        console.log("Error Logging in Employee: ", error)
 
-        res.status(500).json({ error: 'Could not Log In User' });
+        return res.status(404).json({error: "Error Logging in Employee"})
     }
-}
-
-const generateJwtToken = (req, res) => {
-    const { name, email } = req.body
-    const userObj = { name, email }
-    const token = jwt.sign(userObj, process.env.JWT_SECRET)
-    return token
 }
 
 const getAllUsers = async (req, res) => {
@@ -92,8 +93,8 @@ const getAllUsers = async (req, res) => {
 }
 
 module.exports = {
-    registerNewUser,
-    loginUser,
     generateJwtToken,
-    getAllUsers
+    getAllUsers,
+    addEmployee,
+    loginEmployee
 }
