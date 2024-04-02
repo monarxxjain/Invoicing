@@ -1,36 +1,27 @@
 'use client'
-import { usePathname } from 'next/navigation'
 import ThemeContext from '@/components/context/ThemeContext';
 import { useContext, useEffect, useRef, useState } from "react";
-
-import { RiNotification2Fill } from "react-icons/ri";
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import Dropdown from "@/components/atoms/Dropdown";
 import Profile from "@/components/atoms/Profile";
 import Search from '@/components/atoms/Search';
+import IconButton from '@mui/material/IconButton';
 
 export default function Header() {
-  const [isNotifix, setIsNotific] = useState(false);
-  const ref = useRef(null);
+  const [notificationDialog, setNotificationDialog] = useState(false);
 
-  const { user } = useContext(ThemeContext);
+  const { user, notifications } = useContext(ThemeContext);
 
   const [title, setTitle] = useState("");
 
-  let { pathname } = usePathname();
 
   
 
-  useEffect(() => {
-    document.addEventListener("click", (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
-        setIsNotific(false);
-      }
-    });
-  }, []);
 
-  const notificHandler = () => {
-    setIsNotific(!isNotifix);
+  const notificationHandler = () => {
+    setNotificationDialog(!notificationDialog);
   };
+  
   return (
     <header className="py-5 w-full px-5">
       <div className="flex justify-between">
@@ -41,12 +32,14 @@ export default function Header() {
           <Search />
         </div>
         <div className="flex items-center gap-5">
-          <div ref={ref} className="">
-            <button onClick={notificHandler} className='relative'>
-              <RiNotification2Fill className='text-gray-500 text-2xl' />
-              <span className='absolute right-0 -top-2 text-white text-[8px] w-3  bg-red-600 rounded-full'>5</span>
+          <div className="">
+            <button onClick={notificationHandler} className='relative'>
+              <IconButton>
+                <NotificationsNoneIcon className='text-gray-500 text-3xl' />
+                <span className='absolute right-2 top-2 w-1.5 h-1.5 bg-red-600 rounded-full'></span>
+              </IconButton>
+              {notificationDialog && <Dropdown data={notifications} setNotificationDialog={setNotificationDialog} />}
             </button>
-            {isNotifix && <Dropdown data={values.notific} />}
           </div>
           <Profile user={user} />
         </div>
