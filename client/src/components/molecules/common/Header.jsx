@@ -23,9 +23,9 @@ export default function Header() {
   };
   
   return (
-    <header className="py-5 w-full px-5">
+    <header className="py-4 w-full px-5">
       <div className="flex justify-between">
-        <div className="text-4xl font-semibold">
+        <div className="text-3xl font-semibold">
           <h3>{title || "Dashboard"}</h3>
         </div>
         <div className="flex group bg-gray-100 rounded ">

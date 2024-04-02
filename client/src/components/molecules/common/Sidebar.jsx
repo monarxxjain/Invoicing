@@ -2,11 +2,15 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { BiSolidUserVoice } from "react-icons/bi";
 import { FaAngleLeft, FaCarSide } from "react-icons/fa";
-import { FiLogOut } from "react-icons/fi";
+import LogoutIcon from '@mui/icons-material/Logout';
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { IoSettingsSharp } from "react-icons/io5";
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import { PiSquaresFourFill } from "react-icons/pi";
-import { RiHotelFill } from "react-icons/ri";
+import SettingsIcon from '@mui/icons-material/Settings';
+import PersonIcon from '@mui/icons-material/Person';
+import InsertChartIcon from '@mui/icons-material/InsertChart';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import { usePathname } from 'next/navigation'
 import Link from "next/link";
 import Image from "next/image";
@@ -15,29 +19,28 @@ import logo from "@/assets/logo.png";
 export default function Sidebar({ isFull, setIsFull }) {
   const menu = [
     {
-      name: "Dashboard",
-      icon: <PiSquaresFourFill />,
-      url: "/seller",
+      name: "Discover",
+      icon: <LocalLibraryIcon />,
+      url: "/investor",
     },
     {
-      name: "Quotes",
-      icon: <BiSolidUserVoice />,
-      notific: 5,
+      name: "Overview",
+      icon: <InsertChartIcon />,
       url: "/booking",
     },
     {
-      name: "Hotel",
-      icon: <RiHotelFill />,
+      name: "Portfolio",
+      icon: <BusinessCenterIcon />,
       url: "/hotel",
     },
     {
-      name: "Transport",
-      icon: <FaCarSide />,
+      name: "Profile",
+      icon: <PersonIcon />,
       url: "/transport",
     },
     {
       name: "Settings",
-      icon: <IoSettingsSharp />,
+      icon: <SettingsIcon />,
       url: "/setting",
     },
   ];
@@ -70,15 +73,15 @@ export default function Sidebar({ isFull, setIsFull }) {
         
       </div>
 
-      <section className={`${isFull ? "pe-6 py-4" : "py-4"} bg-[#061C37] text-white border-e flex flex-col justify-between h-[90vh] sticky`}>
+      <section className={`${isFull ? " py-4" : "py-4"} bg-[#061C37] text-white border-e flex flex-col justify-between h-[90vh] sticky`}>
         <div className="">
           <ul className="flex flex-col gap-2 font-light">
             {menu.map((d, i) => (
-              <li key={i} className="hover:text-[#061C37] group flex w-min">
-                <div className="invisible group-hover:visible w-2 rounded-e bg-green-300 z-10"></div>
+              <li key={i} className="hover:text-blue-500 hover:font-medium group flex w-min">
+                {/* <div className="invisible group-hover:visible w-2 rounded-e bg-green-300 z-10"></div> */}
                 <Link
                   // onClick={() => setActiveMenu(d.url.replace("/", ""))}
-                  className={(d.url === activeMenu && "active") || `flex items-center gap-3 p-2 rounded hover:bg-green-300 transition-all ${isFull ? "w-44 ms-4" : " ms-2"}`}
+                  className={(d.url === activeMenu && "active") || `flex items-center gap-3 p-2 rounded tab transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}
                   href={d.url}
                 >
                   {d.icon}
@@ -91,16 +94,30 @@ export default function Sidebar({ isFull, setIsFull }) {
             ))}
           </ul>
         </div>
-        <div className="flex w-min">
-          <Link href="/ login"
-            className={`logout flex items-center gap-3 p-1 px-2 rounded transition-all ${isFull ? "w-44 ms-6 mt-2" : " ms-4"}`}
-            onClick={() => {
-              Cookies.remove("login");
-            }}
-          >
-            <FiLogOut />
-            {isFull && <span>Logout</span>}
-          </Link>
+        <div className="flex flex-col gap-2">
+          
+          <div className="flex w-min">
+            <Link href="/ login"
+              className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}
+              onClick={() => {
+                Cookies.remove("login");
+              }}
+            >
+              <LiveHelpIcon />
+              {isFull && <span>FAQ</span>}
+            </Link>
+          </div>
+          <div className="flex w-min">
+            <Link href="/ login"
+              className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}
+              onClick={() => {
+                Cookies.remove("login");
+              }}
+            >
+              <LogoutIcon />
+              {isFull && <span>Logout</span>}
+            </Link>
+          </div>
         </div>
       </section>
 

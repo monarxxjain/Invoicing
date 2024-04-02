@@ -81,3 +81,7 @@ body{
     animation-iteration-count: 1;
     animation-timing-function: ease-in;
   }
+
+  .tab:hover{
+    background-color: rgba(0, 213, 255, 0.064);
+  }
