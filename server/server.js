@@ -4,6 +4,7 @@ const cors = require('cors')
 // const prisma = require('./db');
 // const bcrypt = require('bcrypt');
 const authRouter = require('./routes/authRoutes');
+const dealRoutes = require('./routes/dealRoutes')
 
 const PORT = process.env.PORT || 3001
 const app = express()
@@ -19,7 +20,6 @@ app.use(
 );
 
 
-app.use('/auth', authRouter)
 
 async function main() {
 
@@ -45,6 +45,10 @@ async function main() {
 }
 
 // main()
+
+app.use('/auth', authRouter)
+app.use('/deal', dealRoutes)
+
 
 app.listen(PORT, () => {
     console.log(`App is listening on PORT: ${PORT}`)

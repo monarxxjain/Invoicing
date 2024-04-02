@@ -6,7 +6,8 @@ const saltRounds = 12
 const generateJwtToken = (req, res, role) => {
     const { name, email } = req.body
     const userObj = { name, email, role }
-    const token = jwt.sign(userObj, process.env.JWT_SECRET)
+    const expiresIn = process.env.JWT_EXPIRY || '1d';
+    const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn })
     return token
 }
 
