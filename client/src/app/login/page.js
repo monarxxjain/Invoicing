@@ -1,8 +1,10 @@
+import Signup from "@/components/molecules/login/Signup";
+
 export default function Home() {
     return (
       <div>
-        This is Login Page
+        <Signup/>
       </div>
     );
-  }
+}
   
