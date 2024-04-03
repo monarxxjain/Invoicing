@@ -85,3 +85,45 @@ body{
   .tab:hover{
     background-color: rgba(0, 213, 255, 0.064);
   }
+
+  .progressBar {
+    width: 100%;
+  }
+  .bar {
+    height: 6px;
+    border-radius: 10px;
+  }
+
+  .MuiButton-contained {
+    background-color: #061c37;
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+@keyframes slideLeftOut {
+  from {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-300px);
+    opacity: 0;
+    display: none;
+  }
+}
+
+.slide-left-out {
+  animation: slideLeftOut 200ms forwards;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+}
