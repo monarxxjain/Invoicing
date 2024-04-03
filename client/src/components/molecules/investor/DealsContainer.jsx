@@ -6,6 +6,11 @@ const DealsContainer = () => {
     <div className='mt-10 grid grid-cols-2 gap-6'>
       <Deal />
       <Deal />
+      <Deal />
+      <Deal />
+      <Deal />
+      <Deal />
+      <Deal />
     </div>
   )
 }
