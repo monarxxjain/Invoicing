@@ -16,7 +16,7 @@ const addDeal = async (req, res) => {
                     dealAim: data.dealAim,
                     tentativeDuration: data.tentativeDuration,
                     profitPercent: data.profitPercent,
-                    investors: { create : [{'investor':{'connect':{id :2}}}]},
+                    investors: { create : investors},
                   },
                   include: {
                     investors: true // Include the associated InvestorDeals in the returned Deal object
