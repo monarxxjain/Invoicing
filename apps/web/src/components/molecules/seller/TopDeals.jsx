@@ -37,14 +37,14 @@ const TopDeals = () => {
         },
     ]
   return (
-    <div className='bg-white rounded-lg shadow p-5'>
+    <div className='bg-white rounded-lg shadow p-5 w-full'>
       <h1 className='text-xl font-medium'>Top Deals</h1>
       <p className='text-gray-600 text-xs mt-1'>This data was collected from last 30 days</p>
       <ul className='flex flex-col gap-5 mt-5'>
         {topDeals.map((deal, id) => {
             const progressPercent = (deal.receivedAmount/deal.totalAmount) * 100
             return (
-                <div key={id} className='flex flex-col gap-1 w-80'>
+                <div key={id} className='flex flex-col gap-1'>
                     <div className='flex gap-10 text-sm justify-between font-medium'>
                         <p className=''>{deal.id}</p>
                         <p>{deal.totalAmount}</p>

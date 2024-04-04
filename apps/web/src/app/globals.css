@@ -132,3 +132,91 @@ input[type=number] {
   animation-iteration-count: 1;
   animation-timing-function: ease-in;
 }
+
+
+
+
+.metter {
+  height: 200px;
+  width: 384px;
+  margin: 20px auto;
+  background-color: rgb(0, 92, 173,0.34);
+  overflow: hidden;
+  position: relative;
+  border-top-left-radius: 500rem;
+  border-top-right-radius: 500rem;
+}
+
+.metter-confirmd {
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  background-color: #005cad;
+  transform-origin: left bottom;
+  transform: rotate(180deg) translateX(-50%);
+  border-bottom: 10px solid white;
+}
+
+.metter-inner {
+  width: 75%;
+  height: 75%;
+  background-color: white;
+  z-index: 2;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  border-top-left-radius: 500rem;
+  border-top-right-radius: 500rem;
+}
+
+.metter-border {
+  width: 70%;
+  height: 70%;
+  background-color: white;
+  z-index: 2;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  border-top-left-radius: 500rem;
+  border-top-right-radius: 500rem;
+  border: 5px dotted #e4e4e4;
+  border-bottom: none;
+}
+
+.metter-intigator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) rotate(100deg);
+  width: 80px;
+  height: 80px;
+  background-color: white;
+  border: 10px solid #e4e4e4;
+  z-index: 4;
+  border-radius: 50rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+}
+
+.metter-intigator-inner {
+  width: 15px;
+  height: 15px;
+  background: white;
+  position: absolute;
+  bottom: 25px;
+  border-radius: 50%;
+}
+
+.metter-intigator > img {
+  width: 30px;
+  position: absolute;
+  left: 50%;
+  bottom: 17px;
+  transform: translateX(-50%);
+}
