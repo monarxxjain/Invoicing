@@ -93,6 +93,11 @@ body{
     height: 6px;
     border-radius: 10px;
   }
+  .heighted-bar {
+    height: 16px;
+    border-radius: 4px;
+  }
+
 
   .MuiButton-contained {
     background-color: #061c37;

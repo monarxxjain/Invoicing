@@ -36,8 +36,8 @@ export default function Header() {
             <button onClick={notificationHandler} className='relative'>
               <IconButton>
                 <NotificationsNoneIcon className='text-gray-500 text-3xl' />
-                <span className='absolute right-2 top-2 w-1.5 h-1.5 bg-red-600 rounded-full'></span>
               </IconButton>
+              <span className='absolute right-2 top-2 w-1.5 h-1.5 bg-red-600 rounded-full'></span>
               {notificationDialog && <Dropdown data={notifications} setNotificationDialog={setNotificationDialog} />}
             </button>
           </div>
