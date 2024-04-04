@@ -12,7 +12,8 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
     "lint": "eslint . --max-warnings 0",
-    "build": "echo hi"
+    "build": "echo hi",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
