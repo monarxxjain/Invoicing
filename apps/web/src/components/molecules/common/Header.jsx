@@ -32,14 +32,12 @@ export default function Header() {
           <Search />
         </div>
         <div className="flex items-center gap-5">
-          <div className="">
-            <button onClick={notificationHandler} className='relative'>
+          <div onClick={notificationHandler} className='relative'>
               <IconButton>
                 <NotificationsNoneIcon className='text-gray-500 text-3xl' />
                 <span className='absolute right-2 top-2 w-1.5 h-1.5 bg-red-600 rounded-full'></span>
               </IconButton>
               {notificationDialog && <Dropdown data={notifications} setNotificationDialog={setNotificationDialog} />}
-            </button>
           </div>
           <Profile user={user} />
         </div>
