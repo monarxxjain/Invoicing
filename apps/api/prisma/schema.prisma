@@ -66,7 +66,8 @@ model Seller {
 }
 
 model Deal {
-  id                Int             @id // Custom Id from frontend
+  id                BigInt             @id @default(autoincrement()) @db.BigInt // Custom Id from frontend
+  dealSecondId      String          @unique @default(uuid())
   seller            Seller          @relation(fields: [sellerId], references: [id])
   sellerId          Int
   targetAmount      Int
@@ -89,7 +90,7 @@ model Investor {
 
 model InvestorDeals {
   deal       Deal     @relation(fields: [dealId], references: [id])
-  dealId     Int
+  dealId     BigInt
   investor   Investor @relation(fields: [investorId], references: [id])
   investorId Int
 
