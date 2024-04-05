@@ -14,13 +14,7 @@ const generateJwtToken = (req, res, role) => {
 const addEmployee = async (req, res) => {
     try {
         
-        const user = await prisma.users.create({
-            data: {
-                role: req.body.role
-            }
-        })
 
-        const userId = user.id
 
         // Hashing password coming from frontend and then storing it 
         const hashedPassword = await bcrypt.hash(password, saltRounds)
@@ -28,10 +22,7 @@ const addEmployee = async (req, res) => {
         const employee = await prisma.employee.create({
             data: {
                 ...req.body,
-                password: hashedPassword,
-                user: {
-                    connect: { id: userId }
-                }
+                password: hashedPassword
             }
         });
 
@@ -88,14 +79,8 @@ const loginEmployee = async (req, res) => {
     }
 }
 
-const getAllUsers = async (req, res) => {
-    const users = await prisma.users.findMany()
-    return res.status(200).json(users)
-}
-
 module.exports = {
     generateJwtToken,
-    getAllUsers,
     addEmployee,
     loginEmployee
 }

@@ -1,14 +1,5 @@
 const prisma = require('../db')
 const jwt = require("jsonwebtoken");
-const getUser = async (req, res, next) => {
-    const { email } = req.body
-    const user = await prisma.users.findUnique({ where: { email: email } });
-    if(user){
-        req.userExists = true
-        req.user = user
-    }
-    next()
-}
 
 const getEmployee = async (req, res, next) => {
     const { email } = req.body
@@ -53,7 +44,6 @@ const roleAuthorization = (roles) => {
 };
 
 module.exports = {
-    getUser,
     authorization,
     roleAuthorization,
     getEmployee
