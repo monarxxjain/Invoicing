@@ -20,7 +20,6 @@ import {
 import { useEffect } from "react";
 
 const FormSignUp = ({ userData, setUserData, view, setView }) => {
-  // const [address, setAddress] = useState(useAddress());
   const address = useAddress()
   useEffect(() => {
     console.log(address)
@@ -80,11 +79,17 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
   }));
 
   const signUp = async () => {
-    const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`, {
-      metaMaskId: userData.modelData.metaMaskId
-    })
-    console.log(response.data)
-    console.log(response.headers['set-cookie'])
+
+    try {
+      const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`, {
+        metaMaskId: userData.modelData.metaMaskId
+      })
+      console.log(response.data)
+      console.log(response.headers['set-cookie'])
+      
+    } catch (error) {
+      console.log(error)
+    }
 
   }
 
