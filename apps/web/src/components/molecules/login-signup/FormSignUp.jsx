@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import InputFile from "@/components/atoms/InputFile";
 import { BACKEND_URL } from "@/content/values";
 import axios from "axios";
+import Cookies from "js-cookie";
 import {
   ConnectWallet,
   darkTheme,
@@ -81,11 +82,12 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
   const signUp = async () => {
 
     try {
-      const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`, {
-        metaMaskId: userData.modelData.metaMaskId
-      })
+      const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`, 
+      { metaMaskId: userData.modelData.metaMaskId },
+      {withCredentials : true}
+      )
       console.log(response.data)
-      console.log(response.headers['set-cookie'])
+      console.log(Cookies.get("ROLE"))
       
     } catch (error) {
       console.log(error)

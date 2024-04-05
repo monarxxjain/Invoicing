@@ -9,6 +9,10 @@ const registerNewInvestor = async (req, res) => {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
                     })
+                    .cookie("METAMASKID", req.body.metaMaskId,  {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === "production",
+                      })
                     .status(200).json({message: "You have Logged In Successfully"})
         }
 

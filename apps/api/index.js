@@ -23,23 +23,13 @@ app.use(
 
 async function main() {
 
-  const user = await prisma.users.create({
-    data: {
-        role: "ADMIN"
-    }
-  })
-
-  const userId = user.id
   const hashedPassword = await bcrypt.hash("7410", 12)
   const employee = await prisma.employee.create({
     data: {
       name: "Monark Jain",
       email: "lcs2022033@gmail.com",
       role: "ADMIN",
-      password: hashedPassword,
-      user: {
-        connect: { id: userId }
-      }
+      password: hashedPassword
     }
   })
 }
