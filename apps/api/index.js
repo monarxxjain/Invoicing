@@ -14,7 +14,7 @@ app.use(cookieParser());
 // cors policy
 app.use(
     cors({
-      origin: "*", // Your allowed origin
+      origin: 'http://localhost:3000', // Your allowed origin
       credentials: true, // Allow cookies to be sent
     })
 );

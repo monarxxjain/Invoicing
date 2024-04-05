@@ -27,9 +27,9 @@ export default function Login() {
 
   const [view, setView] = useState("ROLE")
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(userData)
-  },[userData])
+  }, [userData])
 
   const slides = [
     {
@@ -56,51 +56,51 @@ export default function Login() {
 
   return (
     <div className="flex flex-col h-screen bg-[#061c37]">
-      
+
       <div className="absolute top-5 left-5 flex gap-1 items-center text-3xl font-mono">
         <CurrencyBitcoinIcon className="text-green-300 text-5xl" />
         <p className="text-white">Investo</p>
       </div>
       <section className="absolute hidden xl:block left-20 top-1/3">
 
-      <Swiper
-        direction={'vertical'}
-        pagination={{
-          clickable: false,
-        }}
-        loop={true}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        modules={[Pagination, Autoplay, Navigation]}
-        className="mySwiper h-96 w-[35vw]"
-      >
-        {slides.map((slide, id) => {
-          return (
-            <SwiperSlide className="flex flex-col">
-              <Image src={slide.image} />
-              <h1 className="text-green-300 text-4xl mt-4">{slide.title}</h1>
-              <div className="text-white text-lg mt-2">{slide.desc}</div>
-            </SwiperSlide>
-          )
-        })}
-      </Swiper>
+        <Swiper
+          direction={'vertical'}
+          pagination={{
+            clickable: false,
+          }}
+          loop={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          modules={[Pagination, Autoplay, Navigation]}
+          className="mySwiper h-96 w-[35vw]"
+        >
+          {slides.map((slide, id) => {
+            return (
+              <SwiperSlide key={id} className="flex flex-col">
+                <Image alt="altText" src={slide.image} />
+                <h1 className="text-green-300 text-4xl mt-4">{slide.title}</h1>
+                <div className="text-white text-lg mt-2">{slide.desc}</div>
+              </SwiperSlide>
+            )
+          })}
+        </Swiper>
       </section>
 
 
       <div className="hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center sm:flex flex-col">
-        <LoginRole userData={userData} setUserData={setUserData} view={view} setView={setView}  />
+        <LoginRole userData={userData} setUserData={setUserData} view={view} setView={setView} />
         <LoginForm userData={userData} setUserData={setUserData} view={view} setView={setView} />
       </div>
       <motion.div
-       initial={{ opacity: 0, y: "700px" }}
-       animate={{ opacity: 1, y: ["400px","-50px", "0px"], transition: { duration: 0.8, ease: "easeOut" }}}
-       exit={{ opacity: 0, y: "700px", transition: { duration: 0.3, ease: "easeOut" }}}
-       transition={{ duration: 0.3 }}
-       className="sm:hidden h-max overflow-y-hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center flex flex-col">
-        <SelectRole userData={userData} setUserData={setUserData} view={view} setView={setView}  />
-        <FormSignUp userData={userData} setUserData={setUserData} view={view} setView={setView} />
+        initial={{ opacity: 0, y: "700px" }}
+        animate={{ opacity: 1, y: ["400px", "-50px", "0px"], transition: { duration: 0.8, ease: "easeOut" } }}
+        exit={{ opacity: 0, y: "700px", transition: { duration: 0.3, ease: "easeOut" } }}
+        transition={{ duration: 0.3 }}
+        className="sm:hidden h-max overflow-y-hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center flex flex-col">
+        <LoginRole userData={userData} setUserData={setUserData} view={view} setView={setView} />
+        <LoginForm userData={userData} setUserData={setUserData} view={view} setView={setView} />
       </motion.div>
     </div>
   );

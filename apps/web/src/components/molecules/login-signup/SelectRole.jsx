@@ -37,6 +37,7 @@ const SelectRole = ({userData, setUserData, view, setView}) => {
               value="INVESTOR"
               checked={userData.role === "INVESTOR"}
               className="radioButton"
+              onChange={() => handler("INVESTOR")}
             />
             <label className="">Signup to invest in invoices</label>
           </div>
@@ -51,6 +52,7 @@ const SelectRole = ({userData, setUserData, view, setView}) => {
               value="option2"
               checked={userData.role === "SELLER"}
               className="radioButton"
+              onChange={() => handler("SELLER")}
             />
             <label className="">Signup to discount your invoices</label>
           </div>

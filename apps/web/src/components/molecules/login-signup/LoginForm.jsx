@@ -19,11 +19,11 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
     let field = e.target.name
     let value = e.target.value
 
-    if(field == "logo"){
+    if (field == "logo") {
       value = e.target.files[0]
     }
 
-    if(view == "INVESTOR"){
+    if (view == "INVESTOR") {
       setUserData((prev) => ({
         ...prev,
         modelData: {
@@ -32,10 +32,10 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
         },
       }));
     }
-    
-    else{
+
+    else {
       setUserData((prev) => ({
-        ...prev, modelData : {
+        ...prev, modelData: {
           ...prev.modelData,
           [field]: value
         }
@@ -50,7 +50,7 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
     },
   }));
 
-  useEffect(()=>{console.log(view)},[view])
+  useEffect(() => { console.log(view) }, [view])
 
   return (
     <div className="sm:w-96">
@@ -76,7 +76,7 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
             <p className="text-gray-700 text-2xl mx-auto">Investor Login</p>
           </div>
           <div className="flex flex-col gap-4 pt-4 ">
-            <Image src={MetaMaskWolf} className="w-24 mx-auto" />
+            <Image alt="altText" src={MetaMaskWolf} className="w-24 mx-auto" />
             <p className="text-black">
               Connect your Metamask Wollete to Get Started🔥 {" "}
             </p>
@@ -119,7 +119,7 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
             <p className="text-2xl xs:ms-8">Company Login</p>
           </div>
           <form name="orgForm" className="flex flex-col gap-4 py-4">
-            
+
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
               <label for="email">Organisation Email:</label>
               <TextField
@@ -128,7 +128,7 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
                 id="outlined-size-small"
                 size="small"
                 className="w-full xs:w-auto"
-                onChange={(e) => {handler(e)}}
+                onChange={(e) => { handler(e) }}
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
@@ -140,19 +140,19 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
                 id="outlined-size-small"
                 size="small"
                 className="w-full xs:w-auto"
-                onChange={(e) => {handler(e)}}
+                onChange={(e) => { handler(e) }}
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-                <label for="metaMaskId">Connect metamask</label>
-                <Button variant="outlined" className="w-40" name="metaMaskId" type="submit" value={"metaMaskId"}  onClick={(e) => handler(e)}>Connect</Button>
+              <label for="metaMaskId">Connect metamask</label>
+              <Button variant="outlined" className="w-40" name="metaMaskId" type="submit" value={"metaMaskId"} onClick={(e) => handler(e)}>Connect</Button>
             </div>
 
             <ColorButton variant="contained" >Submit</ColorButton>
           </form>
         </motion.div>
       )}
-      
+
     </div>
   );
 };

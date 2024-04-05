@@ -16,6 +16,21 @@ import Image2 from '@/assets/signup/slide2.png'
 import Image3 from '@/assets/signup/slide3.png'
 import Image4 from '@/assets/signup/slide4.png'
 
+import {
+  ThirdwebProvider,
+  metamaskWallet,
+  coinbaseWallet,
+  walletConnect,
+  safeWallet,
+  localWallet,
+  trustWallet,
+  zerionWallet,
+  bloctoWallet,
+  frameWallet,
+  rainbowWallet,
+  phantomWallet,
+} from "@thirdweb-dev/react";
+
 export default function Signup() {
 
   const [userData, setUserData] = useState({
@@ -25,9 +40,9 @@ export default function Signup() {
 
   const [view, setView] = useState("ROLE")
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(userData)
-  },[userData])
+  }, [userData])
 
   const slides = [
     {
@@ -54,52 +69,82 @@ export default function Signup() {
 
   return (
     <div className="flex flex-col h-screen bg-[#061c37]">
-      
+
       <div className="absolute top-5 left-5 flex gap-1 items-center text-3xl font-mono">
-        <CurrencyBitcoinIcon className="text-green-300 text-5xl" />
+        <CurrencyBitcoinIcon className="text-green-300 text-6xl" />
         <p className="text-white">Investo</p>
       </div>
       <section className="absolute hidden xl:block left-20 top-1/3">
 
-      <Swiper
-        direction={'vertical'}
-        pagination={{
-          clickable: false,
-        }}
-        loop={true}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        modules={[Pagination, Autoplay, Navigation]}
-        className="mySwiper h-96 w-[35vw]"
-      >
-        {slides.map((slide, id) => {
-          return (
-            <SwiperSlide className="flex flex-col">
-              <Image src={slide.image} />
-              <h1 className="text-green-300 text-4xl mt-4">{slide.title}</h1>
-              <div className="text-white text-lg mt-2">{slide.desc}</div>
-            </SwiperSlide>
-          )
-        })}
-      </Swiper>
+        <Swiper
+          direction={'vertical'}
+          pagination={{
+            clickable: false,
+          }}
+          loop={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          modules={[Pagination, Autoplay, Navigation]}
+          className="mySwiper h-96 w-[35vw]"
+        >
+          {slides.map((slide, id) => {
+            return (
+              <SwiperSlide key={id} className="flex flex-col">
+                <Image alt="altText" src={slide.image} />
+                <h1 className="text-green-300 text-4xl mt-4">{slide.title}</h1>
+                <div className="text-white text-lg mt-2">{slide.desc}</div>
+              </SwiperSlide>
+            )
+          })}
+        </Swiper>
       </section>
 
-
-      <div className="hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center sm:flex flex-col">
-        <SelectRole userData={userData} setUserData={setUserData} view={view} setView={setView}  />
-        <FormSignUp userData={userData} setUserData={setUserData} view={view} setView={setView} />
-      </div>
-      <motion.div
-       initial={{ opacity: 0, y: "700px" }}
-       animate={{ opacity: 1, y: ["400px","-50px", "0px"], transition: { duration: 0.8, ease: "easeOut" }}}
-       exit={{ opacity: 0, y: "700px", transition: { duration: 0.3, ease: "easeOut" }}}
-       transition={{ duration: 0.3 }}
-       className="sm:hidden h-max overflow-y-hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center flex flex-col">
-        <SelectRole userData={userData} setUserData={setUserData} view={view} setView={setView}  />
-        <FormSignUp userData={userData} setUserData={setUserData} view={view} setView={setView} />
-      </motion.div>
+      <ThirdwebProvider
+        activeChain="mumbai"
+        clientId="YOUR_CLIENT_ID"
+        supportedWallets={[
+          metamaskWallet({ recommended: true }),
+          coinbaseWallet(),
+          walletConnect(),
+          safeWallet({
+            personalWallets: [
+              metamaskWallet({ recommended: true }),
+              coinbaseWallet(),
+              walletConnect(),
+              localWallet(),
+              trustWallet(),
+              zerionWallet(),
+              bloctoWallet(),
+              frameWallet(),
+              rainbowWallet(),
+              phantomWallet(),
+            ],
+          }),
+          localWallet(),
+          trustWallet(),
+          zerionWallet(),
+          bloctoWallet(),
+          frameWallet(),
+          rainbowWallet(),
+          phantomWallet(),
+        ]}
+      >
+        <div className="hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center sm:flex flex-col">
+          <SelectRole userData={userData} setUserData={setUserData} view={view} setView={setView} />
+          <FormSignUp userData={userData} setUserData={setUserData} view={view} setView={setView} />
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: "700px" }}
+          animate={{ opacity: 1, y: ["400px", "-50px", "0px"], transition: { duration: 0.8, ease: "easeOut" } }}
+          exit={{ opacity: 0, y: "700px", transition: { duration: 0.3, ease: "easeOut" } }}
+          transition={{ duration: 0.3 }}
+          className="sm:hidden h-max overflow-y-hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center flex flex-col">
+          <SelectRole userData={userData} setUserData={setUserData} view={view} setView={setView} />
+          <FormSignUp userData={userData} setUserData={setUserData} view={view} setView={setView} />
+        </motion.div>
+      </ThirdwebProvider>
     </div>
   );
 }

@@ -12,7 +12,7 @@ const HeroSection = () => {
   return (
     <div className="lg:h-screen parentcss">
       <div className="lg:h-[85vh] px-12 sm:px-24 py-10 flex flex-col gap-10 bg-[url('/homeImages/heroImage.png')] bg-cover">
-        {/* <Image className="absolute top-0 left-0 h-screen w-full "  width={1000} height={1000}/> */}
+        {/* <Image  alt="altText" className="absolute top-0 left-0 h-screen w-full "  width={1000} height={1000}/> */}
 
         <h1 className="text-5xl text-white font-normal">
           Best Invoice Discounting Platform
@@ -31,7 +31,7 @@ const HeroSection = () => {
                   <h2 className="text-xl font-semibold px-2 py-3">
                     {item.title}
                   </h2>
-                  <Image src={arrow} width={20} height={20} />
+                  <Image alt="altText" src={arrow} width={20} height={20} />
                 </div>
                 <p className="text-l text-white/70 font-normal px-2">
                   {item.description}
@@ -45,7 +45,7 @@ const HeroSection = () => {
           <ul className="flex justify-around gap-10 flex-wrap align-middle">
             {statistic.map((item, index) => (
               <div className="flex flex-col items-center gap-3 " key={index}>
-                <Image src={item.chitra} width={75} height={75} />
+                <Image alt="altText" src={item.chitra} width={75} height={75} />
                 <h3 className="text-3xl font-bold text-white">{item.amount}</h3>
                 <p className="text-sm text-white">{item.title}</p>
               </div>
@@ -57,7 +57,7 @@ const HeroSection = () => {
         <div className=" ms-0 sm:ms-10">
           <h3 className="text-l !w-32">Listed Brands</h3>
         </div>
-        <ImageCorousal />
+        <Image alt="altText" Corousal />
       </div>
     </div>
   );
