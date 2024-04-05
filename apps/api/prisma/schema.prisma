@@ -22,6 +22,7 @@ enum Role {
 }
 
 enum DealStatus {
+  PENDING
   OPEN
   FULL
   CLOSED
@@ -66,11 +67,13 @@ model Seller {
 }
 
 model Deal {
-  id                BigInt             @id @default(autoincrement()) @db.BigInt // Custom Id from frontend
-  dealSecondId      String          @unique @default(uuid())
+  id                BigInt          @id @default(autoincrement()) @db.BigInt // Custom Id from frontend
   seller            Seller          @relation(fields: [sellerId], references: [id])
   sellerId          Int
   targetAmount      Int
+  minInvestmentAmount      Int     @default(0)
+  currentAmount     Int            @default(0)
+  bill              String         @default("")
   status            DealStatus
   dealAim           String
   tentativeDuration Int
@@ -93,6 +96,6 @@ model InvestorDeals {
   dealId     BigInt
   investor   Investor @relation(fields: [investorId], references: [id])
   investorId Int
-
+  investmentAmount Int  @default(0)
   @@id([dealId, investorId])
 }

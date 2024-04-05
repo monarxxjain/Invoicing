@@ -10,7 +10,7 @@
     "dev": "nodemon index",
     "start": "node index.js",
     "db:generate": "prisma generate",
-    "db:push": "prisma db push --skip-generate",
+    "db:push": "prisma db push --skip-generate --accept-data-loss",
     "lint": "eslint . --max-warnings 0",
     "build": "echo hi",
     "postinstall": "prisma generate"
