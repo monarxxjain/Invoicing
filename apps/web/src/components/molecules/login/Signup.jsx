@@ -1,10 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import { motion } from "framer-motion"
+import React, { useRef, useState, useEffect } from "react";
+import Image from 'next/image'
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
 import SelectRole from "./SelectRole";
-import { useEffect } from "react";
 import FormSignUp from "./FormSignUp";
-import { motion } from "framer-motion"
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Autoplay, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+import Image1 from '@/assets/signup/slide1.png'
+import Image2 from '@/assets/signup/slide2.png'
+import Image3 from '@/assets/signup/slide3.png'
+import Image4 from '@/assets/signup/slide4.png'
 
 export default function Signup() {
 
@@ -19,6 +29,29 @@ export default function Signup() {
     console.log(userData)
   },[userData])
 
+  const slides = [
+    {
+      image: Image1,
+      title: "Credit Models",
+      desc: "We use superior algo-driven credit models to curate invoices - Our credit models are much more superior & sharper than that of any other financial institution in India - And we are open to discussing with you about how they work."
+    },
+    {
+      image: Image2,
+      title: "Liquidation",
+      desc: "Down sell your asset to another investor at a click of a button at zero cost. 100% of liquidity requests on TradeCred platform have been honoured till date."
+    },
+    {
+      image: Image3,
+      title: "Track Record",
+      desc: "We have zero delinquency till date."
+    },
+    {
+      image: Image4,
+      title: "Diverse Set of Products",
+      desc: "Invoice Discounting, Asset Leasing, Corporate Bonds, Sovereign Bonds"
+    },
+  ]
+
   return (
     <div className="flex flex-col h-screen bg-[#061c37]">
       
@@ -26,6 +59,33 @@ export default function Signup() {
         <CurrencyBitcoinIcon className="text-green-500 text-5xl" />
         <p className="text-white">Investo</p>
       </div>
+      <section className="absolute hidden xl:block left-20 top-1/3">
+
+      <Swiper
+        direction={'vertical'}
+        pagination={{
+          clickable: false,
+        }}
+        loop={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        modules={[Pagination, Autoplay, Navigation]}
+        className="mySwiper h-96 w-[35vw]"
+      >
+        {slides.map((slide, id) => {
+          return (
+            <SwiperSlide className="flex flex-col">
+              <Image src={slide.image} />
+              <h1 className="text-green-300 text-4xl mt-4">{slide.title}</h1>
+              <div className="text-white text-lg mt-2">{slide.desc}</div>
+            </SwiperSlide>
+          )
+        })}
+      </Swiper>
+      </section>
+
 
       <div className="hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center sm:flex flex-col">
         <SelectRole userData={userData} setUserData={setUserData} view={view} setView={setView}  />
