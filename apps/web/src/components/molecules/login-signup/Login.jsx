@@ -15,8 +15,10 @@ import Image1 from '@/assets/signup/slide1.png'
 import Image2 from '@/assets/signup/slide2.png'
 import Image3 from '@/assets/signup/slide3.png'
 import Image4 from '@/assets/signup/slide4.png'
+import LoginRole from "./LoginRole";
+import LoginForm from "./LoginForm";
 
-export default function Signup() {
+export default function Login() {
 
   const [userData, setUserData] = useState({
     role: "",
@@ -56,7 +58,7 @@ export default function Signup() {
     <div className="flex flex-col h-screen bg-[#061c37]">
       
       <div className="absolute top-5 left-5 flex gap-1 items-center text-3xl font-mono">
-        <CurrencyBitcoinIcon className="text-green-500 text-5xl" />
+        <CurrencyBitcoinIcon className="text-green-300 text-5xl" />
         <p className="text-white">Investo</p>
       </div>
       <section className="absolute hidden xl:block left-20 top-1/3">
@@ -88,8 +90,8 @@ export default function Signup() {
 
 
       <div className="hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center sm:flex flex-col">
-        <SelectRole userData={userData} setUserData={setUserData} view={view} setView={setView}  />
-        <FormSignUp userData={userData} setUserData={setUserData} view={view} setView={setView} />
+        <LoginRole userData={userData} setUserData={setUserData} view={view} setView={setView}  />
+        <LoginForm userData={userData} setUserData={setUserData} view={view} setView={setView} />
       </div>
       <motion.div
        initial={{ opacity: 0, y: "700px" }}

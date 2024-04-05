@@ -75,7 +75,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 }, 300);
               }}
             >
-              <WestOutlinedIcon className="text-xl text-gray-500 cursor-pointer" />
+              <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
             </IconButton>
             <p className="text-gray-700 text-2xl mx-auto">Investor Login</p>
           </div>

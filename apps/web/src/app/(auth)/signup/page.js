@@ -1,4 +1,4 @@
-import Signup from "@/components/molecules/login/Signup";
+import Signup from "@/components/molecules/login-signup/Signup";
 
 export default function Home() {
     return (
