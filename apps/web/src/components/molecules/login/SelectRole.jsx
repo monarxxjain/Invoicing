@@ -20,11 +20,11 @@ const SelectRole = ({userData, setUserData, view, setView}) => {
     view == "ROLE" &&
     <>
         <div>
-            <h1 className="text-3xl font-medium">Welcome to TradeCred</h1>
-            <h3 className="text-l text-gray-600">How would you like to proceed:</h3>
+            <h1 className="text-3xl">Welcome to <span className="text-green-600">Investo!</span></h1>
+            <h3 className="text-left text-gray-600 mt-4">How would you like to Join Us:</h3>
         </div>
 
-      <div className="flex flex-col gap-4 text-justify ">
+      <div className="flex flex-col gap-4 mt-1">
         <form className="flex flex-col gap-4">
           <div
             type={"submit"}
@@ -36,7 +36,7 @@ const SelectRole = ({userData, setUserData, view, setView}) => {
               name="role"
               value="INVESTOR"
               checked={userData.role === "INVESTOR"}
-            //   onChange={() => handler("INVESTOR")}
+              className="radioButton"
             />
             <label className="">Signup to invest in invoices</label>
           </div>
@@ -50,15 +50,15 @@ const SelectRole = ({userData, setUserData, view, setView}) => {
               name="role"
               value="option2"
               checked={userData.role === "SELLER"}
-            //   onChange={() => handler("SELLER")}
+              className="radioButton"
             />
             <label className="">Signup to discount your invoices</label>
           </div>
         </form>
       </div>
 
-      <div>
-        <p>Have an account already? Click Here to <Link className="text-blue-500 hover:underline" href={"/auth/login"}>login</Link></p>
+      <div className="text-left mt-2">
+        <p>Have an account already? Click Here to <Link className="text-blue-500 hover:underline" href={"/login"}>login</Link></p>
       </div>
     </>
   );

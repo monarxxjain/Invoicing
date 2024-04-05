@@ -22,14 +22,31 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
   };
   const handler = (e) => {
     e.preventDefault();
+    let field = e.target.name
+    let value = e.target.value
 
-    setUserData((prev) => ({
-      ...prev,
-      modelData: {
-        ...prev.modelData,
-        metaMaskId: e.target.value,
-      },
-    }));
+    if(field == "logo"){
+      value = e.target.files[0]
+    }
+
+    if(view == "DATA_INVESTOR"){
+      setUserData((prev) => ({
+        ...prev,
+        modelData: {
+          ...prev.modelData,
+          metaMaskId: e.target.value,
+        },
+      }));
+    }
+    
+    else{
+      setUserData((prev) => ({
+        ...prev, modelData : {
+          ...prev.modelData,
+          [field]: value
+        }
+      }))
+    }
   };
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#061c37"),
@@ -40,7 +57,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
   }));
 
   return (
-    <div className="w-96">
+    <div className="sm:w-96">
       {view == "DATA_INVESTOR" && (
         <motion.div
           ref={investorFormRef}
@@ -49,7 +66,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
           exit={{ opacity: 0, x: "-300px", y: "0px" }}
           transition={{ duration: 0.2 }}
         >
-          <div className="flex gap-2 items-center text-gray-700 font-medium ps-4">
+          <div className="flex gap-2 items-center text-gray-700 font-medium md:-ms-6">
             <IconButton
               onClick={() => {
                 investorFormRef.current.classList.add("slide-left-out");
@@ -60,12 +77,12 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
             >
               <WestOutlinedIcon className="text-xl text-gray-500 cursor-pointer" />
             </IconButton>
-            <p className="text-gray-500">Previous</p>
+            <p className="text-gray-700 text-2xl mx-auto">Investor Login</p>
           </div>
           <div className="flex flex-col gap-4 pt-4 ">
             <Image src={MetaMaskWolf} className="w-24 mx-auto" />
             <p className="text-black">
-              Connect to your Metamask Wollete to proceed{" "}
+              Connect your Metamask Wollete to Get Started🔥 {" "}
             </p>
             <form>
               <ColorButton
@@ -103,47 +120,56 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
             >
               <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
             </IconButton>
-            <p>Back</p>
+            <p className="text-2xl xs:ms-8">Organisation Details</p>
           </div>
-          <form className="flex flex-col gap-4 py-4">
-            <div className="flex justify-between items-center">
+          <form name="orgForm" className="flex flex-col gap-4 py-4">
+            <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
               <label for="name">Organisation Name:</label>
               <TextField
-          label="Size"
-          id="outlined-size-small"
-          defaultValue="Name"
-          size="small"
-        />
+                name="name"
+                label="Name"
+                id="outlined-size-small"
+                size="small"
+                className="w-full xs:w-auto"
+                onChange={(e) => {handler(e)}}
+              />
             </div>
-            <div className="flex justify-between">
+            <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
               <label for="email">Organisation Email:</label>
               <TextField
-          label="Size"
-          id="outlined-size-small"
-          defaultValue="Name"
-          size="small"
-        />
+                name="email"
+                label="Email"
+                id="outlined-size-small"
+                size="small"
+                className="w-full xs:w-auto"
+                onChange={(e) => {handler(e)}}
+              />
             </div>
-            <div className="flex justify-between">
+            <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
               <label for="contactNumber">Contact Number:</label>
               <TextField
-          label="Size"
-          id="outlined-size-small"
-          defaultValue="Name"
-          size="small"
-        />
+                name="contactNumber"
+                label="Contact"
+                id="outlined-size-small"
+                size="small"
+                className="w-full xs:w-auto"
+                onChange={(e) => {handler(e)}}
+              />
             </div>
-            <div className="flex justify-between">
+            <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
               <label for="password">Password:</label>
               <TextField
-          label="Size"
-          id="outlined-size-small"
-          defaultValue="Name"
-          size="small"
-        />
+                name="password"
+                type="password"
+                label="Password"
+                id="outlined-size-small"
+                size="small"
+                className="w-full xs:w-auto"
+                onChange={(e) => {handler(e)}}
+              />
             </div>
 
-            <ColorButton variant="contained" onClick={() => handleSellerPageNo(1)}>Next</ColorButton>
+            <ColorButton type="submit" variant="contained" onClick={(e) => handleSellerPageNo(1)}>Next</ColorButton>
           </form>
         </motion.div>
       )}
@@ -164,32 +190,36 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 }, 300);
               }}
             >
-              <WestOutlinedIcon className="text-xl text-gray-500 cursor-pointer" />
+              <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
             </IconButton>
-            <p>Back</p>
+            <p className="text-2xl xs:ms-8">Organisation Details</p>
           </div>
-          <form className="flex flex-col gap-4">
-            <div className="flex justify-between">
+          <form name="orgForm" className="flex flex-col gap-4 mt-4">
+            <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
               <label for="gstNumber">GST Number:</label>
               <TextField
-          label="Size"
-          id="outlined-size-small"
-          defaultValue="Name"
-          size="small"
-        />
+                name="gstNumber"
+                label="GST No"
+                id="outlined-size-small"
+                size="small"
+                className="w-full xs:w-auto"
+                onChange={(e) => {handler(e)}}
+              />
+            </div>
+            <div className="flex flex-wrap   xs:flex-col gap-4 justify-between">
+              <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
+                <label for="logo">Logo:</label>
+                <InputFile handler={handler}/>
+              </div>
+
+              <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
+                <label for="metaMaskId">Connect metamask</label>
+                <Button variant="outlined" className="w-40" name="metaMaskId" type="submit" value={"metaMaskId"}  onClick={(e) => handler(e)}>Connect</Button>
+              </div>
+
             </div>
 
-            <div className="flex justify-between">
-              <label for="logo">Logo:</label>
-              <InputFile/>
-            </div>
-
-            <div className="flex justify-between">
-              <label for="metaMaskId">Connect metamask</label>
-              <ColorButton variant="contained">Connect</ColorButton>
-            </div>
-
-            <imput type="submit"> Submit</imput>
+            <ColorButton variant="contained" type="submit" onClick={(e)=> {e.preventDefault()}}> Submit</ColorButton>
           </form>
         </motion.div>
       )}

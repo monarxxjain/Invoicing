@@ -15,24 +15,18 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-export default function InputFile() {
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#061c37"),
-    backgroundColor: "#061c37",
-    "&:hover": {
-      backgroundColor: "#061c37",
-    },
-  }));
+export default function InputFile({handler}) {
   return (
-    <ColorButton
+    <Button
       component="label"
       role={undefined}
-      variant="contained"
+      variant="outlined"
       tabIndex={-1}
       startIcon={<CloudUploadIcon />}
+      className='w-40'
     >
       Upload file
-      <VisuallyHiddenInput type="file" />
-    </ColorButton>
+      <VisuallyHiddenInput name='logo' type="file" accept="image/png, image/jpeg, image/jpg" onChange={(e) => {handler(e)}}/>
+    </Button>
   );
 }

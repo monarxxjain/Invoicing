@@ -224,3 +224,8 @@ input[type=number] {
   bottom: 17px;
   transform: translateX(-50%);
 }
+
+
+.radioButton {
+  accent-color: #061c376d;
+}
