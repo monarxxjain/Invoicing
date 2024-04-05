@@ -12,20 +12,10 @@ const registerNewInvestor = async (req, res) => {
                     .status(200).json({message: "You have Logged In Successfully"})
         }
 
-        const user = await prisma.users.create({
-            data: {
-                role: "INVESTOR"
-            }
-        })
-
-        const userId = user.id
     
         const investor = await prisma.investor.create({
             data: {
-                ...req.body,
-                user: {
-                    connect: { id: userId }
-                }
+                ...req.body
             }
         });
 
