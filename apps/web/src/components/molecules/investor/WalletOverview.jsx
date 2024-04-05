@@ -26,32 +26,32 @@ export default function WalletOverview() {
 
       <div className="flex bg-gray-300">
         <div className>
-            <div className="flex ">
-                <h3>Invested Amount</h3>
-                <Image src={investedamount} height={20} width={20}/>
-            </div>
-            <p>0</p>
+          <div className="flex ">
+            <h3>Invested Amount</h3>
+            <Image alt="altText" src={investedamount} height={20} width={20} />
+          </div>
+          <p>0</p>
         </div>
         <div>
-            <div className="flex">
-                <h3>Current Value</h3>
-                <Image src={currentvalue} height={20} width={20}/>
-            </div>
-            <p>0</p>
+          <div className="flex">
+            <h3>Current Value</h3>
+            <Image alt="altText" src={currentvalue} height={20} width={20} />
+          </div>
+          <p>0</p>
         </div>
         <div>
-            <div className="flex">
-                <h3>Net Gain</h3>
-                <Image src={netgain} height={20} width={20}/>
-            </div>
-            <p>0</p>
+          <div className="flex">
+            <h3>Net Gain</h3>
+            <Image alt="altText" src={netgain} height={20} width={20} />
+          </div>
+          <p>0</p>
         </div>
         <div>
-            <div className="flex">
-                <h3>Net IRR</h3>
-                <Image src={netirr} height={20} width={20}/>
-            </div>
-            <p>0</p>
+          <div className="flex">
+            <h3>Net IRR</h3>
+            <Image alt="altText" src={netirr} height={20} width={20} />
+          </div>
+          <p>0</p>
         </div>
       </div>
     </div>

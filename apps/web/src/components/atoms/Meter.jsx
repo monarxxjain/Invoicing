@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import img from "@/assets/icons/pointer.png";
 import Image from 'next/image'
 
-export default function Meter({totalAmount, receivedAmount}) {
+export default function Meter({ totalAmount, receivedAmount }) {
   const received = useRef(null);
   const intigat = useRef(null);
   const [roted, setRoted] = useState(180);
@@ -33,7 +33,7 @@ export default function Meter({totalAmount, receivedAmount}) {
       <div className="metter-inner"></div>
       <div className="metter-border"></div>
       <div ref={intigat} className="metter-intigator">
-        <Image src={img} alt="" />
+        <Image alt="altText" src={img} alt="" />
         <div className="metter-intigator-inner"></div>
       </div>
     </div>

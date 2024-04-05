@@ -9,13 +9,35 @@ import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import TextField from '@mui/material/TextField';
 import InputFile from "@/components/atoms/InputFile";
+import { BACKEND_URL } from "@/content/values";
+import axios from "axios";
+import {
+  ConnectWallet,
+  darkTheme,
+  useAddress,
+  useAuth
+} from "@thirdweb-dev/react";
+import { useEffect } from "react";
 
 const FormSignUp = ({ userData, setUserData, view, setView }) => {
+  const address = useAddress()
+  useEffect(() => {
+    console.log(address)
+    address && setUserData((prev) => ({
+      ...prev, modelData: {
+        ...prev.modelData,
+        metaMaskId: address
+      }
+    }))
+    if (address) {
+      signUp()
+    }
+  }, [address])
+
   const sellerFormRef = useRef(null);
   const investorFormRef = useRef(null);
   const [sellerPageNo, setSellerPageNo] = useState(1);
   const handleSellerPageNo = (number) => {
-    //console.log(number)
     if (number === 1) {
       setSellerPageNo(2);
     }
@@ -25,11 +47,11 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
     let field = e.target.name
     let value = e.target.value
 
-    if(field == "logo"){
+    if (field == "logo") {
       value = e.target.files[0]
     }
 
-    if(view == "DATA_INVESTOR"){
+    if (view == "DATA_INVESTOR") {
       setUserData((prev) => ({
         ...prev,
         modelData: {
@@ -38,10 +60,10 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
         },
       }));
     }
-    
-    else{
+
+    else {
       setUserData((prev) => ({
-        ...prev, modelData : {
+        ...prev, modelData: {
           ...prev.modelData,
           [field]: value
         }
@@ -55,6 +77,21 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
       backgroundColor: "#061c37",
     },
   }));
+
+  const signUp = async () => {
+
+    try {
+      const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`, {
+        metaMaskId: userData.modelData.metaMaskId
+      })
+      console.log(response.data)
+      console.log(response.headers['set-cookie'])
+      
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
 
   return (
     <div className="sm:w-96">
@@ -75,27 +112,44 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 }, 300);
               }}
             >
-              <WestOutlinedIcon className="text-xl text-gray-500 cursor-pointer" />
+              <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
             </IconButton>
             <p className="text-gray-700 text-2xl mx-auto">Investor Login</p>
           </div>
           <div className="flex flex-col gap-4 pt-4 ">
-            <Image src={MetaMaskWolf} className="w-24 mx-auto" />
+            <Image src={MetaMaskWolf} alt="metaMaskLogo" className="w-24 mx-auto" />
             <p className="text-black">
               Connect your Metamask Wollete to Get Started🔥 {" "}
             </p>
             <form>
-              <ColorButton
-                variant="contained"
-                name="metaMaskId"
-                type="submit"
-                value={"metaMaskId"}
-                onClick={(e) => {
-                  handler(e);
+              <ConnectWallet
+                className="!bg-[#061c37] !text-white !font-mono active:scale-95 transition-all"
+                theme={darkTheme({
+                  colors: {
+                    accentText: "#86EFAC",
+                    accentButtonBg: "#bb00ff",
+                    borderColor: "#86EFAC",
+                    separatorLine: "#f1e4e4",
+                    modalBg: "#061c37",
+                  },
+                })}
+                btnTitle={"Connect Web3"}
+                modalTitle={"Connect to Investo"}
+                modalSize={"wide"}
+                welcomeScreen={{
+                  title: "Welcome to Investo",
+                  subtitle: "",
+                  img: {
+                    src: "https://hopin-prod-fe-page-builder.imgix.net/events/page_builder/000/288/066/original/4764288e-0018-44ec-afc5-1b4e48d6c235.GIF?ixlib=rb-4.0.0&s=3b978bc503fed36297bf33b1b72e702c",
+                    width: 350,
+                    height: 250,
+                  },
                 }}
-              >
-                Connect
-              </ColorButton>
+                modalTitleIconUrl={""}
+
+              />
+
+
             </form>
           </div>
         </motion.div>
@@ -131,7 +185,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 id="outlined-size-small"
                 size="small"
                 className="w-full xs:w-auto"
-                onChange={(e) => {handler(e)}}
+                onChange={(e) => { handler(e) }}
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
@@ -142,7 +196,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 id="outlined-size-small"
                 size="small"
                 className="w-full xs:w-auto"
-                onChange={(e) => {handler(e)}}
+                onChange={(e) => { handler(e) }}
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
@@ -153,7 +207,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 id="outlined-size-small"
                 size="small"
                 className="w-full xs:w-auto"
-                onChange={(e) => {handler(e)}}
+                onChange={(e) => { handler(e) }}
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
@@ -165,7 +219,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 id="outlined-size-small"
                 size="small"
                 className="w-full xs:w-auto"
-                onChange={(e) => {handler(e)}}
+                onChange={(e) => { handler(e) }}
               />
             </div>
 
@@ -203,23 +257,23 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 id="outlined-size-small"
                 size="small"
                 className="w-full xs:w-auto"
-                onChange={(e) => {handler(e)}}
+                onChange={(e) => { handler(e) }}
               />
             </div>
             <div className="flex flex-wrap   xs:flex-col gap-4 justify-between">
               <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
                 <label for="logo">Logo:</label>
-                <InputFile handler={handler}/>
+                <InputFile handler={handler} />
               </div>
 
               <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
                 <label for="metaMaskId">Connect metamask</label>
-                <Button variant="outlined" className="w-40" name="metaMaskId" type="submit" value={"metaMaskId"}  onClick={(e) => handler(e)}>Connect</Button>
+                <Button variant="outlined" className="w-40" name="metaMaskId" type="submit" value={"metaMaskId"} onClick={(e) => handler(e)}>Connect</Button>
               </div>
 
             </div>
 
-            <ColorButton variant="contained" type="submit" onClick={(e)=> {e.preventDefault()}}> Submit</ColorButton>
+            <ColorButton variant="contained" type="submit" onClick={(e) => { e.preventDefault() }}> Submit</ColorButton>
           </form>
         </motion.div>
       )}

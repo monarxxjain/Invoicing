@@ -11,10 +11,10 @@ export default function FAQS() {
       <div>
         <ul className="flex flex-col gap-8 text-justify ">
           {faqs.map((item, index) => (
-            <div className="">
+            <div key={index} className="">
               <div
                 className="flex border-b-2 border-green-500 justify-between gap-32"
-                key={index}
+                
               >
                 <h4 className="text-base sm:text-lg md:text-xl font-bold ">
                   {item.question}

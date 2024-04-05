@@ -48,7 +48,7 @@ const SellerStats = () => {
     <div className='flex gap-8 justify-between'>
       {stats.map((stat, id) => {
         return (
-            <div className='p-5 px-8 w-full flex flex-col gap-2 bg-white rounded-lg shadow'>
+            <div key={id} className='p-5 px-8 w-full flex flex-col gap-2 bg-white rounded-lg shadow'>
                 <div className={`flex gap-2 items-center ${colorStats[id]} relative`}>
                     <div className={`absolute w-3 h-3 animate-ping ms-0.5 rounded-full ${bgColorStats[id]}`}></div>
                     {stat?.icon}

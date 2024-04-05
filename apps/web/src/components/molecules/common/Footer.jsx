@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <div className="flex justify-evenly bg-gray-600">
       <div>
-        <Image src={logo} height={100} width={100} />
+        <Image alt="altText" src={logo} height={100} width={100} />
       </div>
 
       <div className="flex flex-col gap-3">
