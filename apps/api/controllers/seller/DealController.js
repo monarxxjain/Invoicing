@@ -103,16 +103,16 @@ const investDeal = async (req, res) => {
       if (amount > 0 && deal.targetAmount > remainingInvestment) {
         return res.status(400).json({ message: "Final amount should be less than or equal to required amount" });
       }
-
+      console.log("existing ",existingInvestment);
       // Update existing investment amount
         await prisma.investorDeals.update({
           where: {
-            
+            dealId_investorId: {
               ...existingInvestment
-            
+            }
           },
           data: {
-            investmentAmount: remainingInvestment
+            investmentAmount: 10
           }
         });
       if(amount<0) return res.status(200).json({ message: "Money withdrawing was successfyll" });
