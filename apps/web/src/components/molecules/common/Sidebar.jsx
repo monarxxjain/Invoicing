@@ -1,55 +1,26 @@
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { BiSolidUserVoice } from "react-icons/bi";
-import { FaAngleLeft, FaCarSide } from "react-icons/fa";
-import LogoutIcon from '@mui/icons-material/Logout';
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import LiveHelpIcon from '@mui/icons-material/LiveHelp';
-import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
-import { PiSquaresFourFill } from "react-icons/pi";
-import SettingsIcon from '@mui/icons-material/Settings';
-import PersonIcon from '@mui/icons-material/Person';
-import InsertChartIcon from '@mui/icons-material/InsertChart';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import { usePathname } from 'next/navigation'
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from 'next/navigation'
 import logo from "@/assets/logo.png";
+import { FaAngleLeft } from "react-icons/fa";
+import LogoutIcon from '@mui/icons-material/Logout';
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { useContext } from "react";
+import ThemeContext from "@/components/context/ThemeContext";
 
-export default function Sidebar({ isFull, setIsFull }) {
-  const menu = [
-    {
-      name: "Discover",
-      icon: <LocalLibraryIcon />,
-      url: "/investor",
-    },
-    {
-      name: "Overview",
-      icon: <InsertChartIcon />,
-      url: "/booking",
-    },
-    {
-      name: "Portfolio",
-      icon: <BusinessCenterIcon />,
-      url: "/hotel",
-    },
-    {
-      name: "Profile",
-      icon: <PersonIcon />,
-      url: "/transport",
-    },
-    {
-      name: "Settings",
-      icon: <SettingsIcon />,
-      url: "/setting",
-    },
-  ];
-
+export default function Sidebar({ menu, isFull, setIsFull }) {
+  
+  const { user } = useContext(ThemeContext)
+  const role = user.role?.toLowerCase()
   const [activeMenu, setActiveMenu] = useState(menu[0].url);
   const location = usePathname();
+  console.log(location)
 
   useEffect(() => {
-    setActiveMenu(location.pathname);
+    setActiveMenu(location);
   });
 
   return (
@@ -76,12 +47,12 @@ export default function Sidebar({ isFull, setIsFull }) {
       <section className={`${isFull ? " py-4" : "py-4"} bg-[#061C37] text-white border-e flex flex-col justify-between h-[90vh] sticky`}>
         <div className="">
           <ul className="flex flex-col gap-2 font-light">
-            {menu.map((d, i) => (
-              <li key={i} className="hover:text-blue-500 hover:font-medium group flex w-min">
-                {/* <div className="invisible group-hover:visible w-2 rounded-e bg-green-300 z-10"></div> */}
+            {menu.map((d, i) => {
+              console.log(activeMenu)
+              return(
+              <li key={i} className={`hover:text-blue-500 hover:font-medium ${d.url === activeMenu && "text-blue-500 font-medium"} group flex w-min`}>
                 <Link
-                  // onClick={() => setActiveMenu(d.url.replace("/", ""))}
-                  className={(d.url === activeMenu && "active") || `flex items-center gap-3 p-2 rounded tab transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}
+                  className={`flex items-center gap-3 p-2 rounded tab transition-all ${d.url === activeMenu && "active"} ${isFull ? "w-48 mx-2" : "ms-3"}`}
                   href={d.url}
                 >
                   {d.icon}
@@ -91,24 +62,22 @@ export default function Sidebar({ isFull, setIsFull }) {
                   )}
                 </Link>
               </li>
-            ))}
+            )})}
           </ul>
         </div>
         <div className="flex flex-col gap-2">
           
           <div className="flex w-min">
-            <Link href="/ login"
+            <Link href={`/${role}/ask`}
               className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}
-              onClick={() => {
-                Cookies.remove("login");
-              }}
             >
               <LiveHelpIcon />
-              {isFull && <span>FAQ</span>}
+              {isFull && <span>Ask A.I.</span>}
+              {isFull && <AutoAwesomeIcon className="text-base" />}
             </Link>
           </div>
           <div className="flex w-min">
-            <Link href="/ login"
+            <Link href="/login"
               className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}
               onClick={() => {
                 Cookies.remove("login");

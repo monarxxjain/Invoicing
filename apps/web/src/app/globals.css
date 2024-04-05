@@ -85,6 +85,10 @@ body{
   .tab:hover{
     background-color: rgba(0, 213, 255, 0.064);
   }
+  .active{
+    background-color: rgba(0, 213, 255, 0.064);
+    pointer-events: none;
+  }
 
   .progressBar {
     width: 100%;

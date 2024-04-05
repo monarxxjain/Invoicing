@@ -63,7 +63,7 @@ const TopDeals = () => {
             )
         })}
       </ul>
-      <Link href={"/seller/deals"}><Button variant='outlined' color='inherit' className='w-full mt-2'>All Deals</Button></Link>
+      <Link href={"/seller/deals"}><Button variant='outlined'  className='w-full mt-2'>All Deals</Button></Link>
     </div>
   )
 }

@@ -12,7 +12,7 @@ export default function Profile({ user }) {
       </div>
       <div className="profile-body -mt-1">
           {user?.firstName} {user?.lastName} Monark Jain
-          <div className="text-blue-500 text-sm">{user?.role} admin</div>
+          <div className="text-blue-500 text-sm">{user?.role.toLowerCase()} </div>
       </div>
     </div>
   );
