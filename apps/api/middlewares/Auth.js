@@ -13,7 +13,6 @@ const getEmployee = async (req, res, next) => {
 }
 
 const authorization = (req, res, next) => {
-
     const token = req.cookies.access_token;
     if (!token) {
       return res.status(201).json({error: "JWT token NOT found"});

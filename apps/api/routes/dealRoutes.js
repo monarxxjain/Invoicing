@@ -5,8 +5,8 @@ const prisma = require('../db')
 
 const router = express.Router()
 
-router.post('/postDeal', addDeal)
-router.put('/investDeal', investDeal)
+router.post('/postDeal', authorization, roleAuthorization(["SELLER"]), addDeal)
+router.put('/investDeal', authorization, roleAuthorization(["INVESTOR"]), investDeal)
 
 
 module.exports = router
