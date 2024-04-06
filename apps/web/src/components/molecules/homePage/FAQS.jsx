@@ -19,7 +19,7 @@ export default function FAQS() {
                 <h4 className="text-base sm:text-lg md:text-xl font-bold ">
                   {item.question}
                 </h4>
-                <button className="bg-red-500 text-2xl w-10" onClick={
+                <button className=" text-2xl text-gray-500 w-10" onClick={
                     ()=>{
                         if(open === index)setOpen(-1);
                         else setOpen(index);
