@@ -9,7 +9,7 @@ const Navbar = ({metaMaskId, token}) => {
         <a href='' className='hidden xs:block hover:text-green-500 transition-all ' >Roles</a>
         <a href='' className='hidden xs:block hover:text-green-500 transition-all ' >FAQ's</a>
         <a href='' className='hidden xs:block hover:text-green-500 transition-all ' >Team</a>
-        <Link  className='hover:text-green-500 transition-all ' href={`${metaMaskId ? "/login" : "/signup"}`}><button className="">{token ? "Dashboard" : "Login/Signup"}</button></Link>
+        <Link  className='hover:text-green-500 transition-all ' href={`${metaMaskId?.value ? "/login" : "/signup"}`}><button className="">{token ? "Dashboard" : "Login/Signup"}</button></Link>
     </div>
   )
 }

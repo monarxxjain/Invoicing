@@ -12,11 +12,10 @@ export default function Home() {
     const metaMaskId = cookieStore.get('METAMASKID')
     const token = cookieStore.get('access_token')
     const decodedToken = jwt.decode(token?.value);
-
   return (
     <div>
       <Navbar metaMaskId={metaMaskId} token={token}/>
-      <HeroSection />
+      <HeroSection metaMaskId={metaMaskId} token={token} />
       <div className="flex flex-col gap-16">
         <TheProcess />
         <FAQS />

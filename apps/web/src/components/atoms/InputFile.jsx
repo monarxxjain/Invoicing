@@ -26,7 +26,7 @@ export default function InputFile({handler}) {
       className='w-40'
     >
       Upload file
-      <VisuallyHiddenInput name='logo' type="file" accept="image/png, image/jpeg, image/jpg" onChange={(e) => {handler(e)}}/>
+      <VisuallyHiddenInput name='logo' type="file" required accept="image/png, image/jpeg, image/jpg" onChange={(e) => {handler(e)}}/>
     </Button>
   );
 }

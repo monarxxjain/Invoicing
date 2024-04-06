@@ -4,9 +4,10 @@ import pinata from "@/utils/pinata";
 import axios from "axios";
 import React, { useState } from "react";
 import Snackbar from '@mui/joy/Snackbar';
+import LoadingButton from '@mui/lab/LoadingButton';
+
 
 const CreateDealForm = ({ sellerId, token }) => {
-  // console.log("Seller Id ",sellerId);
   const [open, setOpen] = useState()
   const [billFile, setBillFile] = useState(null);
   const [formData, setFormData] = useState({
@@ -15,6 +16,8 @@ const CreateDealForm = ({ sellerId, token }) => {
     interestRate: "",
     dealAim: "",
   });
+
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +39,7 @@ const CreateDealForm = ({ sellerId, token }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
     const ipfshash = await pinata(billFile);
     console.log("ipfs hash ",ipfshash);
     const link = 'https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/' + (ipfshash).IpfsHash;
@@ -72,10 +76,10 @@ const CreateDealForm = ({ sellerId, token }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-gray-100 p-6 rounded-md shadow-md"
+      className="rounded-md"
     >
-      <h2 className="text-xl font-semibold mb-4">Create Deal</h2>
-      <div className="grid grid-cols-2 gap-4">
+      <h2 className="text-2xl mb-4">Create Deal</h2>
+      <div className="grid grid-cols-2 gap-8 bg-white p-6 rounded-md shadow-md">
         <div>
           <label htmlFor="targetAmount" className="block text-gray-600">
             Target Amount
@@ -86,7 +90,7 @@ const CreateDealForm = ({ sellerId, token }) => {
             name="targetAmount"
             value={formData.targetAmount}
             onChange={handleChange}
-            className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
+            className="w-full border-gray-300 border shadow rounded-md py-2 px-4 mt-1"
             required
           />
         </div>
@@ -100,7 +104,7 @@ const CreateDealForm = ({ sellerId, token }) => {
             name="minInvestmentAmount"
             value={formData.minInvestmentAmount}
             onChange={handleChange}
-            className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
+            className="w-full border-gray-300 border shadow rounded-md py-2 px-4 mt-1"
             required
           />
         </div>
@@ -114,7 +118,7 @@ const CreateDealForm = ({ sellerId, token }) => {
             name="tentativeDuration"
             value={formData.tentativeDuration}
             onChange={handleChange}
-            className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
+            className="w-full border-gray-300 border shadow rounded-md py-2 px-4 mt-1"
             required
           />
         </div>
@@ -128,7 +132,7 @@ const CreateDealForm = ({ sellerId, token }) => {
             name="interestRate"
             value={formData.interestRate}
             onChange={handleChange}
-            className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
+            className="w-full border-gray-300 border shadow rounded-md py-2 px-4 mt-1"
             required
           />
         </div>
@@ -142,7 +146,7 @@ const CreateDealForm = ({ sellerId, token }) => {
             id="unpaidInvoices"
             name="unpaidInvoices"
             onChange={handleFileChange}
-            className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
+            className="w-full border-gray-300 border shadow rounded-md py-2 px-4 mt-1"
             required
           />
         </div>
@@ -155,17 +159,19 @@ const CreateDealForm = ({ sellerId, token }) => {
             name="dealAim"
             value={formData.dealAim}
             onChange={handleChange}
-            className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
+            className="w-full border-gray-300 border shadow rounded-md py-2 px-4 mt-1"
             rows="3"
           />
         </div>
       </div>
-      <button
+      <LoadingButton
+        variant="contained"
         type="submit"
-        className="bg-blue-500 text-white font-semibold py-2 px-4 mt-4 rounded-md hover:bg-blue-600 transition duration-300"
+        loading={loading}
+        className="bg-blue-500 text-white font-semibold py-2 px-4 !mt-6 rounded-md hover:bg-blue-600 transition duration-300"
       >
         Create Deal
-      </button>
+      </LoadingButton>
       <Snackbar
         autoHideDuration={4000}
         open={open}
@@ -176,6 +182,7 @@ const CreateDealForm = ({ sellerId, token }) => {
             return;
           }
           setOpen(false);
+          setLoading(false)
         }}
       >
         Deal Created Successfully !!

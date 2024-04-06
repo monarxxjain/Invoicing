@@ -7,7 +7,7 @@ export default function Home( ) {
   console.log("cookie ",sellerId);
   const token = cookieStore.get('access_token')
     return (
-      <div>
+      <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
         <CreateDealForm sellerId={sellerId} token={token}/>
       </div>
     );

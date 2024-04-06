@@ -242,7 +242,7 @@ input[type=number] {
   display: none !important;
 }
 
-.MuiCircularProgress-root {
+.loader .MuiCircularProgress-root {
   color: #061c37 !important;
   width: 100px !important;
   height: 100px !important;

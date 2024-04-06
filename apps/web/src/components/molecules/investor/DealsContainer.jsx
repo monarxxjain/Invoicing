@@ -43,7 +43,7 @@ const DealsContainer = () => {
   }, [])
 
   return (
-    <div className='mt-10 grid grid-cols-2 gap-6 relative'>
+    <div className='mt-10 grid grid-cols-2 gap-6 relative loader'>
       {!deals && <CircularProgress className='mx-auto'/>}
       {deals?.map((deal, id) => {
         return (

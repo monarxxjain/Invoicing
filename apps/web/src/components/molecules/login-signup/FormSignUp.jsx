@@ -245,6 +245,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 label="Name"
                 id="outlined-size-small"
                 size="small"
+                required
                 className="w-full xs:w-auto"
                 onChange={(e) => { handler(e) }}
               />
@@ -256,6 +257,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 label="Email"
                 id="outlined-size-small"
                 size="small"
+                required
                 className="w-full xs:w-auto"
                 onChange={(e) => { handler(e) }}
               />
@@ -267,6 +269,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 label="Contact"
                 id="outlined-size-small"
                 size="small"
+                required
                 className="w-full xs:w-auto"
                 onChange={(e) => { handler(e) }}
               />
@@ -279,6 +282,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 label="Password"
                 id="outlined-size-small"
                 size="small"
+                required
                 className="w-full xs:w-auto"
                 onChange={(e) => { handler(e) }}
               />
@@ -317,6 +321,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
                 label="GST No"
                 id="outlined-size-small"
                 size="small"
+                required
                 className="w-full xs:w-auto"
                 onChange={(e) => { handler(e) }}
               />
