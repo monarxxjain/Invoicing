@@ -36,13 +36,21 @@ const getAllInvestedDeals = async (req, res) => {
         let investedDeals = await prisma.investorDeals.findMany({
             where: {
                 investorId: req.investor.id
+            },
+            include : {
+                deal : {
+                    include : {
+                        seller:true
+                    }
+                }
             }
         })
-        console.log(investedDeals)
-
+        
         investedDeals.map((deal)=>{
             deal.dealId = deal.dealId.toString()
+            deal.deal.id = deal.deal.id.toString()
         })
+        // console.log(investedDeals)
 
         res.status(200).json({message: "Invested Deals fetched successfully", data: investedDeals })
 

@@ -63,7 +63,7 @@ const faqs = [
   },
 ];
 
-const investorTabs=["Ongoing Deals","Liqudation Requested","Liqudated Deals","Completed Deals"];
+const investorTabs=["Ongoing Deals","Mature Deals","Liqudated Deals","Requested to Liquidate","Completed Deals"];
 
 const sellerTabs=["Ongoing Deals", "Past Deals"];
 
