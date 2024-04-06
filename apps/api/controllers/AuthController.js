@@ -79,8 +79,19 @@ const loginEmployee = async (req, res) => {
     }
 }
 
+const logout = (req, res) => {
+    res
+    .cookie("access_token", "", {
+        httpOnly: true,
+        maxAge: 0,
+        secure: process.env.NODE_ENV === "production",
+      })
+      .status(200).json({message: "You have logged Out Successfully"})
+}
+
 module.exports = {
     generateJwtToken,
     addEmployee,
-    loginEmployee
+    loginEmployee,
+    logout
 }

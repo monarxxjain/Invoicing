@@ -8,12 +8,38 @@ import MetaMaskWolf from "@/assets/icons/metamaskIcon.svg";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import TextField from '@mui/material/TextField';
-import InputFile from "@/components/atoms/InputFile";
+import {
+  ConnectWallet,
+  darkTheme,
+  useAddress,
+} from "@thirdweb-dev/react";
 import { useEffect } from "react";
+import axios from "axios";
+import { BACKEND_URL } from "@/content/values";
+import { useRouter } from 'next/navigation'
+import LoadingButton from '@mui/lab/LoadingButton';
 
-const LoginForm = ({ userData, setUserData, view, setView }) => {
+const LoginForm = ({ existingEmail, userData, setUserData, view, setView }) => {
+  const address = useAddress()
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [error, setError]= useState(null)
   const sellerFormRef = useRef(null);
   const investorFormRef = useRef(null);
+
+
+  useEffect(() => {
+    console.log(address)
+    address && setUserData((prev) => ({
+      ...prev, modelData: {
+        ...prev.modelData,
+        metaMaskId: address
+      }
+    }))
+    if (address && userData.role == "INVESTOR") {
+      loginInvestor()
+    }
+  }, [address])
   const handler = (e) => {
     e.preventDefault();
     let field = e.target.name
@@ -49,6 +75,54 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
       backgroundColor: "#061c37",
     },
   }));
+  const ColorLoadingButton = styled(LoadingButton)(({ theme }) => ({
+    color: theme.palette.getContrastText("#061c37"),
+    backgroundColor: "#061c37",
+    "&:hover": {
+      backgroundColor: "#061c37",
+    },
+  }));
+
+  const loginInvestor = async () => {
+
+    try {
+      const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`,
+        { metaMaskId: userData.modelData.metaMaskId },
+        { withCredentials: true }
+      )
+      if (!(response.status == 200 || response.status == 201)) {
+        throw new Error("Error Signing you In")
+      }
+      else {
+        router.push('/investor')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  const loginSeller = async () => {
+    try {
+      const response = await axios.post(`${BACKEND_URL}/auth/login/seller`,
+        { ...userData.modelData },
+        { withCredentials: true }
+      )
+      if (response.data.error) {
+        console.log(response.data.error)
+        setError(response.data.error)
+        // throw new Error("Error Logging you In")
+      }
+      else {
+        setLoading(true)
+        router.push('/seller')
+      }
+    } catch (error) {
+      setLoading(false)
+      console.log(error)
+    }
+
+  }
 
   useEffect(() => { console.log(view) }, [view])
 
@@ -81,17 +155,32 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
               Connect your Metamask Wollete to Get Started🔥 {" "}
             </p>
             <form>
-              <ColorButton
-                variant="contained"
-                name="metaMaskId"
-                type="submit"
-                value={"metaMaskId"}
-                onClick={(e) => {
-                  handler(e);
+            <ConnectWallet
+                className="!bg-[#061c37] !text-white !font-mono active:scale-95 transition-all"
+                theme={darkTheme({
+                  colors: {
+                    accentText: "#86EFAC",
+                    accentButtonBg: "#bb00ff",
+                    borderColor: "#86EFAC",
+                    separatorLine: "#f1e4e4",
+                    modalBg: "#061c37",
+                  },
+                })}
+                btnTitle={"Connect Web3"}
+                modalTitle={"Connect to Investo"}
+                modalSize={"wide"}
+                welcomeScreen={{
+                  title: "Welcome to Investo",
+                  subtitle: "",
+                  img: {
+                    src: "https://hopin-prod-fe-page-builder.imgix.net/events/page_builder/000/288/066/original/4764288e-0018-44ec-afc5-1b4e48d6c235.GIF?ixlib=rb-4.0.0&s=3b978bc503fed36297bf33b1b72e702c",
+                    width: 350,
+                    height: 250,
+                  },
                 }}
-              >
-                Connect
-              </ColorButton>
+                modalTitleIconUrl={""}
+
+              />
             </form>
           </div>
         </motion.div>
@@ -127,6 +216,7 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
                 label="Email"
                 id="outlined-size-small"
                 size="small"
+                defaultValue={existingEmail?.value}
                 className="w-full xs:w-auto"
                 onChange={(e) => { handler(e) }}
               />
@@ -145,10 +235,38 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
               <label htmlFor="metaMaskId">Connect metamask</label>
-              <Button variant="outlined" className="w-40" name="metaMaskId" type="submit" value={"metaMaskId"} onClick={(e) => handler(e)}>Connect</Button>
-            </div>
+              <Button variant="outlined" className="seller">
+                  <ConnectWallet
+                    className="!text-inherit !font-light !rounded !text-sm !bg-transparent !border !border-blue-600 !p-0.5"
+                    theme={darkTheme({
+                      colors: {
+                        accentText: "#86EFAC",
+                        accentButtonBg: "#bb00ff",
+                        borderColor: "#86EFAC",
+                        separatorLine: "#f1e4e4",
+                        modalBg: "#061c37",
+                      },
+                    })}
+                    btnTitle={"CONNECT WEB3"}
+                    modalTitle={"Connect to Investo"}
+                    modalSize={"wide"}
+                    welcomeScreen={{
+                      title: "Welcome to Investo",
+                      subtitle: "",
+                      img: {
+                        src: "https://hopin-prod-fe-page-builder.imgix.net/events/page_builder/000/288/066/original/4764288e-0018-44ec-afc5-1b4e48d6c235.GIF?ixlib=rb-4.0.0&s=3b978bc503fed36297bf33b1b72e702c",
+                        width: 350,
+                        height: 250,
+                      },
+                    }}
+                    modalTitleIconUrl={""}
 
-            <ColorButton variant="contained" >Submit</ColorButton>
+                  />
+
+                </Button>
+            </div>
+            { error && <div className="text-red-500">* {error}</div>}
+            <ColorLoadingButton loading={loading} onClick={()=>{loginSeller()}} variant="contained" >Submit</ColorLoadingButton>
           </form>
         </motion.div>
       )}

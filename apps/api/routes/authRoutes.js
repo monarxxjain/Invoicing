@@ -4,7 +4,7 @@ const { getSeller } = require('../middlewares/seller/Auth')
 const { getInvestor } = require('../middlewares/investor/Auth')
 const { authorization, roleAuthorization, getEmployee } = require('../middlewares/Auth')
 
-const { addEmployee, loginEmployee } = require('../controllers/AuthController')
+const { addEmployee, loginEmployee, logout } = require('../controllers/AuthController')
 const { registerNewInvestor } = require('../controllers/investor/AuthController')
 const { approveSellerRequest, loginSeller, addNewSellerRequest } = require('../controllers/seller/AuthController')
 const router = express.Router()
@@ -18,4 +18,5 @@ router.post('/login/company', getEmployee, loginEmployee)
 
 router.put('/approveSeller', authorization, roleAuthorization(["ADMIN"]), approveSellerRequest)
 
+router.get('/logout', authorization, logout)
 module.exports = router

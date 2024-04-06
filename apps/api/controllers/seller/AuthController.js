@@ -1,5 +1,5 @@
 const prisma = require('../../db')
-const jwt = require("jsonwebtoken");
+
 const { generateJwtToken } = require('../AuthController');
 const bcrypt = require('bcrypt');
 const saltRounds = 12
@@ -31,10 +31,6 @@ const addNewSellerRequest = async (req, res) => {
             secure: process.env.NODE_ENV === "production",
           })
           .cookie("METAMASKID", req.body.metaMaskId,  {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-          })
-          .cookie("STATUS", false,  {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
@@ -73,18 +69,15 @@ const loginSeller = async (req, res) => {
             return res.status(404).json({error: "Seller Does not Exist"})
         }
         if(!req.seller.isSellerApproved){
-            return res.status(403).json({message: "Your profile is currently under Review"})
+            return res.status(200).json({error: "Your profile is currently under Review"})
         }
-        const { password, panCardNumber } = req.body
+        const { password } = req.body
         const dbPassword = req.seller.password
-        const dbPanCardNumber = req.seller.panCardNumber
 
-        // Comparing hashed password and request password as well as PAN Card Number
+        // Comparing hashed password and request password
         const isPasswordCorrect = await bcrypt.compare(password, dbPassword)
-        const isPanNumberCorrect = panCardNumber == dbPanCardNumber
-
-        if(isPasswordCorrect && isPanNumberCorrect){
-            const expiryTime = process.env.JWT_EXPIRY || '1d';
+        console.log(isPasswordCorrect)
+        if(isPasswordCorrect){
             const token = generateJwtToken(req, res, "SELLER")
 
             res

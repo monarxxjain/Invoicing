@@ -1,10 +1,13 @@
 import Link from "next/link";
 import React from "react";
+import { useEffect } from "react";
 
 
 // this is [view] = "ROLE"
-const LoginRole = ({userData, setUserData, view, setView}) => {
+const LoginRole = ({existingSellerStatus, existingRole, userData, setUserData, view, setView}) => {
 
+
+  
     const handler = (role) => {
         setUserData((prev) => ({ ...prev, role: role }))
 
@@ -15,6 +18,13 @@ const LoginRole = ({userData, setUserData, view, setView}) => {
             setView("SELLER")
         }
     }
+
+    useEffect(()=>{
+      if(existingRole?.value) {
+        handler(existingRole?.value)
+      }
+    },[])
+
 
   return (
     view == "ROLE" &&
@@ -30,11 +40,12 @@ const LoginRole = ({userData, setUserData, view, setView}) => {
             type={"submit"}
             onClick={() => handler("INVESTOR")}
             className="border border-gray-300 rounded p-4 flex gap-4 hover:bg-gray-100 active:bg-gray-200  transition-all"
-          >
+            >
             <input
               type="radio"
               name="role"
               value="INVESTOR"
+              onChange={() => handler("INVESTOR")}
               checked={userData.role === "INVESTOR"}
               className="radioButton"
             />
@@ -44,13 +55,14 @@ const LoginRole = ({userData, setUserData, view, setView}) => {
             type={"submit"}
             onClick={() => handler("SELLER")}
             className="border border-gray-300 rounded p-4 flex gap-4 hover:bg-gray-100 active:bg-gray-200 transition-all"
-          >
+            >
             <input
               type="radio"
               name="role"
               value="option2"
               checked={userData.role === "SELLER"}
               className="radioButton"
+              onChange={() => handler("SELLER")}
             />
             <label className="">Company</label>
           </div>

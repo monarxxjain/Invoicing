@@ -14,12 +14,10 @@ import axios from "axios";
 import { useRouter } from 'next/navigation'
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import Cookies from "js-cookie";
 import {
   ConnectWallet,
   darkTheme,
   useAddress,
-  useAuth
 } from "@thirdweb-dev/react";
 import { useEffect } from "react";
 import { supabase } from "@/utils/supabase";

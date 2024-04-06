@@ -1,15 +1,25 @@
-"use client"
-import ThemeContext from "@/components/context/ThemeContext";
+import WelcomeUser from "@/components/atoms/WelcomeUser";
 import SellerHomeAnalytics from "@/components/molecules/seller/SellerHomeAnalytics";
-import { useContext } from "react";
+import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
+import jwt from 'jsonwebtoken';
 
 export default function Home() {
 
-  const { user } = useContext(ThemeContext);
+  const cookieStore = cookies()
+  const token = cookieStore.get('access_token')
+  const decodedToken = jwt.decode(token?.value);
+
+  if(decodedToken?.role != "SELLER" ){
+    redirect("/")
+  }
+  else{
+
+  }
 
     return (
       <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8 flex flex-col gap-6">
-        <h1 className="text-2xl">Welcome, <span className="font-serif font-semibold italic">{user?.name || "Monark Jain"}</span> 👋</h1>
+        <WelcomeUser />
         <SellerHomeAnalytics />
       </div>
     );

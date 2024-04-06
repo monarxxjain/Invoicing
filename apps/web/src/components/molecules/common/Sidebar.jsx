@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -10,6 +9,10 @@ import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { useContext } from "react";
 import ThemeContext from "@/components/context/ThemeContext";
+import { Logout } from "@mui/icons-material";
+import axios from "axios";
+import { useRouter } from 'next/navigation'
+import { BACKEND_URL } from "@/content/values";
 
 export default function Sidebar({ menu, isFull, setIsFull }) {
 
@@ -22,6 +25,18 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
   useEffect(() => {
     setActiveMenu(location);
   });
+
+  const logout = async () => {
+    try {
+      console.log("object")
+      const response = await axios.get(`${BACKEND_URL}/auth/logout`,{withCredentials: true})
+      console.log(response.message)
+      router.push('/')
+    } catch (error) {
+      console.log(error)
+    }
+  } 
+  
 
   return (
     <nav className={`${isFull ? "-mt-[0.05rem]" : ""}`} id="nav">
@@ -78,15 +93,15 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
             </Link>
           </div>
           <div className="flex w-min">
-            <Link href="/login"
+            <button
               className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}
               onClick={() => {
-                Cookies.remove("login");
+                logout()
               }}
             >
               <LogoutIcon />
               {isFull && <span>Logout</span>}
-            </Link>
+            </button>
           </div>
         </div>
       </section>

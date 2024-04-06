@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import SellerStats from './SellerStats'
 import ViewBestStats from './ViewBestStats'
