@@ -6,7 +6,8 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const CreateDealForm = () => {
+const CreateDealForm = ({sellerId,token}) => {
+  // console.log("Seller Id ",sellerId);
   const [billFile,setBillFile] = useState(null);
   const [formData, setFormData] = useState({
     targetAmount: "",
@@ -35,13 +36,13 @@ const CreateDealForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const link = 'https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/'+(await pinata(billFile)).IpfsHash;
-    const link = "sdf" 
+    const link = 'https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/'+(await pinata(billFile)).IpfsHash;
+
     setFormData({
       ...formData,
       bill: link,
     });
-    console.log(link)
+    // console.log(link)
     toast.success("Deal Created Successfully!", {
       position: "bottom-right",
     });
@@ -53,6 +54,12 @@ const CreateDealForm = () => {
       axios.post(BACKEND_URL+'/deal/postDeal', {
         ...formData,
         bill: link,
+        sellerId: Number(sellerId.value),
+        tentativeDuration:Number(formData.tentativeDuration),
+        minInvestmentAmount:Number(formData.minInvestmentAmount),
+        targetAmount:Number(formData.targetAmount),
+      },{
+        withCredentials: true
       })
   .then(response => {
     console.log('Response:', response.data);
@@ -136,7 +143,7 @@ const CreateDealForm = () => {
             name="unpaidInvoices"
             onChange={handleFileChange}
             className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
-            // required
+            required
           />
         </div>
         <div className="col-span-2">
