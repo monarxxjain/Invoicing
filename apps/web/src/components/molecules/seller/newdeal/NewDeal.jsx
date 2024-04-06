@@ -1,5 +1,7 @@
 "use client";
+import { BACKEND_URL } from "@/content/values";
 import pinata from "@/utils/pinata";
+import axios from "axios";
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,8 +12,7 @@ const CreateDealForm = () => {
     targetAmount: "",
     tentativeDuration: "",
     interestRate: "",
-    unpaidInvoices: null,
-    dealDescription: "",
+    dealAim: "",
   });
 
   const handleChange = (e) => {
@@ -34,8 +35,9 @@ const CreateDealForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const link = 'https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/'+(await pinata(billFile)).IpfsHash;
-     setFormData({
+    // const link = 'https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/'+(await pinata(billFile)).IpfsHash;
+    const link = "sdf" 
+    setFormData({
       ...formData,
       bill: link,
     });
@@ -47,6 +49,17 @@ const CreateDealForm = () => {
         ...formData,
         bill: link,
       });
+    
+      axios.post(BACKEND_URL+'/deal/postDeal', {
+        ...formData,
+        bill: link,
+      })
+  .then(response => {
+    console.log('Response:', response.data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
   };
 
   return (
@@ -65,6 +78,20 @@ const CreateDealForm = () => {
             id="targetAmount"
             name="targetAmount"
             value={formData.targetAmount}
+            onChange={handleChange}
+            className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="minInvestmentAmount" className="block text-gray-600">
+            Minimum Investment
+          </label>
+          <input
+            type="number"
+            id="minInvestmentAmount"
+            name="minInvestmentAmount"
+            value={formData.minInvestmentAmount}
             onChange={handleChange}
             className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
             required
@@ -109,17 +136,17 @@ const CreateDealForm = () => {
             name="unpaidInvoices"
             onChange={handleFileChange}
             className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
-            required
+            // required
           />
         </div>
         <div className="col-span-2">
-          <label htmlFor="dealDescription" className="block text-gray-600">
+          <label htmlFor="dealAim" className="block text-gray-600">
             Deal Description
           </label>
           <textarea
-            id="dealDescription"
-            name="dealDescription"
-            value={formData.dealDescription}
+            id="dealAim"
+            name="dealAim"
+            value={formData.dealAim}
             onChange={handleChange}
             className="w-full border-gray-300 rounded-md py-2 px-4 mt-1"
             rows="3"

@@ -1,9 +1,6 @@
 const prisma = require("../../db");
 const addDeal = async (req, res) => {
   const data = req.body;
-  const investors = data.investors.map((v) => {
-    return { investor: { connect: { id: v } } };
-  });
   const billVerify = ()=>{return true;}
   if(!billVerify())
   {
@@ -11,34 +8,34 @@ const addDeal = async (req, res) => {
     return;
   }
   console.log("Deal ",data);
-  // try {
+  try {
 
-  //   let deal = await prisma.deal.create({
-  //     data: {
-  //       seller: { connect: { id: data.sellerId } },
-  //       targetAmount: data.targetAmount,
-  //       bill : data.bill,
-  //       minInvestmentAmount: data.minInvestmentAmount,
-  //       status: "PENDING",
-  //       dealAim: data.dealAim,
-  //       tentativeDuration: data.tentativeDuration,
-  //       profitPercent: data.profitPercent,
-  //       investors: { create: [] },
-  //     },
-  //     include: {
-  //       investors: true, // Include the associated InvestorDeals in the returned Deal object
-  //     },
-  //   });
-  //   deal.id = deal.id.toString();
-  //   deal.investors = deal.investors.map((v) => {
-  //     return { dealId: v.dealId.toString(), investorId: v.investorId };
-  //   });
-  //   console.log("Deal  ", deal);
-  //   res.status(200).json(deal);
-  // } catch (e) {
-  //   console.log("error in db ", e);
-  //   res.status(402).json({ error: "Error adding new Deal" });
-  // }
+    let deal = await prisma.deal.create({
+      data: {
+        seller: { connect: { id: data.sellerId } },
+        targetAmount: data.targetAmount,
+        bill : data.bill,
+        minInvestmentAmount: data.minInvestmentAmount,
+        status: "PENDING",
+        dealAim: data.dealAim ,
+        tentativeDuration: data.tentativeDuration,
+        profitPercent: Number(data.interestRate),
+        investors: { create: [] },
+      },
+      include: {
+        investors: true, // Include the associated InvestorDeals in the returned Deal object
+      },
+    });
+    deal.id = deal.id.toString();
+    deal.investors = deal.investors.map((v) => {
+      return { dealId: v.dealId.toString(), investorId: v.investorId };
+    });
+    console.log("Deal  ", deal);
+    res.status(200).json(deal);
+  } catch (e) {
+    console.log("error in db ", e);
+    res.status(402).json({ error: "Error adding new Deal" });
+  }
 };
 
 
