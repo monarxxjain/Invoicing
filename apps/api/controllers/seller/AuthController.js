@@ -11,13 +11,7 @@ const addNewSellerRequest = async (req, res) => {
             return res.status(403).json({error: "Seller Already Exists with this EmailID"})
         }
 
-        const user = await prisma.users.create({
-            data: {
-                role: "SELLER"
-            }
-        })
 
-        const userId = user.id
         const { password } = req.body
 
         // Hashing password coming from frontend and then storing it 
@@ -27,10 +21,7 @@ const addNewSellerRequest = async (req, res) => {
             data: {
                 ...req.body,
                 isSellerApproved: false,
-                password: hashedPassword,
-                user: {
-                    connect: { id: userId }
-                }
+                password: hashedPassword
             }
         });
 
@@ -43,7 +34,7 @@ const addNewSellerRequest = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
-          .cookie("PAN", req.body.panCardNumber,  {
+          .cookie("STATUS", false,  {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })

@@ -121,7 +121,7 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
           <form name="orgForm" className="flex flex-col gap-4 py-4">
 
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-              <label for="email">Organisation Email:</label>
+              <label htmlFor="email">Organisation Email:</label>
               <TextField
                 name="email"
                 label="Email"
@@ -132,7 +132,7 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-              <label for="password">Password:</label>
+              <label htmlFor="password">Password:</label>
               <TextField
                 name="password"
                 type="password"
@@ -144,7 +144,7 @@ const LoginForm = ({ userData, setUserData, view, setView }) => {
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-              <label for="metaMaskId">Connect metamask</label>
+              <label htmlFor="metaMaskId">Connect metamask</label>
               <Button variant="outlined" className="w-40" name="metaMaskId" type="submit" value={"metaMaskId"} onClick={(e) => handler(e)}>Connect</Button>
             </div>
 
