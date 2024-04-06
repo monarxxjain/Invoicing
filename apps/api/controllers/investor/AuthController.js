@@ -6,7 +6,7 @@ const registerNewInvestor = async (req, res) => {
         const userObj = { metaMaskId: req.body.metaMaskId }
         const expiresIn = process.env.JWT_EXPIRY || '1d';
         const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn })
-        
+        console.log("req ", req.body)
         if(req.investor){
             return res
                     .cookie("ROLE", "INVESTOR",  {
@@ -27,10 +27,10 @@ const registerNewInvestor = async (req, res) => {
     
         const investor = await prisma.investor.create({
             data: {
-                ...req.body
+                metaMaskId: req.body.metaMaskId
             }
         });
-
+        console.log("Investor: ", investor)
         res
           .cookie("ROLE", "INVESTOR",  {
             httpOnly: true,

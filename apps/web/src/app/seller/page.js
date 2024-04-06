@@ -10,12 +10,10 @@ export default function Home() {
   const token = cookieStore.get('access_token')
   const decodedToken = jwt.decode(token?.value);
 
-  if(decodedToken?.role != "SELLER" ){
+  if(!decodedToken){
     redirect("/")
   }
-  else{
 
-  }
 
     return (
       <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8 flex flex-col gap-6">

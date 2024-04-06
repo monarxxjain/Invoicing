@@ -34,11 +34,15 @@ const addNewSellerRequest = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
+          .cookie("SELLER_ID", seller.id,  {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+          })
           .cookie("EMAIL", req.body.email,  {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
-          .status(201).json({message: "Seller Request has been generated successfully"})
+          .status(200).json({message: "Seller Request has been generated successfully"})
 
     } catch (error) {
         console.log("Error Creating Seller: ", error)

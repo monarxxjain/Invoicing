@@ -4,6 +4,7 @@ import Header from "@/components/molecules/common/Header";
 import Sidebar from "@/components/molecules/common/Sidebar";
 import { Inter } from "next/font/google";
 import { useState } from "react";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 import WindowIcon from '@mui/icons-material/Window';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -83,6 +84,10 @@ export default function RootLayout({ children }) {
 
   return (
     <ThemeContext.Provider value={{user, notifications}}>
+      <ThirdwebProvider
+        activeChain="ethereum"
+        clientId="your-client-id"
+      >
         <div className="absolute w-screen h-[0.5px] z-10 top-20 bg-gray-300"></div>
         <div className="flex overflow-y-hidden h-screen">
           <Sidebar menu={menu} isFull={isFull} setIsFull={setIsFull} />
@@ -91,6 +96,7 @@ export default function RootLayout({ children }) {
             <div className={inter.className + " hide-scrollbars overflow-y-scroll"}>{children}</div>
           </div>
         </div>
+      </ThirdwebProvider>
     </ThemeContext.Provider>
   );
 }

@@ -29,7 +29,9 @@ const LoginForm = ({ existingEmail, userData, setUserData, view, setView }) => {
 
 
   useEffect(() => {
-    console.log(address)
+    console.log('use effect address ',address)
+    let data = userData;
+    data.modelData.metaMaskId = address;
     address && setUserData((prev) => ({
       ...prev, modelData: {
         ...prev.modelData,
@@ -37,7 +39,7 @@ const LoginForm = ({ existingEmail, userData, setUserData, view, setView }) => {
       }
     }))
     if (address && userData.role == "INVESTOR") {
-      loginInvestor()
+      loginInvestor(data)
     }
   }, [address])
   const handler = (e) => {
@@ -83,8 +85,8 @@ const LoginForm = ({ existingEmail, userData, setUserData, view, setView }) => {
     },
   }));
 
-  const loginInvestor = async () => {
-
+  const loginInvestor = async (userData) => {
+    console.log("TEEST:" , userData)
     try {
       const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`,
         { metaMaskId: userData.modelData.metaMaskId },

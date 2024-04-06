@@ -114,7 +114,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
   
 
   const signUpInvestor = async () => {
-
+    console.log("TEEST:" , userData)
     try {
       const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`,
         { metaMaskId: userData.modelData.metaMaskId },
