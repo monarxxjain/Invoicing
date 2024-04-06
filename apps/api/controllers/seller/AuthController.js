@@ -8,7 +8,7 @@ const addNewSellerRequest = async (req, res) => {
     try {
         
         if(req.seller){
-            return res.status(403).json({error: "Seller Already Exists with this EmailID"})
+            return res.status(200).json({error: "Seller Already Exists with this EmailID"})
         }
 
 

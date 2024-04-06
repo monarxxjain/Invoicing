@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const registerNewInvestor = async (req, res) => {
     try {
 
-        const userObj = { metaMaskId: req.body.metaMaskId }
+        const userObj = { metaMaskId: req.body.metaMaskId, role: "INVESTOR" }
         const expiresIn = process.env.JWT_EXPIRY || '1d';
         const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn })
         console.log("req ", req.body)

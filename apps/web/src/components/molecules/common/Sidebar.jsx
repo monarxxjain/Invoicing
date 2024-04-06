@@ -22,7 +22,6 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
   const role = user.role?.toLowerCase()
   const [activeMenu, setActiveMenu] = useState(menu[0].url);
   const location = usePathname();
-  console.log(location)
 
   useEffect(() => {
     setActiveMenu(location);
@@ -65,7 +64,6 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
         <div className="">
           <ul className="flex flex-col gap-2 font-light">
             {menu.map((d, i) => {
-              console.log(activeMenu)
               return (
                 <li key={i} className={`hover:text-blue-500 hover:font-medium ${d.url === activeMenu && "text-blue-500 font-medium"} group flex w-min`}>
                   <Link

@@ -65,6 +65,6 @@ const faqs = [
 
 const investorTabs=["Ongoing Deals","Liqudation Requested","Liqudated Deals","Completed Deals"];
 
-const sellerTabs=["Ongoing Deals","Completed Deals"];
+const sellerTabs=["Ongoing Deals", "Past Deals"];
 
 export { features, statistic,faqs,investorTabs,sellerTabs};
