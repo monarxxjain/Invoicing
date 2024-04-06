@@ -3,11 +3,11 @@ import { BACKEND_URL } from "@/content/values";
 import pinata from "@/utils/pinata";
 import axios from "axios";
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Snackbar from '@mui/joy/Snackbar';
 
 const CreateDealForm = ({ sellerId, token }) => {
   // console.log("Seller Id ",sellerId);
+  const [open, setOpen] = useState()
   const [billFile, setBillFile] = useState(null);
   const [formData, setFormData] = useState({
     targetAmount: "",
@@ -45,9 +45,7 @@ const CreateDealForm = ({ sellerId, token }) => {
       bill: link,
     });
     // console.log(link)
-    toast.success("Deal Created Successfully!", {
-      position: "bottom-right",
-    });
+    setOpen(true)
     console.log({
       ...formData,
       bill: link,
@@ -168,7 +166,20 @@ const CreateDealForm = ({ sellerId, token }) => {
       >
         Create Deal
       </button>
-      <ToastContainer />
+      <Snackbar
+        autoHideDuration={4000}
+        open={open}
+        variant={"outlined"}
+        color={"success"}
+        onClose={(event, reason) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+          setOpen(false);
+        }}
+      >
+        Deal Created Successfully !!
+      </Snackbar>
     </form>
   );
 };

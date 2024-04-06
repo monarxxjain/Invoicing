@@ -241,3 +241,9 @@ input[type=number] {
 .seller .css-1cjcgnb{
   display: none !important;
 }
+
+.MuiCircularProgress-root {
+  color: #061c37 !important;
+  width: 100px !important;
+  height: 100px !important;
+}

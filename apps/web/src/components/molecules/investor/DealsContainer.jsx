@@ -6,7 +6,7 @@ import { BACKEND_URL } from '@/content/values'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { supabase } from '@/utils/supabase'
-
+import CircularProgress from '@mui/material/CircularProgress';
 const DealsContainer = () => {
   const [deals, setDeals] = useState()
   const getAllDeals = async () => {
@@ -31,7 +31,8 @@ const DealsContainer = () => {
   }, [])
 
   return (
-    <div className='mt-10 grid grid-cols-2 gap-6'>
+    <div className='mt-10 grid grid-cols-2 gap-6 relative'>
+      {!deals && <CircularProgress className='mx-auto'/>}
       {deals?.map((deal, id) => {
         return (
           <Deal key={id} deal={deal} />

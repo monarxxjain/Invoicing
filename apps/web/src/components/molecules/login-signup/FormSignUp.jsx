@@ -28,6 +28,8 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
   const router = useRouter()
   useEffect(() => {
     console.log(address)
+    let data = userData;
+    data.modelData.metaMaskId = address;
     address && setUserData((prev) => ({
       ...prev, modelData: {
         ...prev.modelData,
@@ -35,7 +37,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
       }
     }))
     if (address && userData.role == "INVESTOR") {
-      signUpInvestor()
+      signUpInvestor(data)
     }
   }, [address])
 
@@ -113,7 +115,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
   }));
   
 
-  const signUpInvestor = async () => {
+  const signUpInvestor = async (userData) => {
     console.log("TEEST:" , userData)
     try {
       const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`,

@@ -59,14 +59,14 @@ const investDeal = async (req, res) => {
     const { deal, amount } = data;
 
     const investor = req.investor; 
-    console.log(deal)
+    console.log(investor)
 
     // Check if deal status is OPEN
     if (deal.status !== 'OPEN') {
-      return res.status(402).json({ message: "Deal status is not OPEN" });
+      return res.status(200).json({ error: "Deal status is not OPEN" });
     }
     if (amount == 0) {
-      return res.status(402).json({ message: "Amount can't be zero" });
+      return res.status(200).json({ error: "Amount can't be zero" });
     }
 
     // Check if the investor is already invested in this deal
@@ -79,7 +79,7 @@ const investDeal = async (req, res) => {
 
     // If first time investing, amount should be more than min
     if (!existingInvestment && amount < deal.minInvestmentAmount) {
-      return res.status(400).json({ message: "Amount should be more than minimum investment amount" });
+      return res.status(200).json({ error: "Amount should be more than minimum investment amount" });
     }
     
     // If modifying investment
@@ -108,12 +108,12 @@ const investDeal = async (req, res) => {
 
       // Taking out some money
       if (amount < 0 && remainingInvestment < deal.minInvestmentAmount) {
-        return res.status(400).json({ message: "Remaining investment should be more or equal to minimum investment amount or be zero" });
+        return res.status(200).json({ error: "Remaining investment should be more or equal to minimum investment amount or be zero" });
       }
 
       // If adding money, then final amount should be less than or equal to money required
       if (amount > 0 && deal.targetAmount < remainingInvestment) {
-        return res.status(400).json({ message: "Final amount should be less than or equal to required amount" });
+        return res.status(200).json({ error: "Final amount should be less than or equal to required amount" });
       }
 
       // Update existing investment amount
@@ -140,7 +140,7 @@ const investDeal = async (req, res) => {
       } else {
         if(amount<0)
         {
-          return res.status(400).json({message:"You have not invested anything, so can't withdraw !"});
+          return res.status(200).json({error:"You have not invested anything, so can't withdraw !"});
         }
         await prisma.investorDeals.create({
           data: {
@@ -192,7 +192,6 @@ const verifyDeal = async (req, res) => {
       
     });
     deal.id = deal.id.toString();
-    console.log("Deal  ", deal);
     res.status(200).json(deal);
   } catch (e) {
     console.log("error in db ", e);

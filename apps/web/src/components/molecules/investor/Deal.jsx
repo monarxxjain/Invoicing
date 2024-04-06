@@ -10,12 +10,14 @@ import DealSummary from '@/components/atoms/DealSummary';
 import DealRisks from '@/components/atoms/DealRisks';
 import axios from 'axios';
 import { BACKEND_URL } from '@/content/values';
-import { useAddress } from '@thirdweb-dev/react';
+import { useAddress, useBalance } from '@thirdweb-dev/react';
+import { useEffect } from 'react';
+import ReportProblemIcon from '@mui/icons-material/ReportProblem';
+import Snackbar from '@mui/joy/Snackbar';
 
-const Deal = ({deal}) => {
-
+const Deal = ({ deal }) => {
   const address = useAddress()
-
+  const balance = 100000
   const tags = [
     {
       abbr: "RF",
@@ -29,7 +31,7 @@ const Deal = ({deal}) => {
     }
   ]
 
-  const progressPercent = (deal.currentAmount / deal.targetAmount) *100
+  const [progressPercent, setProgressPercent] = useState((deal.currentAmount / deal.targetAmount) * 100)
 
   const details = [
     {
@@ -48,9 +50,11 @@ const Deal = ({deal}) => {
       color: "text-black"
     }
   ]
-
+  const [amount, setAmount] = useState(null)
   const [showMore, setShowMore] = useState(null)
-
+  const [error, setError] = useState()
+  const [success, setSuccess] = useState()
+  const [open, setOpen] = useState()
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#061c37"),
     backgroundColor: "#061c37",
@@ -62,12 +66,10 @@ const Deal = ({deal}) => {
   const handleBuy = (e) => {
     e.preventDefault();
 
-    const formData = new FormData(e.target)
-    const amount  = formData.get('amount')
     try {
       invest(amount)
     } catch (error) {
-        
+
     }
   }
 
@@ -78,25 +80,38 @@ const Deal = ({deal}) => {
       return { dealId: Number(v.dealId), investorId: Number(v.investorId) };
     });
 
+    try {
+      const res = await axios.put(`${BACKEND_URL}/deal/investDeal`,
+        {
+          deal: deal,
+          metaMaskId: address,
+          amount: Number(Math.abs(amount))
+        },
+        { withCredentials: true }
+      )
+      if (res.data.error) {
+        console.log(res.data.error)
+        setError(res.data.error)
+        setOpen(true)
+      }
+      else if (res.data.message) {
+        setProgressPercent((amount+deal.currentAmount)/deal.targetAmount *100)
+        setSuccess(res.data.message)
+        setOpen(true)
+        setAmount(null)
+      }
 
-    const res = await axios.put(`${BACKEND_URL}/deal/investDeal`,
-      {
-        deal: deal,
-        metaMaskId: address,
-        amount: Number(amount)
-      },
-      {withCredentials: true}
-    )
+    } catch (error) {
 
-    console.log(res)
+    }
   }
 
   return (
-    <div className='relative'>
+    <div className='relative h-full'>
       <div className='absolute left-8 z-10 -top-3 border border-green-400 bg-green-200 rounded px-10 text-sm text-green-700'>
         ICT24249823897238798789324
       </div>
-      <div className='border border-green-400 bg-white rounded px-3 pt-5 pb-3 flex flex-col gap-5'>
+      <div className='border h-full border-green-400 bg-white rounded px-3 pt-5 pb-3 flex flex-col gap-5'>
         <section className='flex justify-between items-center'>
           <ul className='flex gap-3 h-fit'>
             {tags.map((tag, id) => {
@@ -123,8 +138,8 @@ const Deal = ({deal}) => {
         </section>
 
         <section className='flex justify-between items-center text-gray-700 text-sm -mt-3 px-5'>
-            <div>ETH <span className='font-medium text-gray-900'>{deal.targetAmount - deal.currentAmount}</span> - Available</div>
-            <div>ETH <span className='font-medium text-gray-900'>{deal.targetAmount}</span> - Total</div>
+          <div>ETH <span className='font-medium text-gray-900'>{deal.targetAmount - deal.currentAmount}</span> - Available</div>
+          <div>ETH <span className='font-medium text-gray-900'>{deal.targetAmount}</span> - Total</div>
         </section>
 
         <section className='flex justify-around'>
@@ -138,15 +153,15 @@ const Deal = ({deal}) => {
           })}
         </section>
 
-        <form id='investForm' onSubmit={(e)=>{handleBuy(e)}} className='grid grid-cols-2 gap-4'>
-          <input type='number' name='amount' className='text-right outline-gray-600 border border-gray-600 rounded p-2' />
-          <ColorButton variant='contained' type='submit' >
+        <form id='investForm' onSubmit={(e) => { handleBuy(e) }} className='grid grid-cols-2 gap-4'>
+          <input type='number' onChange={(e) => { setAmount(Math.abs(e.target.value).toString().replace(/^0+/, '')) }} value={amount || 0} name='amount' className='text-right outline-gray-600 border border-gray-600 rounded p-2' />
+          <ColorButton disabled={balance < deal.minInvestmentAmount || !amount ? true : false} variant='contained' type='submit' >
             BUY
           </ColorButton>
         </form>
 
         <section className='self-end -mt-3'>
-          <Warning warning={"This is the warning"} />
+          {balance < deal.minInvestmentAmount && <Warning warning={`Add at least ${deal.minInvestmentAmount - balance} ETH in your wollete to invest`} />}
         </section>
 
         <section className='flex justify-around text-gray-700 cursor-pointer font-medium'>
@@ -165,6 +180,35 @@ const Deal = ({deal}) => {
       <DealSummary showMore={showMore} setShowMore={setShowMore} />
 
       <DealRisks showMore={showMore} setShowMore={setShowMore}/>
+
+      {error && <Snackbar
+        autoHideDuration={3000}
+        open={open}
+        variant="outlined"
+        color={"danger"}
+        onClose={(event, reason) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+          setOpen(false);
+        }}
+      >
+        {error}
+      </Snackbar>}
+      { success && <Snackbar
+        autoHideDuration={3000}
+        open={open}
+        variant="outlined"
+        color={"success"}
+        onClose={(event, reason) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+          setOpen(false);
+        }}
+      >
+        {success}
+      </Snackbar>}
     </div>
   )
 }
