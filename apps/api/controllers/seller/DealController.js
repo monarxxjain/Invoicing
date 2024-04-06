@@ -80,8 +80,7 @@ const investDeal = async (req, res) => {
     // If modifying investment
     if (existingInvestment) {
       // Calculate remaining investment after modification
-      const remainingInvestment = existingInvestment.amount + amount;
-
+      const remainingInvestment = Number(existingInvestment.investmentAmount) + Number(amount);
       // Taking out entire money
       if (remainingInvestment === 0) {
         // Remove existing investment
@@ -103,18 +102,19 @@ const investDeal = async (req, res) => {
       if (amount > 0 && deal.targetAmount > remainingInvestment) {
         return res.status(400).json({ message: "Final amount should be less than or equal to required amount" });
       }
-      console.log("existing ",existingInvestment);
+
       // Update existing investment amount
-        await prisma.investorDeals.update({
+      console.log(await prisma.investorDeals.update({
           where: {
             dealId_investorId: {
-              ...existingInvestment
+              dealId:deal.id,
+              investorId:existingInvestment.investorId
             }
           },
           data: {
-            investmentAmount: 10
+            investmentAmount: remainingInvestment
           }
-        });
+        }));
       if(amount<0) return res.status(200).json({ message: "Money withdrawing was successfyll" });
       return res.status(200).json({ message: "Investment updated successfully" });
     } else {
