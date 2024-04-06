@@ -1,1 +1,1 @@
-export const BACKEND_URL = "http://localhost:3001"
+export const BACKEND_URL = "http://invoicing-backend.vercel.app"
