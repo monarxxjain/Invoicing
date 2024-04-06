@@ -1,3 +1,4 @@
+const { verify } = require("crypto");
 const prisma = require("../../db");
 const addDeal = async (req, res) => {
   const data = req.body;
@@ -43,20 +44,20 @@ const addDeal = async (req, res) => {
 
 const investDeal = async (req, res) => {
   /*
-    * if deal is open or not
-    * if first time investing 
-        amount should be more than min
-    * if modifying
-        * Taking out entire money
-        * Taking out some money 
-          * Remaining investment should be more than min
-        * If adding money
-          * Then final amount should be less= than money req
+  * if deal is open or not
+  * if first time investing 
+  amount should be more than min
+  * if modifying
+  * Taking out entire money
+  * Taking out some money 
+  * Remaining investment should be more than min
+  * If adding money
+  * Then final amount should be less= than money req
   */
-  try {
+ try {
     const data = req.body;
     const { deal, investor, amount } = data;
-
+    
     // Check if deal status is OPEN
     if (deal.status !== 'OPEN') {
       return res.status(402).json({ message: "Deal status is not OPEN" });
@@ -74,7 +75,7 @@ const investDeal = async (req, res) => {
     if (!existingInvestment && amount < deal.minInvestmentAmount) {
       return res.status(400).json({ message: "Amount should be more than minimum investment amount" });
     }
-
+    
     // If modifying investment
     if (existingInvestment) {
       // Calculate remaining investment after modification
@@ -113,11 +114,11 @@ const investDeal = async (req, res) => {
             investmentAmount: remainingInvestment
           }
         }));
-      if(amount<0) return res.status(200).json({ message: "Money withdrawing was successfyll" });
-      return res.status(200).json({ message: "Investment updated successfully" });
-    } else {
-      await prisma.investorDeals.create({
-        data: {
+        if(amount<0) return res.status(200).json({ message: "Money withdrawing was successfyll" });
+        return res.status(200).json({ message: "Investment updated successfully" });
+      } else {
+        await prisma.investorDeals.create({
+          data: {
           deal: {
             connect: {
               id: deal.id
@@ -139,7 +140,31 @@ const investDeal = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+ 
+const verifyDeal = async (req, res) => {
+  const data = req.body;
+  
+  try {
+    let deal = await prisma.deal.update({
+      where:{
+        id:data.id.toString(),
+      },
+      data : {
+        status: "OPEN",
+      },
+      
+    });
+    deal.id = deal.id.toString();
+    console.log("Deal  ", deal);
+    res.status(200).json(deal);
+  } catch (e) {
+    console.log("error in db ", e);
+    res.status(402).json({ error: "Error verifying Deal" });
+  }
+};
+
 module.exports = {
   addDeal,
-  investDeal
+  investDeal,
+  verifyDeal
 };

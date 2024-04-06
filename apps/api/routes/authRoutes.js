@@ -19,4 +19,5 @@ router.post('/login/company', getEmployee, loginEmployee)
 router.put('/approveSeller', authorization, roleAuthorization(["ADMIN"]), approveSellerRequest)
 
 router.get('/logout', authorization, logout)
+
 module.exports = router

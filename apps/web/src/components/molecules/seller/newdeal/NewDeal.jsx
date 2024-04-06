@@ -36,7 +36,10 @@ const CreateDealForm = ({ sellerId, token }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const link = 'https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/' + (await pinata(billFile)).IpfsHash;
+    const ipfshash = await pinata(billFile);
+    console.log("ipfs hash ",ipfshash);
+    const link = 'https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/' + (ipfshash).IpfsHash;
+    // const link =  "sdfs";
     setFormData({
       ...formData,
       bill: link,

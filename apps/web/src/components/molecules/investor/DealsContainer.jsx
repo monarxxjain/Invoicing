@@ -23,7 +23,7 @@ const DealsContainer = () => {
         console.log("here ",ob);
         return ob;
     })
-    setDeals(deals.data.data)
+    // setDeals(deals)  
   }
 
   useEffect(()=>{

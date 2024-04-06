@@ -7,6 +7,7 @@ const FormData = require("form-data");
 const JWT = process.env.PINATA_KEY
 
 const pinFileToIPFS = async (file) => {
+  console.log("JWT ",JWT);
   const formData = new FormData();
 
   formData.append("file", file);
