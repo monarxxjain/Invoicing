@@ -59,7 +59,6 @@ const investDeal = async (req, res) => {
     const { deal, amount } = data;
 
     const investor = req.investor; 
-    console.log(investor)
 
     // Check if deal status is OPEN
     if (deal.status !== 'OPEN') {

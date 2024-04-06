@@ -15,7 +15,7 @@ import { useEffect } from 'react';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import Snackbar from '@mui/joy/Snackbar';
 
-const Deal = ({ deal }) => {
+const Deal = ({ deal, investedDeals }) => {
   const address = useAddress()
   const balance = 100000
   const tags = [
@@ -31,17 +31,17 @@ const Deal = ({ deal }) => {
     }
   ]
 
-  const [progressPercent, setProgressPercent] = useState((deal.currentAmount / deal.targetAmount) * 100)
+  const [progressPercent, setProgressPercent] = useState(Math.floor((deal.currentAmount / deal.targetAmount) * 100))
 
   const details = [
     {
       title: "Net IRR",
-      value: deal.profitPercent,
+      value: `${deal.profitPercent}%`,
       color: "text-green-600"
     },
     {
       title: "Return in",
-      value: deal.tentativeDuration,
+      value: `${deal.tentativeDuration} days`,
       color: "text-blue-900"
     },
     {
@@ -95,7 +95,7 @@ const Deal = ({ deal }) => {
         setOpen(true)
       }
       else if (res.data.message) {
-        setProgressPercent((amount+deal.currentAmount)/deal.targetAmount *100)
+        setProgressPercent(Math.floor((amount+deal.currentAmount)/deal.targetAmount *100))
         setSuccess(res.data.message)
         setOpen(true)
         setAmount(null)
@@ -106,10 +106,21 @@ const Deal = ({ deal }) => {
     }
   }
 
+  let investedAmount = null;
+  for(let i=0; i<investedDeals.length; i++){
+    if(deal.id == investedDeals[i].dealId){
+      investedAmount = investedDeals[i].investmentAmount;
+       break;
+    }
+
+  }
+
+
+
   return (
     <div className='relative h-full'>
       <div className='absolute left-8 z-10 -top-3 border border-green-400 bg-green-200 rounded px-10 text-sm text-green-700'>
-        ICT24249823897238798789324
+        ICT{deal.id}
       </div>
       <div className='border h-full border-green-400 bg-white rounded px-3 pt-5 pb-3 flex flex-col gap-5'>
         <section className='flex justify-between items-center'>
@@ -159,6 +170,15 @@ const Deal = ({ deal }) => {
             BUY
           </ColorButton>
         </form>
+
+        {investedAmount ? <section className='text-sm text-[#061c37] border border-[#061c37] rounded bg-blue-100 w-full text-center px-3 py-1 '>
+          You have invested ETH <span>{investedAmount}</span> on this Deal
+        </section>
+          : 
+        <section className='text-sm text-yellow-600 border border-yellow-600 rounded bg-yellow-100 w-full text-center px-3 py-1 '>
+          Let's make a bond and earn
+        </section>
+        }
 
         <section className='self-end -mt-3'>
           {balance < deal.minInvestmentAmount && <Warning warning={`Add at least ${deal.minInvestmentAmount - balance} ETH in your wollete to invest`} />}

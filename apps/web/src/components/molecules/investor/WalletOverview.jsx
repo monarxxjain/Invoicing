@@ -9,7 +9,7 @@ import netirr from "@/assets/Investor/NetIRR.svg";
 export default function WalletOverview() {
   return (
     <div className="flex flex-col gap-10 h-screen md:px-12 lg:px-32 py-12 bg-[#f4f4f6]">
-      <div className="flex justify-evenly py-12 bg-white rounded-lg">
+      <div className="flex justify-evenly py-12 bg-white rounded-lg shadow-md">
         <div className="flex flex-col items-center">
           <h2>Wallet Balance</h2>
           <p>0</p>
@@ -21,19 +21,19 @@ export default function WalletOverview() {
       </div>
 
       <div className="flex  justify-between gap-6 flex-wrap ">
-        <div className="bg-white p-8 rounded-lg gap-5 flex flex-col justify-between ">
+        <div className="bg-white p-8 rounded-lg gap-5 flex flex-col justify-between shadow">
           <div className="flex justify-between gap-10">
             <h3>
               Invested <br /> Amount
             </h3>
             <div className="bg-blue-600 rounded-full">
-              <Image src={investedamount} height={20} width={20} />
+              <Image src={investedamount} className="w-10" />
             </div>
           </div>
           <p>0</p>
         </div>
 
-        <div className="bg-white p-8 rounded-lg gap-5 flex flex-col justify-between">
+        <div className="bg-white p-8 rounded-lg gap-5 flex flex-col justify-between shadow">
           <div className="flex justify-between gap-10">
             <h3>Current<br/> Value</h3>
             <div className="bg-blue-600 rounded-full">
@@ -42,7 +42,7 @@ export default function WalletOverview() {
           </div>
           <p>0</p>
         </div>
-        <div className="bg-white p-8 rounded-lg gap-5 flex flex-col justify-between">
+        <div className="bg-white p-8 rounded-lg gap-5 flex flex-col justify-between shadow">
           <div className="flex justify-between gap-10">
             <h3>Net Gain</h3>
             <div className="bg-blue-600 rounded-full">
@@ -51,7 +51,7 @@ export default function WalletOverview() {
           </div>
           <p>0</p>
         </div>
-        <div className="bg-white p-8 rounded-lg gap-5 flex flex-col justify-between">
+        <div className="bg-white p-8 rounded-lg gap-5 flex flex-col justify-between shadow">
           <div className="flex justify-between gap-10">
             <h3>Net IRR</h3>
             <div className="bg-blue-600 rounded-full">

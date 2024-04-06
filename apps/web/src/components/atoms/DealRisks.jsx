@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { motion } from "framer-motion";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import WestOutlinedIcon from "@mui/icons-material/WestOutlined";
 import { useContext } from "react";
 import ThemeContext from "../context/ThemeContext";
@@ -8,6 +8,13 @@ import ThemeContext from "../context/ThemeContext";
 const DealRisks = ({ showMore, setShowMore }) => {
   const riskRef = useRef(null);
   const { user } = useContext(ThemeContext)
+
+  const returnBack = () => {
+    riskRef.current.classList.add("slide-left-out");
+    setTimeout(() => {
+      setShowMore(null);
+    }, 300);
+  }
   return (
     showMore == "RISKS" && (
       <motion.div
@@ -20,18 +27,13 @@ const DealRisks = ({ showMore, setShowMore }) => {
       >
         <div className="flex gap-2 items-center text-gray-700 font-medium">
           <IconButton
-            onClick={() => {
-              riskRef.current.classList.add("slide-left-out");
-              setTimeout(() => {
-                setShowMore(null);
-              }, 300);
-            }}
+            onClick={() => { returnBack() }}
           >
             <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
           </IconButton>
           <div>Risks</div>
         </div>
-        <div className="p-2">
+        <div className="p-2 flex flex-col justify-between gap-6">
           <h3 className="text-lg">
             I, {user.name}, understand the risks involved and acknowledge of
             the following risks:
@@ -53,6 +55,17 @@ const DealRisks = ({ showMore, setShowMore }) => {
               been detected by TradeCred.
             </li>
           </ol>
+          <section className='flex justify-around text-gray-700 cursor-pointer font-medium'>
+            <Button onClick={() => { returnBack() }} variant='outlined'>
+              <div>DEAL</div>
+            </Button>
+            <Button onClick={() => { setShowMore("SUMMARY") }} variant='secondary'>
+              <div>Summary</div>
+            </Button>
+            <Button onClick={() => { setShowMore("REPORT") }} variant='secondary'>
+              <div>Deal Report</div>
+            </Button>
+          </section>
         </div>
       </motion.div>
     )

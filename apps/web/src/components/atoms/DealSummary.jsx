@@ -2,9 +2,17 @@ import React, { useRef } from "react";
 import { motion } from "framer-motion";
 import WestOutlinedIcon from "@mui/icons-material/WestOutlined";
 import IconButton from "@mui/material/IconButton";
+import { Button } from "@mui/material";
 
 const DealSummary = ({ showMore, setShowMore }) => {
   const summaryRef = useRef(null);
+
+  const returnBack = () => {
+    summaryRef.current.classList.add("slide-left-out");
+    setTimeout(() => {
+      setShowMore(null);
+    }, 300);
+  }
   return (
     showMore == "SUMMARY" && (
       <motion.div
@@ -17,18 +25,13 @@ const DealSummary = ({ showMore, setShowMore }) => {
       >
         <div className="flex gap-2 items-center text-gray-700 font-medium">
           <IconButton
-            onClick={() => {
-              summaryRef.current.classList.add("slide-left-out");
-              setTimeout(() => {
-                setShowMore(null);
-              }, 300);
-            }}
+            onClick={() => { returnBack() }}
           >
             <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
           </IconButton>
           <div>Summary</div>
         </div>
-        <div>
+        <div className="flex flex-col justify-between gap-9">
           <ul className="flex flex-col gap-4 p-3">
             <li>
               <div className="flex justify-between text-base">
@@ -68,6 +71,17 @@ const DealSummary = ({ showMore, setShowMore }) => {
               </p>
             </li>
           </ul>
+          <section className='flex justify-around text-gray-700 cursor-pointer font-medium'>
+            <Button onClick={() => { setShowMore("RISKS") }} variant='secondary'>
+              <div>Risks</div>
+            </Button>
+            <Button onClick={() => { returnBack() }} variant='outlined'>
+              <div>DEAL</div>
+            </Button>
+            <Button onClick={() => { setShowMore("REPORT") }} variant='secondary'>
+              <div>Deal Report</div>
+            </Button>
+          </section>
         </div>
       </motion.div>
     )

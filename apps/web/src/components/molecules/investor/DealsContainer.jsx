@@ -9,6 +9,8 @@ import { supabase } from '@/utils/supabase'
 import CircularProgress from '@mui/material/CircularProgress';
 const DealsContainer = () => {
   const [deals, setDeals] = useState()
+  const [investedDeals, setInvestedDeals] = useState()
+
   const getAllDeals = async () => {
     let deals = await axios.get(`${BACKEND_URL}/deal/getDeals`,
       { withCredentials: true }
@@ -26,8 +28,18 @@ const DealsContainer = () => {
     setDeals(deals)
   }
 
+  const getAllInvestedDeals = async () => {
+    let investedDeals = await axios.get(`${BACKEND_URL}/deal/getInvestedDeals`,
+      { withCredentials: true }
+    )
+
+    console.log(investedDeals.data)
+    setInvestedDeals(investedDeals.data.data)
+  }
+
   useEffect(() => {
     getAllDeals()
+    getAllInvestedDeals()
   }, [])
 
   return (
@@ -35,7 +47,7 @@ const DealsContainer = () => {
       {!deals && <CircularProgress className='mx-auto'/>}
       {deals?.map((deal, id) => {
         return (
-          <Deal key={id} deal={deal} />
+          <Deal key={id} deal={deal} investedDeals={investedDeals} />
         )
       })}
     </div>
