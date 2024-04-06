@@ -15,7 +15,7 @@ export default function Footer() {
       
         <div className="flex flex-col gap-8">
           <div className="">
-            <h4 className="text-white font-bold text-base pb-4">Useful links</h4>
+            <h4 className="text-white font-bold text-lg pb-4">Useful links</h4>
             <ul className="flex flex-col gap-1 text-gray-100">
               <Link href={"/"}>Home</Link>
               <li>About Us</li>
@@ -23,7 +23,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="text-white font-bold text-base pb-4 flex items-center gap-3">
+            <h4 className="text-white font-bold text-lg pb-4 flex items-center gap-3">
               <Image src={email} height={14} width={14}></Image>
               Email</h4>
             <address className="text-gray-100 ">support@tradecred.com</address>
@@ -32,7 +32,7 @@ export default function Footer() {
         </div>
         <div className="flex flex-col gap-8">
           <div>
-            <h4 className="text-white font-bold text-base pb-4">Legal</h4>
+            <h4 className="text-white font-bold text-lg pb-4">Legal</h4>
             <ul className="flex flex-col gap-1 text-gray-100">
               <li>Privacy Policy</li>
               <li>Terms and Condition</li>
@@ -40,7 +40,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="text-white font-bold text-base pb-4">Contact</h4>
+            <h4 className="text-white font-bold text-lg pb-4">Contact</h4>
             <ul className="flex flex-col gap-1 text-gray-100">
               <li className="flex items-center gap-3">
               <Image src={phone} height={14} width={14}></Image>
