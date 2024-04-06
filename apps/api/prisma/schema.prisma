@@ -42,13 +42,11 @@ model Seller {
   name             String   @db.VarChar(191)
   email            String   @unique @db.VarChar(191)
   password         String
-  panCardNumber    String   @unique @db.VarChar(20)
   gstNumber        String   @unique @db.VarChar(20)
   contactNumber    String   @unique
-  panCardLink      String
   isSellerApproved Boolean
   refCode          String?
-  logo             Bytes?
+  logo             String
   deals            Deal[]
   created_at       DateTime @default(now())
   updated_at       DateTime @default(now())

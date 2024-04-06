@@ -229,3 +229,15 @@ input[type=number] {
 .radioButton {
   accent-color: #061c376d;
 }
+
+.seller .tw-connected-wallet {
+  border: none !important;
+}
+
+.seller .tw-connected-wallet__address {
+  color: #1976d2 !important;
+}
+
+.seller .css-1cjcgnb{
+  display: none !important;
+}

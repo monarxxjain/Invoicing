@@ -3,8 +3,6 @@ import { motion } from "framer-motion"
 import React, { useRef, useState, useEffect } from "react";
 import Image from 'next/image'
 import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
-import SelectRole from "./SelectRole";
-import FormSignUp from "./FormSignUp";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay, Navigation } from 'swiper/modules';
@@ -18,11 +16,29 @@ import Image4 from '@/assets/signup/slide4.png'
 import LoginRole from "./LoginRole";
 import LoginForm from "./LoginForm";
 
-export default function Login() {
+
+import {
+  ThirdwebProvider,
+  metamaskWallet,
+  coinbaseWallet,
+  walletConnect,
+  safeWallet,
+  localWallet,
+  trustWallet,
+  zerionWallet,
+  bloctoWallet,
+  frameWallet,
+  rainbowWallet,
+  phantomWallet,
+} from "@thirdweb-dev/react";
+
+export default function Login({ existingRole, existingEmail}) {
 
   const [userData, setUserData] = useState({
-    role: "",
-    modelData: {}
+    role: existingRole?.value || "",
+    modelData: {
+      email : existingEmail?.value || ""
+    }
   })
 
   const [view, setView] = useState("ROLE")
@@ -87,21 +103,52 @@ export default function Login() {
           })}
         </Swiper>
       </section>
+      
+      <ThirdwebProvider
+        activeChain="mumbai"
+        clientId="YOUR_CLIENT_ID"
+        supportedWallets={[
+          metamaskWallet({ recommended: true }),
+          coinbaseWallet(),
+          walletConnect(),
+          safeWallet({
+            personalWallets: [
+              metamaskWallet({ recommended: true }),
+              coinbaseWallet(),
+              walletConnect(),
+              localWallet(),
+              trustWallet(),
+              zerionWallet(),
+              bloctoWallet(),
+              frameWallet(),
+              rainbowWallet(),
+              phantomWallet(),
+            ],
+          }),
+          localWallet(),
+          trustWallet(),
+          zerionWallet(),
+          bloctoWallet(),
+          frameWallet(),
+          rainbowWallet(),
+          phantomWallet(),
+        ]}
+      >
 
-
-      <div className="hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center sm:flex flex-col">
-        <LoginRole userData={userData} setUserData={setUserData} view={view} setView={setView} />
-        <LoginForm userData={userData} setUserData={setUserData} view={view} setView={setView} />
-      </div>
-      <motion.div
-        initial={{ opacity: 0, y: "700px" }}
-        animate={{ opacity: 1, y: ["400px", "-50px", "0px"], transition: { duration: 0.8, ease: "easeOut" } }}
-        exit={{ opacity: 0, y: "700px", transition: { duration: 0.3, ease: "easeOut" } }}
-        transition={{ duration: 0.3 }}
-        className="sm:hidden h-max overflow-y-hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center flex flex-col">
-        <LoginRole userData={userData} setUserData={setUserData} view={view} setView={setView} />
-        <LoginForm userData={userData} setUserData={setUserData} view={view} setView={setView} />
-      </motion.div>
+        <div className="hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center sm:flex flex-col">
+          <LoginRole existingEmail={existingEmail} existingRole={existingRole} userData={userData} setUserData={setUserData} view={view} setView={setView} />
+          <LoginForm existingEmail={existingEmail} existingRole={existingRole} userData={userData} setUserData={setUserData} view={view} setView={setView} />
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: "700px" }}
+          animate={{ opacity: 1, y: ["400px", "-50px", "0px"], transition: { duration: 0.8, ease: "easeOut" } }}
+          exit={{ opacity: 0, y: "700px", transition: { duration: 0.3, ease: "easeOut" } }}
+          transition={{ duration: 0.3 }}
+          className="sm:hidden h-max overflow-y-hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center flex flex-col">
+          <LoginRole existingEmail={existingEmail} existingRole={existingRole} userData={userData} setUserData={setUserData} view={view} setView={setView} />
+          <LoginForm existingEmail={existingEmail} existingRole={existingRole} userData={userData} setUserData={setUserData} view={view} setView={setView} />
+        </motion.div>
+      </ThirdwebProvider>
     </div>
   );
 }

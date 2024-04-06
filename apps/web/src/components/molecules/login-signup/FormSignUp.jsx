@@ -11,17 +11,21 @@ import TextField from '@mui/material/TextField';
 import InputFile from "@/components/atoms/InputFile";
 import { BACKEND_URL } from "@/content/values";
 import axios from "axios";
-import Cookies from "js-cookie";
+import { useRouter } from 'next/navigation'
+import LoadingButton from '@mui/lab/LoadingButton';
+
 import {
   ConnectWallet,
   darkTheme,
   useAddress,
-  useAuth
 } from "@thirdweb-dev/react";
 import { useEffect } from "react";
+import { supabase } from "@/utils/supabase";
 
 const FormSignUp = ({ userData, setUserData, view, setView }) => {
+  const [loading, setLoading] = useState(false)
   const address = useAddress()
+  const router = useRouter()
   useEffect(() => {
     console.log(address)
     address && setUserData((prev) => ({
@@ -30,8 +34,8 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
         metaMaskId: address
       }
     }))
-    if (address) {
-      signUp()
+    if (address && userData.role == "INVESTOR") {
+      signUpInvestor()
     }
   }, [address])
 
@@ -43,13 +47,35 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
       setSellerPageNo(2);
     }
   };
-  const handler = (e) => {
+  const handler = async (e) => {
     e.preventDefault();
     let field = e.target.name
     let value = e.target.value
 
     if (field == "logo") {
       value = e.target.files[0]
+      console.log("File ", value);
+
+      const currentDate = new Date();
+      const timestamp = currentDate.getTime(); // Get current timestamp
+      const fileName = `${timestamp}_${value.name}`; // Append timestamp to the file name
+      console.log(fileName)
+      let { data, error } = await supabase.storage.from('invoice').upload('/logos/' + fileName, value);
+      if (error) {
+        console.log("Supabase error ", error);
+      } else {
+        console.log("Supabase data ", data);
+        // Handle success
+      }
+
+        ({ data, error } = await supabase.storage
+          .from('invoice')
+          .createSignedUrl(data.path, 3600))
+
+        if (data) {
+          console.log(data.signedUrl)
+          value = data.signedUrl
+        }
     }
 
     if (view == "DATA_INVESTOR") {
@@ -78,17 +104,48 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
       backgroundColor: "#061c37",
     },
   }));
+  const ColorLoadingButton = styled(LoadingButton)(({ theme }) => ({
+    color: theme.palette.getContrastText("#061c37"),
+    backgroundColor: "#061c37",
+    "&:hover": {
+      backgroundColor: "#061c37",
+    },
+  }));
+  
 
-  const signUp = async () => {
+  const signUpInvestor = async () => {
+    console.log("TEEST:" , userData)
+    try {
+      const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`,
+        { metaMaskId: userData.modelData.metaMaskId },
+        { withCredentials: true }
+      )
+      if (!(response.status == 200 || response.status == 201)) {
+        throw new Error("Error Signing you In")
+      }
+      else {
+        router.push('/investor')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  const signUpSeller = async () => {
 
     try {
-      const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`, 
-      { metaMaskId: userData.modelData.metaMaskId },
-      {withCredentials : true}
+      const response = await axios.post(`${BACKEND_URL}/auth/signup/seller`,
+      { ...userData.modelData },
+      { withCredentials: true }
       )
-      console.log(response.data)
-      console.log(Cookies.get("ROLE"))
-      
+      if (!(response.status == 200 || response.status == 201)) {
+        throw new Error("Error Signing you In")
+      }
+      else {
+        setLoading(true)
+        router.push('/login')
+      }
     } catch (error) {
       console.log(error)
     }
@@ -180,7 +237,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
           </div>
           <form name="orgForm" className="flex flex-col gap-4 py-4">
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-              <label for="name">Organisation Name:</label>
+              <label htmlFor="name">Organisation Name:</label>
               <TextField
                 name="name"
                 label="Name"
@@ -191,7 +248,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-              <label for="email">Organisation Email:</label>
+              <label htmlFor="email">Organisation Email:</label>
               <TextField
                 name="email"
                 label="Email"
@@ -202,7 +259,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-              <label for="contactNumber">Contact Number:</label>
+              <label htmlFor="contactNumber">Contact Number:</label>
               <TextField
                 name="contactNumber"
                 label="Contact"
@@ -213,7 +270,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-              <label for="password">Password:</label>
+              <label htmlFor="password">Password:</label>
               <TextField
                 name="password"
                 type="password"
@@ -252,7 +309,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
           </div>
           <form name="orgForm" className="flex flex-col gap-4 mt-4">
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-              <label for="gstNumber">GST Number:</label>
+              <label htmlFor="gstNumber">GST Number:</label>
               <TextField
                 name="gstNumber"
                 label="GST No"
@@ -264,18 +321,47 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
             </div>
             <div className="flex flex-wrap   xs:flex-col gap-4 justify-between">
               <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-                <label for="logo">Logo:</label>
+                <label htmlFor="logo">Logo:</label>
                 <InputFile handler={handler} />
               </div>
 
               <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-                <label for="metaMaskId">Connect metamask</label>
-                <Button variant="outlined" className="w-40" name="metaMaskId" type="submit" value={"metaMaskId"} onClick={(e) => handler(e)}>Connect</Button>
+                <label htmlFor="metaMaskId">Connect metamask</label>
+                <Button variant="outlined" className="seller">
+                  <ConnectWallet
+                    className="!text-inherit !font-light !rounded !text-sm !bg-transparent !border !border-blue-600 !p-0.5"
+                    theme={darkTheme({
+                      colors: {
+                        accentText: "#86EFAC",
+                        accentButtonBg: "#bb00ff",
+                        borderColor: "#86EFAC",
+                        separatorLine: "#f1e4e4",
+                        modalBg: "#061c37",
+                      },
+                    })}
+                    btnTitle={"CONNECT WEB3"}
+                    modalTitle={"Connect to Investo"}
+                    modalSize={"wide"}
+                    welcomeScreen={{
+                      title: "Welcome to Investo",
+                      subtitle: "",
+                      img: {
+                        src: "https://hopin-prod-fe-page-builder.imgix.net/events/page_builder/000/288/066/original/4764288e-0018-44ec-afc5-1b4e48d6c235.GIF?ixlib=rb-4.0.0&s=3b978bc503fed36297bf33b1b72e702c",
+                        width: 350,
+                        height: 250,
+                      },
+                    }}
+                    modalTitleIconUrl={""}
+
+                  />
+
+                </Button>
+                {/* <Button variant="outlined" className="w-40" name="metaMaskId" type="submit" value={"metaMaskId"} onClick={(e) => handler(e)}>Connect</Button> */}
               </div>
 
             </div>
 
-            <ColorButton variant="contained" type="submit" onClick={(e) => { e.preventDefault() }}> Submit</ColorButton>
+            <ColorLoadingButton loading={loading} variant="contained" type="submit" onClick={(e) => { e.preventDefault(); signUpSeller() }}> Submit</ColorLoadingButton>
           </form>
         </motion.div>
       )}
