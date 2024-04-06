@@ -68,14 +68,14 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
         // Handle success
       }
 
-        ({ data, error } = await supabase.storage
-          .from('invoice')
-          .createSignedUrl(data.path, 3600))
+        // ({ data, error } = await supabase.storage
+        //   .from('invoice')
+        //   .createSignedUrl(data.path, 3600))
 
-        if (data) {
-          console.log(data.signedUrl)
-          value = data.signedUrl
-        }
+        // if (data) {
+        //   console.log(data.signedUrl)
+          value = data.path
+        // }
     }
 
     if (view == "DATA_INVESTOR") {

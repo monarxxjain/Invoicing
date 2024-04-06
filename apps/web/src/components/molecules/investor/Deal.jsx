@@ -9,7 +9,7 @@ import Tag from '@/components/atoms/Tag';
 import DealSummary from '@/components/atoms/DealSummary';
 import DealRisks from '@/components/atoms/DealRisks';
 
-const Deal = () => {
+const Deal = ({deal}) => {
 
   const tags = [
     {
@@ -24,22 +24,22 @@ const Deal = () => {
     }
   ]
 
-  const progressPercent = 76
+  const progressPercent = (deal.currentAmount / deal.targetAmount) *100
 
   const details = [
     {
       title: "Net IRR",
-      value: "10.40%",
+      value: deal.profitPercent,
       color: "text-green-600"
     },
     {
       title: "Return in",
-      value: "95 days",
+      value: deal.tentativeDuration,
       color: "text-blue-900"
     },
     {
       title: "Minimum Purchasable amount",
-      value: "$ 1,00,000",
+      value: `${deal.minInvestmentAmount} ETH`,
       color: "text-black"
     }
   ]
@@ -68,7 +68,7 @@ const Deal = () => {
               )
             })}
           </ul>
-          <Image alt="altText" src={logo} className='h-14 w-fit self-end' />
+          <Image alt="altText" src={deal.seller.logo} width={100} height={100} className='h-14 w-fit self-end' />
         </section>
 
         <section className='w-full flex justify-between items-center ps-2'>

@@ -93,6 +93,18 @@ const loginSeller = async (req, res) => {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
               })
+              .cookie("METAMASKID", req.body.metaMaskId,  {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+              })
+              .cookie("SELLER_ID", req.seller.id,  {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+              })
+              .cookie("EMAIL", req.body.email,  {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+              })
               .status(201)
               .json({message: "Logged in Successfully"})
         }

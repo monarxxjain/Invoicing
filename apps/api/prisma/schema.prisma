@@ -28,6 +28,11 @@ enum DealStatus {
   CLOSED
 }
 
+enum DealTags {
+  RF
+  ZC
+}
+
 model Employee {
   id       Int    @id @default(autoincrement())
   name     String
@@ -52,20 +57,23 @@ model Seller {
   updated_at       DateTime @default(now())
 }
 
+
+
 model Deal {
-  id                BigInt          @id @default(autoincrement()) @db.BigInt // Custom Id from frontend
-  seller            Seller          @relation(fields: [sellerId], references: [id])
-  sellerId          Int
-  targetAmount      Int
-  minInvestmentAmount      Int     @default(0)
-  currentAmount     Int            @default(0)
-  bill              String         @default("")
-  status            DealStatus
-  dealAim           String
-  tentativeDuration Int
-  profitPercent     Int
-  investors         InvestorDeals[]
-  created_at        DateTime        @default(now())
+  id                  BigInt          @id @default(autoincrement()) @db.BigInt // Custom Id from frontend
+  seller              Seller          @relation(fields: [sellerId], references: [id])
+  sellerId            Int
+  targetAmount        Int
+  minInvestmentAmount Int             @default(0)
+  currentAmount       Int             @default(0)
+  bill                String          @default("")
+  status              DealStatus
+  tags                DealTags[]
+  dealAim             String
+  tentativeDuration   Int
+  profitPercent       Int
+  investors           InvestorDeals[]
+  created_at          DateTime        @default(now())
 }
 
 model Investor {
@@ -77,10 +85,11 @@ model Investor {
 }
 
 model InvestorDeals {
-  deal       Deal     @relation(fields: [dealId], references: [id])
-  dealId     BigInt
-  investor   Investor @relation(fields: [investorId], references: [id])
-  investorId Int
-  investmentAmount Int  
+  deal             Deal     @relation(fields: [dealId], references: [id])
+  dealId           BigInt
+  investor         Investor @relation(fields: [investorId], references: [id])
+  investorId       Int
+  investmentAmount Int
+
   @@id([dealId, investorId])
 }

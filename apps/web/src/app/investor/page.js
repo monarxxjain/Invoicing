@@ -8,7 +8,7 @@ import { BACKEND_URL } from "@/content/values";
 
 async function getAllDeals () {
 
-  const res = await axios.post(`${BACKEND_URL}/deal/postDeal`,{},
+  const res = await axios.post(`${BACKEND_URL}/deal/getDeals`,{},
     {withCredentials: true}  
   )
 
@@ -25,12 +25,12 @@ export default  function Home() {
     redirect("/")
   }
   
-  const deals = getAllDeals()
+  // const deals = getAllDeals()
 
   return (
     <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
       <WelcomeUser />
-      <DealsContainer deals={deals} />
+      <DealsContainer />
     </div>
   );
 }

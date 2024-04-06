@@ -6,9 +6,9 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const CreateDealForm = ({sellerId,token}) => {
+const CreateDealForm = ({ sellerId, token }) => {
   // console.log("Seller Id ",sellerId);
-  const [billFile,setBillFile] = useState(null);
+  const [billFile, setBillFile] = useState(null);
   const [formData, setFormData] = useState({
     targetAmount: "",
     tentativeDuration: "",
@@ -36,8 +36,7 @@ const CreateDealForm = ({sellerId,token}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const link = 'https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/'+(await pinata(billFile)).IpfsHash;
-
+    const link = 'https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/' + (await pinata(billFile)).IpfsHash;
     setFormData({
       ...formData,
       bill: link,
@@ -47,26 +46,26 @@ const CreateDealForm = ({sellerId,token}) => {
       position: "bottom-right",
     });
     console.log({
-        ...formData,
-        bill: link,
-      });
-    
-      axios.post(BACKEND_URL+'/deal/postDeal', {
-        ...formData,
-        bill: link,
-        sellerId: Number(sellerId.value),
-        tentativeDuration:Number(formData.tentativeDuration),
-        minInvestmentAmount:Number(formData.minInvestmentAmount),
-        targetAmount:Number(formData.targetAmount),
-      },{
-        withCredentials: true
+      ...formData,
+      bill: link,
+    });
+
+    axios.post(BACKEND_URL + '/deal/postDeal', {
+      ...formData,
+      bill: link,
+      sellerId: Number(sellerId.value),
+      tentativeDuration: Number(formData.tentativeDuration),
+      minInvestmentAmount: Number(formData.minInvestmentAmount),
+      targetAmount: Number(formData.targetAmount),
+    }, {
+      withCredentials: true
+    })
+      .then(response => {
+        console.log('Response:', response.data);
       })
-  .then(response => {
-    console.log('Response:', response.data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-  });
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   return (
