@@ -1,15 +1,13 @@
 const prisma = require("../../db");
 const addDeal = async (req, res) => {
   const data = req.body;
-  const investors = data.investors.map((v) => {
-    return { investor: { connect: { id: v } } };
-  });
   const billVerify = ()=>{return true;}
   if(!billVerify())
   {
     res.status(402).json({ error: "Bill can't be verified !" });
     return;
   }
+  console.log("Deal ",data);
   try {
 
     let deal = await prisma.deal.create({
@@ -19,9 +17,9 @@ const addDeal = async (req, res) => {
         bill : data.bill,
         minInvestmentAmount: data.minInvestmentAmount,
         status: "PENDING",
-        dealAim: data.dealAim,
+        dealAim: data.dealAim ,
         tentativeDuration: data.tentativeDuration,
-        profitPercent: data.profitPercent,
+        profitPercent: Number(data.interestRate),
         investors: { create: [] },
       },
       include: {

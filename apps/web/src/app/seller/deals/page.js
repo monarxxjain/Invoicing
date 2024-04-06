@@ -1,7 +1,10 @@
+import InvestorPortfolioTab from "@/components/atoms/InverstorPortfolioTab";
+import { sellerTabs } from "@/content/homeContent";
+
 export default function Home() {
     return (
       <div>
-        All Deals Page
+        <InvestorPortfolioTab tabs={sellerTabs}/>
       </div>
     );
 }

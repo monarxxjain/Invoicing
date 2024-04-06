@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import Warning from '@/components/atoms/Warning';
 import Tag from '@/components/atoms/Tag';
 import DealSummary from '@/components/atoms/DealSummary';
+import DealRisks from '@/components/atoms/DealRisks';
 
 const Deal = () => {
 
@@ -120,6 +121,8 @@ const Deal = () => {
       </div>
 
       <DealSummary showMore={showMore} setShowMore={setShowMore} />
+
+      <DealRisks showMore={showMore} setShowMore={setShowMore}/>
     </div>
   )
 }

@@ -16,7 +16,7 @@ const authorization = (req, res, next) => {
 
     const token = req.cookies.access_token;
     if (!token) {
-      return res.status(403).json({message: "JWT token NOT found"});
+      return res.status(201).json({error: "JWT token NOT found"});
     }
     
     try {
@@ -38,7 +38,7 @@ const roleAuthorization = (roles) => {
       next();
     }
     else{
-      res.status(403).json({error: "Access Forbidden to this Role"})
+      res.status(201).json({error: "Access Forbidden to this Role"})
     }
   };
 };

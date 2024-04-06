@@ -5,8 +5,7 @@ import arrow from "@/assets/home/arrow.svg";
 
 import Image from "next/image";
 import ImageCorousal from "./ImageCorousal";
-import TheProcess from "./TheProcess";
-import FAQS from "./FAQS";
+
 
 const HeroSection = () => {
   return (

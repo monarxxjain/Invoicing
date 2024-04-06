@@ -3,19 +3,19 @@ import { useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2";
 
-export default function Search({ search, setSearch, pls,handleSearch }) {
-  useEffect(()=>{
+export default function Search({ search, setSearch, pls, handleSearch }) {
+  useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.code === 'Space') {
         document.getElementById("searchBox").focus();
       }
     };
     document.addEventListener('keydown', handleKeyDown);
- 
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  },[])
+  }, [])
   return (
     <form
       onSubmit={(e) => {

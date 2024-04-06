@@ -1,10 +1,10 @@
 import InvestorPortfolioTab from "@/components/atoms/InverstorPortfolioTab";
-
+import { investorTabs } from "@/content/homeContent";
 
 export default function Home() {
     return (
       <div>
-        <InvestorPortfolioTab/>
+        <InvestorPortfolioTab tabs={investorTabs}/>
       </div>
     );
 }
