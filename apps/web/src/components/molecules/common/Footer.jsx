@@ -8,12 +8,10 @@ import whatsapplogo from '@/assets/home/whatsapplogo.png'
 
 export default function Footer() {
   return (
-    <div className="flex justify-around bg-gray-700 p-6 ">
-      <div className="">
-        <Image src={logo} height={150} width={150} />
-      </div>
+    <div className="flex flex-wrap gap-10 justify-around bg-gray-700 p-6">
+
       
-        <div className="flex flex-col gap-8">
+        <div className="flex justify-between sm:flex-col gap-8">
           <div className="">
             <h4 className="text-white font-bold text-lg pb-4">Useful links</h4>
             <ul className="flex flex-col gap-1 text-gray-100">
@@ -26,7 +24,7 @@ export default function Footer() {
             <h4 className="text-white font-bold text-lg pb-4 flex items-center gap-3">
               <Image src={email} height={14} width={14}></Image>
               Email</h4>
-            <address className="text-gray-100 ">support@tradecred.com</address>
+            <address className="text-gray-100 ">support@example.com</address>
             
           </div>
         </div>
@@ -44,10 +42,10 @@ export default function Footer() {
             <ul className="flex flex-col gap-1 text-gray-100">
               <li className="flex items-center gap-3">
               <Image src={phone} height={14} width={14}></Image>
-                Phone : 1800-120-9870</li>
+                Phone : 1800-XXX-2342</li>
               <li className="flex items-center gap-3">
               <Image src={whatsapplogo} height={20} width={20}></Image>
-                Chat with us: 9356816066</li>
+                Chat with us: 935XXXX066</li>
             </ul>
           </div>
         </div>

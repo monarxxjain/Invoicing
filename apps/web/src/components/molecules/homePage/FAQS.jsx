@@ -6,8 +6,8 @@ export default function FAQS() {
     const [open,setOpen] = useState(-1)
 
   return (
-    <div className="flex flex-col  lg:flex-row gap-4 lg:gap-0 justify-evenly">
-      <h3 className=" text-3xl md:text-5xl font-bold text-gray-400">FAQs</h3>
+    <div className="flex flex-col gap-10 px-10 lg:px-24">
+      <h3 className=" text-3xl md:text-5xl font-bold text-gray-700">FAQ's</h3>
       <div>
         <ul className="flex flex-col gap-8 text-justify ">
           {faqs.map((item, index) => (

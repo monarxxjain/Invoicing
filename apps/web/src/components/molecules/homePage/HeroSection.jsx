@@ -5,20 +5,21 @@ import arrow from "@/assets/home/arrow.svg";
 
 import Image from "next/image";
 import ImageCorousal from "./ImageCorousal";
+import Link from "next/link";
 
 
-const HeroSection = () => {
+const HeroSection = ({metaMaskId, token}) => {
   return (
     <div className="lg:h-screen parentcss">
-      <div className="lg:h-[85vh] px-12 sm:px-24 py-10 flex flex-col gap-10 bg-[url('/homeImages/heroImage.png')] bg-cover">
+      <div className="lg:h-[90vh] px-12 sm:px-24 py-10 flex flex-col gap-10 bg-[url('/homeImages/heroImage.png')] bg-cover">
         {/* <Image  alt="altText" className="absolute top-0 left-0 h-screen w-full "  width={1000} height={1000}/> */}
 
-        <h1 className="text-5xl text-white font-normal">
+        <h1 className="text-5xl text-white font-normal xs:mt-8">
           Best Invoice Discounting Platform
         </h1>
-        <button className="py-2 px-5 sm:py-4 sm:px-10 transition duration-500 hover:shadow-none shadow-[0_0_100px_-10px_rgba(255,255,255)] text-left font-montserrat bg-green-500 font-medium rounded-lg w-fit text-white">
-          GET STARTED
-        </button>
+        <Link href={`${metaMaskId ? "/login" : "/signup"}`} className="py-2 px-5 sm:py-4 sm:px-10 transition duration-500 hover:shadow-none shadow-[0_0_100px_-10px_rgba(255,255,255)] text-left font-montserrat bg-green-500 font-medium rounded-lg w-fit text-white">
+        {token ? "DASHBOARD" : "GET STARTED"}
+        </Link>
         <div className="">
           <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {features.map((item, index) => (
@@ -52,8 +53,8 @@ const HeroSection = () => {
           </ul>
         </div>
       </div>
-      <div className="lg:h-[15vh] flex justify-evenly gap-14 !p-8 bg-gray-100">
-        <div className=" ms-0 sm:ms-10">
+      <div className="lg:h-[10vh] flex justify-evenly gap-14 p-4 bg-gray-100">
+        <div className="hidden xs:block ms-0 sm:ms-10">
           <h3 className="text-l !w-32">Listed Brands</h3>
         </div>
         <ImageCorousal/>

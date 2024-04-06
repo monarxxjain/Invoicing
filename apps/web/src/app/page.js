@@ -5,6 +5,7 @@ import FAQS from "@/components/molecules/homePage/FAQS";
 import Footer from "@/components/molecules/common/Footer";
 import Link from 'next/link'
 import jwt from 'jsonwebtoken';
+import Navbar from '@/components/molecules/common/Navbar';
 
 export default function Home() {
     const cookieStore = cookies()
@@ -14,7 +15,7 @@ export default function Home() {
 
   return (
     <div>
-      <Link href={`${metaMaskId ? "/login" : "/signup"}`}><button className="absolute right-0 bg-white p-1 rounded">Login/Signup</button></Link>
+      <Navbar metaMaskId={metaMaskId} token={token}/>
       <HeroSection />
       <div className="flex flex-col gap-16">
         <TheProcess />

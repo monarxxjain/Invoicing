@@ -8,7 +8,7 @@ import partnerWhite from "@/assets/home/partnerWhite.png";
 
 export default function TheProcess() {
   return (
-    <div className="flex flex-col gap-3 mt-8 ">
+    <div className="flex flex-col gap-3 mt-8 px-10 lg:px-24">
       <div className="text-center flex flex-col gap-4">
         <h2 className="font-semibold text-xl text-gray-800">The Process</h2>
         <h3 className="text-gray-500">
@@ -16,7 +16,7 @@ export default function TheProcess() {
         </h3>
       </div>
 
-      <div className="flex flex-col mx-3 lg:flex-row justify-around gap-y-10 flex-wrap gap-2 ">
+      <div className="justify-around gap-y-10 gap-6 grid grid-cols-1 md:grid-cols-3">
         <Description
           title={"Become an Investor"}
           details={
