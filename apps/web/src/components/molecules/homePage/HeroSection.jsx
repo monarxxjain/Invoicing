@@ -56,7 +56,8 @@ const HeroSection = () => {
         <div className=" ms-0 sm:ms-10">
           <h3 className="text-l !w-32">Listed Brands</h3>
         </div>
-        <Image alt="altText" Corousal />
+        <ImageCorousal/>
+        
       </div>
     </div>
   );
