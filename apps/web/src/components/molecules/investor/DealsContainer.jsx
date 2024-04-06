@@ -5,36 +5,36 @@ import axios from 'axios'
 import { BACKEND_URL } from '@/content/values'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import { supabase } from '@/utils/supabase'
 
 const DealsContainer = () => {
   const [deals, setDeals] = useState()
   const getAllDeals = async () => {
     let deals = await axios.get(`${BACKEND_URL}/deal/getDeals`,
-      {withCredentials: true}  
+      { withCredentials: true }
     )
-    console.log(deals.data.data);
-    deals =  deals.data.data.map(async (v)=>{
-      ({ data, error } = await supabase.storage
-          .from('invoice')
-          .createSignedUrl(v.seller.logo, 3600))
-        let ob = v;
+    deals = await Promise.all( deals.data.data.map(async (v) => {
+      const { data, error } = await supabase.storage
+        .from('invoice')
+        .createSignedUrl(v.seller.logo, 3600)
+      let ob = v;
+      ob.seller.logo = data.signedUrl
+      return ob;
+    }))
 
-        ob.seller.logo = data.signedUrl
-        console.log("here ",ob);
-        return ob;
-    })
-    // setDeals(deals)  
+    console.log(deals)
+    setDeals(deals)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getAllDeals()
-  },[])
+  }, [])
 
   return (
     <div className='mt-10 grid grid-cols-2 gap-6'>
       {deals?.map((deal, id) => {
         return (
-          <Deal key={id } deal={deal} />
+          <Deal key={id} deal={deal} />
         )
       })}
     </div>

@@ -8,8 +8,13 @@ import Warning from '@/components/atoms/Warning';
 import Tag from '@/components/atoms/Tag';
 import DealSummary from '@/components/atoms/DealSummary';
 import DealRisks from '@/components/atoms/DealRisks';
+import axios from 'axios';
+import { BACKEND_URL } from '@/content/values';
+import { useAddress } from '@thirdweb-dev/react';
 
 const Deal = ({deal}) => {
+
+  const address = useAddress()
 
   const tags = [
     {
@@ -54,6 +59,38 @@ const Deal = ({deal}) => {
     }
   }));
 
+  const handleBuy = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target)
+    const amount  = formData.get('amount')
+    try {
+      invest(amount)
+    } catch (error) {
+        
+    }
+  }
+
+  const invest = async (amount) => {
+
+    deal.id = Number(deal.id);
+    deal.investors = deal.investors?.map((v) => {
+      return { dealId: Number(v.dealId), investorId: Number(v.investorId) };
+    });
+
+
+    const res = await axios.put(`${BACKEND_URL}/deal/investDeal`,
+      {
+        deal: deal,
+        metaMaskId: address,
+        amount: Number(amount)
+      },
+      {withCredentials: true}
+    )
+
+    console.log(res)
+  }
+
   return (
     <div className='relative'>
       <div className='absolute left-8 z-10 -top-3 border border-green-400 bg-green-200 rounded px-10 text-sm text-green-700'>
@@ -68,7 +105,7 @@ const Deal = ({deal}) => {
               )
             })}
           </ul>
-          <Image alt="altText" src={deal.seller.logo} width={100} height={100} className='h-14 w-fit self-end' />
+          <Image alt="altText" src={deal.seller.logo} width={300} height={100} className='h-14 w-fit self-end' />
         </section>
 
         <section className='w-full flex justify-between items-center ps-2'>
@@ -85,6 +122,11 @@ const Deal = ({deal}) => {
           <div className=''>{progressPercent}%</div>
         </section>
 
+        <section className='flex justify-between items-center text-gray-700 text-sm -mt-3 px-5'>
+            <div>ETH <span className='font-medium text-gray-900'>{deal.targetAmount - deal.currentAmount}</span> - Available</div>
+            <div>ETH <span className='font-medium text-gray-900'>{deal.targetAmount}</span> - Total</div>
+        </section>
+
         <section className='flex justify-around'>
           {details.map((detail, id) => {
             return (
@@ -96,9 +138,9 @@ const Deal = ({deal}) => {
           })}
         </section>
 
-        <form className='grid grid-cols-2 gap-4'>
+        <form id='investForm' onSubmit={(e)=>{handleBuy(e)}} className='grid grid-cols-2 gap-4'>
           <input type='number' name='amount' className='text-right outline-gray-600 border border-gray-600 rounded p-2' />
-          <ColorButton variant='contained' type='submit' onClick={(e) => { e.preventDefault() }}>
+          <ColorButton variant='contained' type='submit' >
             BUY
           </ColorButton>
         </form>
