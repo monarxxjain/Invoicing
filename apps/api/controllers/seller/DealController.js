@@ -65,6 +65,9 @@ const investDeal = async (req, res) => {
     if (deal.status !== 'OPEN') {
       return res.status(402).json({ message: "Deal status is not OPEN" });
     }
+    if (amount == 0) {
+      return res.status(402).json({ message: "Amount can't be zero" });
+    }
 
     // Check if the investor is already invested in this deal
     const existingInvestment = await prisma.investorDeals.findFirst({
@@ -92,21 +95,29 @@ const investDeal = async (req, res) => {
             investorId: investor.id
           }
         });
+        await prisma.deal.update({
+          where: {
+            dealId: deal.id,
+          },
+          data:{
+            currentAmount:0
+          }
+        });
         return res.status(200).json({ message: "Investment removed successfully" });
       }
 
       // Taking out some money
-      if (remainingInvestment < existingInvestment.amount && remainingInvestment < deal.minInvestmentAmount) {
+      if (amount < 0 && remainingInvestment < deal.minInvestmentAmount) {
         return res.status(400).json({ message: "Remaining investment should be more or equal to minimum investment amount or be zero" });
       }
 
       // If adding money, then final amount should be less than or equal to money required
-      if (amount > 0 && deal.targetAmount > remainingInvestment) {
+      if (amount > 0 && deal.targetAmount < remainingInvestment) {
         return res.status(400).json({ message: "Final amount should be less than or equal to required amount" });
       }
 
       // Update existing investment amount
-      console.log(await prisma.investorDeals.update({
+      await prisma.investorDeals.update({
           where: {
             dealId_investorId: {
               dealId:deal.id,
@@ -116,10 +127,21 @@ const investDeal = async (req, res) => {
           data: {
             investmentAmount: remainingInvestment
           }
-        }));
+        });
+      await prisma.deal.update({
+          where: {
+              id:deal.id,
+          },data:{
+            currentAmount:remainingInvestment
+          }
+        });
         if(amount<0) return res.status(200).json({ message: "Money withdrawing was successfyll" });
         return res.status(200).json({ message: "Investment updated successfully" });
       } else {
+        if(amount<0)
+        {
+          return res.status(400).json({message:"You have not invested anything, so can't withdraw !"});
+        }
         await prisma.investorDeals.create({
           data: {
           deal: {
@@ -135,6 +157,14 @@ const investDeal = async (req, res) => {
           investmentAmount: amount
         }
       });
+        await prisma.deal.update({
+          where:{
+            id:deal.id
+          },
+          data:{
+            currentAmount:amount
+          }
+      });
 
     }
     return res.status(200).json({ message: "Investment added successfully" });
@@ -144,6 +174,10 @@ const investDeal = async (req, res) => {
   }
 };
  
+
+
+
+
 const verifyDeal = async (req, res) => {
   const data = req.body;
   
