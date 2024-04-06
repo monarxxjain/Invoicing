@@ -9,23 +9,17 @@ const registerNewInvestor = async (req, res) => {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
                     })
+                    .cookie("METAMASKID", req.body.metaMaskId,  {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === "production",
+                      })
                     .status(200).json({message: "You have Logged In Successfully"})
         }
 
-        const user = await prisma.users.create({
-            data: {
-                role: "INVESTOR"
-            }
-        })
-
-        const userId = user.id
     
         const investor = await prisma.investor.create({
             data: {
-                ...req.body,
-                user: {
-                    connect: { id: userId }
-                }
+                ...req.body
             }
         });
 

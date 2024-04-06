@@ -12,7 +12,7 @@ import { useContext } from "react";
 import ThemeContext from "@/components/context/ThemeContext";
 
 export default function Sidebar({ menu, isFull, setIsFull }) {
-  
+
   const { user } = useContext(ThemeContext)
   const role = user.role?.toLowerCase()
   const [activeMenu, setActiveMenu] = useState(menu[0].url);
@@ -27,7 +27,7 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
     <nav className={`${isFull ? "-mt-[0.05rem]" : ""}`} id="nav">
       <div className={`flex justify-center relative my-auto items-center ${isFull ? "py-2 pb-3" : "py-4"} border-e border-e-gray-300`}>
         <div className="flex items-center mx-3 ">
-          <Image src={logo} className={`${isFull ? "w-[60px]" : "w-[50px]"} `} />
+          <Image alt="altText" src={logo} className={`${isFull ? "w-[60px]" : "w-[50px]"} `} />
           {isFull && <div className="text-2xl font-bold">Investo</div>}
         </div>
         <button
@@ -41,7 +41,7 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
         >
           <FaAngleLeft />
         </button>
-        
+
       </div>
 
       <section className={`${isFull ? " py-4" : "py-4"} bg-[#061C37] text-white border-e flex flex-col justify-between h-[90vh] sticky`}>
@@ -49,24 +49,25 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
           <ul className="flex flex-col gap-2 font-light">
             {menu.map((d, i) => {
               console.log(activeMenu)
-              return(
-              <li key={i} className={`hover:text-blue-500 hover:font-medium ${d.url === activeMenu && "text-blue-500 font-medium"} group flex w-min`}>
-                <Link
-                  className={`flex items-center gap-3 p-2 rounded tab transition-all ${d.url === activeMenu && "active"} ${isFull ? "w-48 mx-2" : "ms-3"}`}
-                  href={d.url}
-                >
-                  {d.icon}
-                  {isFull && <p>{d.name}</p>}
-                  {isFull && d.notific && (
-                    <span className="text-white bg-red-600 text-sm px-1 text-center  rounded-full">{d.notific}</span>
-                  )}
-                </Link>
-              </li>
-            )})}
+              return (
+                <li key={i} className={`hover:text-blue-500 hover:font-medium ${d.url === activeMenu && "text-blue-500 font-medium"} group flex w-min`}>
+                  <Link
+                    className={`flex items-center gap-3 p-2 rounded tab transition-all ${d.url === activeMenu && "active"} ${isFull ? "w-48 mx-2" : "ms-3"}`}
+                    href={d.url}
+                  >
+                    {d.icon}
+                    {isFull && <p>{d.name}</p>}
+                    {isFull && d.notific && (
+                      <span className="text-white bg-red-600 text-sm px-1 text-center  rounded-full">{d.notific}</span>
+                    )}
+                  </Link>
+                </li>
+              )
+            })}
           </ul>
         </div>
         <div className="flex flex-col gap-2">
-          
+
           <div className="flex w-min">
             <Link href={`/${role}/ask`}
               className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}

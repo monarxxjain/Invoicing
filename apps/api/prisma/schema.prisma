@@ -22,24 +22,14 @@ enum Role {
 }
 
 enum DealStatus {
+  PENDING
   OPEN
   FULL
   CLOSED
 }
 
-model Users {
-  id         Int       @id @default(autoincrement())
-  role       Role
-  created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
-  seller     Seller?
-  investor   Investor?
-  employee   Employee?
-}
-
 model Employee {
-  id       Int    @id @unique
-  user     Users  @relation(fields: [id], references: [id])
+  id       Int    @id @default(autoincrement())
   name     String
   email    String @unique
   role     Role
@@ -47,8 +37,7 @@ model Employee {
 }
 
 model Seller {
-  id               Int      @id @unique
-  user             Users    @relation(fields: [id], references: [id])
+  id               Int      @id @default(autoincrement())
   metaMaskId       String   @unique
   name             String   @db.VarChar(191)
   email            String   @unique @db.VarChar(191)
@@ -66,11 +55,13 @@ model Seller {
 }
 
 model Deal {
-  id                BigInt             @id @default(autoincrement()) @db.BigInt // Custom Id from frontend
-  dealSecondId      String          @unique @default(uuid())
+  id                BigInt          @id @default(autoincrement()) @db.BigInt // Custom Id from frontend
   seller            Seller          @relation(fields: [sellerId], references: [id])
   sellerId          Int
   targetAmount      Int
+  minInvestmentAmount      Int     @default(0)
+  currentAmount     Int            @default(0)
+  bill              String         @default("")
   status            DealStatus
   dealAim           String
   tentativeDuration Int
@@ -80,8 +71,7 @@ model Deal {
 }
 
 model Investor {
-  id         Int             @id @unique
-  user       Users           @relation(fields: [id], references: [id])
+  id         Int             @id @default(autoincrement())
   metaMaskId String          @unique
   deals      InvestorDeals[]
   created_at DateTime        @default(now())
@@ -93,6 +83,6 @@ model InvestorDeals {
   dealId     BigInt
   investor   Investor @relation(fields: [investorId], references: [id])
   investorId Int
-
+  investmentAmount Int  @default(0)
   @@id([dealId, investorId])
 }

@@ -24,7 +24,7 @@ const Deal = () => {
     }
   ]
 
-  const progressPercent =  76
+  const progressPercent = 76
 
   const details = [
     {
@@ -68,27 +68,27 @@ const Deal = () => {
               )
             })}
           </ul>
-          <Image src={logo} className='h-14 w-fit self-end' />
+          <Image alt="altText" src={logo} className='h-14 w-fit self-end' />
         </section>
 
         <section className='w-full flex justify-between items-center ps-2'>
-            <div className='w-[90%] h-2'>
-              <div className="progressBar">
-                <motion.div
-                  className={`bar ${progressPercent<50 ? "bg-green-500" : "bg-red-500" }`}
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progressPercent}%` }}
-                  transition={{ duration: 1 + (progressPercent/100) }}
-                ></motion.div>
-              </div>
+          <div className='w-[90%] h-2'>
+            <div className="progressBar">
+              <motion.div
+                className={`bar ${progressPercent < 50 ? "bg-green-500" : "bg-red-500"}`}
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercent}%` }}
+                transition={{ duration: 1 + (progressPercent / 100) }}
+              ></motion.div>
             </div>
-            <div className=''>{progressPercent}%</div>
+          </div>
+          <div className=''>{progressPercent}%</div>
         </section>
 
         <section className='flex justify-around'>
           {details.map((detail, id) => {
-            return(
-              <div className='flex flex-col gap-1'>
+            return (
+              <div key={id} className='flex flex-col gap-1'>
                 <div className='text-gray-500 font-semibold text-sm'>{detail.title}</div>
                 <div className={`font-bold text-xl ${detail.color}`}>{detail.value}</div>
               </div>
@@ -97,10 +97,10 @@ const Deal = () => {
         </section>
 
         <form className='grid grid-cols-2 gap-4'>
-            <input type='number' name='amount' className='text-right outline-gray-600 border border-gray-600 rounded p-2' />
-            <ColorButton variant='contained' type='submit' onClick={(e)=>{e.preventDefault()}}>
-              BUY
-            </ColorButton>
+          <input type='number' name='amount' className='text-right outline-gray-600 border border-gray-600 rounded p-2' />
+          <ColorButton variant='contained' type='submit' onClick={(e) => { e.preventDefault() }}>
+            BUY
+          </ColorButton>
         </form>
 
         <section className='self-end -mt-3'>
@@ -108,13 +108,13 @@ const Deal = () => {
         </section>
 
         <section className='flex justify-around text-gray-700 cursor-pointer font-medium'>
-          <Button onClick={()=>{setShowMore("RISKS")}} variant='secondary'>
+          <Button onClick={() => { setShowMore("RISKS") }} variant='secondary'>
             <div>Risks</div>
           </Button>
-          <Button onClick={()=>{setShowMore("SUMMARY")}} variant='secondary'>
+          <Button onClick={() => { setShowMore("SUMMARY") }} variant='secondary'>
             <div>Summary</div>
           </Button>
-          <Button onClick={()=>{setShowMore("REPORT")}} variant='secondary'>
+          <Button onClick={() => { setShowMore("REPORT") }} variant='secondary'>
             <div>Deal Report</div>
           </Button>
         </section>
