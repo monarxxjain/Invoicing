@@ -15,7 +15,9 @@ import { useEffect } from 'react';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import Snackbar from '@mui/joy/Snackbar';
 
-const Deal = ({ deal, investedDeals }) => {
+const InvestedDeal = ({ investedDeals }) => {
+  console.log("Invested Deals ",investedDeals);
+  const deal = investedDeals.deal
   const address = useAddress()
   const balance = 100000
   const tags = [
@@ -74,7 +76,7 @@ const Deal = ({ deal, investedDeals }) => {
   }
 
   const invest = async (amount) => {
-
+    return;
     deal.id = Number(deal.id);
     deal.investors = deal.investors?.map((v) => {
       return { dealId: Number(v.dealId), investorId: Number(v.investorId) };
@@ -90,36 +92,27 @@ const Deal = ({ deal, investedDeals }) => {
         { withCredentials: true }
       )
       if (res.data.error) {
-        setSuccess(false)
         console.log(res.data.error)
         setError(res.data.error)
         setOpen(true)
       }
       else if (res.data.message) {
-        setError(false)
-        setProgressPercent(Math.floor((Number(amount)+Number(deal.currentAmount))/Number(deal.targetAmount) *100))
+        setProgressPercent(Math.floor((amount+deal.currentAmount)/deal.targetAmount *100))
         setSuccess(res.data.message)
         setOpen(true)
         setAmount(null)
       }
 
     } catch (error) {
-      console.log(error);
+
     }
   }
 
-  let investedAmount = null;
-  for(let i=0; i<investedDeals.length; i++){
-    if(deal.id == investedDeals[i].dealId){
-      investedAmount = investedDeals[i].investmentAmount;
-       break;
-    }
-
-  }
+  let investedAmount = investedDeals.investmentAmount;
 
 
 
-  return (
+  return (  
     <div className='relative h-full'>
       <div className='absolute left-8 z-10 -top-3 border border-green-400 bg-green-200 rounded px-10 text-sm text-green-700'>
         ICT{deal.id}
@@ -235,4 +228,4 @@ const Deal = ({ deal, investedDeals }) => {
   )
 }
 
-export default Deal
+export default InvestedDeal
