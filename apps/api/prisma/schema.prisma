@@ -81,6 +81,6 @@ model InvestorDeals {
   dealId     BigInt
   investor   Investor @relation(fields: [investorId], references: [id])
   investorId Int
-  investmentAmount Int  @default(0)
+  investmentAmount Int  
   @@id([dealId, investorId])
 }

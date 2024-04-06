@@ -6,8 +6,8 @@ const { getAllDeals } = require('../controllers/investor/DealController')
 const router = express.Router()
 
 router.get('/getDeals', authorization, roleAuthorization(["INVESTOR", "ADMIN"]) ,getAllDeals)
-router.post('/postDeal', addDeal)
-router.put('/investDeal', investDeal)
+router.post('/postDeal', authorization, roleAuthorization(["SELLER"]), addDeal)
+router.put('/investDeal', authorization, roleAuthorization(["INVESTOR"]), investDeal)
 
 
 module.exports = router
