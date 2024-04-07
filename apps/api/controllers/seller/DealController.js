@@ -298,9 +298,9 @@ const getSellerDeals = async (req,res) =>
 {
   const token = req.cookies.access_token;
   const decodedToken = jwt.decode(token)
-  const { metaMaskId } = decodedToken
+  const { wolleteAddr } = decodedToken
   try{
-      const seller = await prisma.seller.findUnique({ where: { metaMaskId: metaMaskId },include:{deals:true} });
+      const seller = await prisma.seller.findUnique({ where: { wolleteAddr: wolleteAddr },include:{deals:true} });
       let data = seller.deals.map((v)=>{
         let el = v;
         el.id = v.id.toString();

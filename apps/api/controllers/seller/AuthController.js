@@ -30,7 +30,7 @@ const addNewSellerRequest = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
-          .cookie("METAMASKID", req.body.metaMaskId,  {
+          .cookie("WOLLETEADDR", req.body.wolleteAddr,  {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
@@ -55,7 +55,7 @@ const approveSellerRequest = async (req, res) => {
     try {
 
         const seller = await prisma.seller.update({
-            where: { metaMaskId: req.body.metaMaskId },
+            where: { wolleteAddr: req.body.wolleteAddr },
             data: { isSellerApproved: true }
         })
 
@@ -93,7 +93,7 @@ const loginSeller = async (req, res) => {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
               })
-              .cookie("METAMASKID", req.body.metaMaskId,  {
+              .cookie("WOLLETEADDR", req.body.wolleteAddr,  {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
               })
