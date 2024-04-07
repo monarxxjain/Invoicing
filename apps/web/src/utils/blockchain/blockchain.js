@@ -10,12 +10,20 @@ export { NFT_ABI, NFTContractAddress };
 export const connect = async () => {
   const provider = new ethers.BrowserProvider(window.ethereum);
 
+  // MetaMask requires requesting permission to connect users accounts
   await provider.send("eth_requestAccounts", []);
 
+  // The MetaMask plugin also allows signing transactions to
+  // send ether and pay to change state within the blockchain.
+  // For this, you need the account signer...
   const signer = provider.getSigner();
   return signer;
 };
 
+/**
+ * Represents a book.
+ * @param {string} receiverAddress - The address of receiver.
+ */
 export const transferETH = async (signer, receiverAddress, amount) => {
   if (signer === null || signer === undefined) {
     console.log("transferETH: Sign In First!");
