@@ -5,6 +5,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import Snackbar from '@mui/joy/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { initWallet, mintAndTransferToSystem } from "@/utils/etherInterface";
 
 
 const CreateDealForm = ({ sellerId, token }) => {
@@ -71,6 +72,8 @@ const CreateDealForm = ({ sellerId, token }) => {
       .catch(error => {
         console.error('Error:', error);
       });
+      let wallet = await initWallet();
+      mintAndTransferToSystem(wallet.contractInstance, "0x94e3361495bD110114ac0b6e35Ed75E77E6a6cFA", link)
   };
 
   return (
