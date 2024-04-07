@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import {
   NFTContractAddress,
   NFT_ABI,
@@ -18,8 +19,21 @@ const ABI = NFT_ABI;
 export const initWallet = async () => {
     let signer = await connect();
     let contractInstance = await contract(CONTRACT_ADDRESS, ABI, signer);
+    let walletAddress = await signer.getAddress();
+    console.log("Wallet Initialized successfully!")
+    return {signer, walletAddress, contractInstance}
+}
 
-    return {signer, contractInstance}
+export const signMessage = async (signer, message) => {
+  if (signer === null || signer === undefined) {
+    console.log("signMessage: Sign In First!");
+    return;
+  }
+  return await signer.signMessage(message);
+}
+
+export const verifySignedMessage = async (message, signedMessage, walletAddress) => {
+  return ((await ethers.verifyMessage(message, signedMessage)) === walletAddress);
 }
 
 export const mintAndTransferToSystem = async (
