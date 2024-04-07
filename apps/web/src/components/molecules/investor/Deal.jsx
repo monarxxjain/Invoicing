@@ -10,13 +10,11 @@ import DealSummary from '@/components/atoms/DealSummary';
 import DealRisks from '@/components/atoms/DealRisks';
 import axios from 'axios';
 import { BACKEND_URL } from '@/content/values';
-import { useAddress, useBalance } from '@thirdweb-dev/react';
 import { useEffect } from 'react';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import Snackbar from '@mui/joy/Snackbar';
 
 const Deal = ({ deal, investedDeals }) => {
-  const address = useAddress()
   const balance = 100000
   const tags = [
     {

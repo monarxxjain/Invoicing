@@ -17,8 +17,6 @@
     "@mui/material": "^5.15.14",
     "@mui/x-data-grid": "^7.1.1",
     "@supabase/supabase-js": "^2.42.0",
-    "@thirdweb-dev/react": "^4.4.31",
-    "@thirdweb-dev/sdk": "^4.0.57",
     "axios": "^1.6.8",
     "ethers": "^6.11.1",
     "form-data": "^4.0.0",

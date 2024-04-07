@@ -13,33 +13,26 @@ import { BACKEND_URL } from "@/content/values";
 import axios from "axios";
 import { useRouter } from 'next/navigation'
 import LoadingButton from '@mui/lab/LoadingButton';
-
-import {
-  ConnectWallet,
-  darkTheme,
-  useAddress,
-} from "@thirdweb-dev/react";
 import { useEffect } from "react";
 import { supabase } from "@/utils/supabase";
 
 const FormSignUp = ({ userData, setUserData, view, setView }) => {
   const [loading, setLoading] = useState(false)
-  const address = useAddress()
   const router = useRouter()
-  useEffect(() => {
-    console.log(address)
-    let data = userData;
-    data.modelData.metaMaskId = address;
-    address && setUserData((prev) => ({
-      ...prev, modelData: {
-        ...prev.modelData,
-        metaMaskId: address
-      }
-    }))
-    if (address && userData.role == "INVESTOR") {
-      signUpInvestor(data)
-    }
-  }, [address])
+  // useEffect(() => {
+  //   console.log(address)
+  //   let data = userData;
+  //   data.modelData.metaMaskId = address;
+  //   address && setUserData((prev) => ({
+  //     ...prev, modelData: {
+  //       ...prev.modelData,
+  //       metaMaskId: address
+  //     }
+  //   }))
+  //   if (address && userData.role == "INVESTOR") {
+  //     signUpInvestor(data)
+  //   }
+  // }, [address])
 
   const sellerFormRef = useRef(null);
   const investorFormRef = useRef(null);
@@ -180,37 +173,10 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
           <div className="flex flex-col gap-4 pt-4 ">
             <Image src={MetaMaskWolf} alt="metaMaskLogo" className="w-24 mx-auto" />
             <p className="text-black">
-              Connect your Metamask Wollete to Get Started🔥 {" "}
+              Connect your Wollete to Get Started🔥 {" "}
             </p>
             <form>
-              <ConnectWallet
-                className="!bg-[#061c37] !text-white !font-mono active:scale-95 transition-all"
-                theme={darkTheme({
-                  colors: {
-                    accentText: "#86EFAC",
-                    accentButtonBg: "#bb00ff",
-                    borderColor: "#86EFAC",
-                    separatorLine: "#f1e4e4",
-                    modalBg: "#061c37",
-                  },
-                })}
-                btnTitle={"Connect Web3"}
-                modalTitle={"Connect to Investo"}
-                modalSize={"wide"}
-                welcomeScreen={{
-                  title: "Welcome to Investo",
-                  subtitle: "",
-                  img: {
-                    src: "https://hopin-prod-fe-page-builder.imgix.net/events/page_builder/000/288/066/original/4764288e-0018-44ec-afc5-1b4e48d6c235.GIF?ixlib=rb-4.0.0&s=3b978bc503fed36297bf33b1b72e702c",
-                    width: 350,
-                    height: 250,
-                  },
-                }}
-                modalTitleIconUrl={""}
-
-              />
-
-
+              <ColorButton className="capitalize !px-4 text-lg !font-mono !font-light">Connect Web3</ColorButton>
             </form>
           </div>
         </motion.div>
