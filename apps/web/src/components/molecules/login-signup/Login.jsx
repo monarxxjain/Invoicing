@@ -16,7 +16,7 @@ import Image4 from '@/assets/signup/slide4.png'
 import LoginRole from "./LoginRole";
 import LoginForm from "./LoginForm";
 
-
+import Snackbar from '@mui/joy/Snackbar';
 
 
 export default function Login({ existingRole, existingEmail}) {
@@ -29,6 +29,10 @@ export default function Login({ existingRole, existingEmail}) {
   })
 
   const [view, setView] = useState("ROLE")
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState({
+    color: "",
+    message: ""
+  })
 
   useEffect(() => {
     console.log(userData)
@@ -95,7 +99,7 @@ export default function Login({ existingRole, existingEmail}) {
 
         <div className="hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center sm:flex flex-col">
           <LoginRole existingEmail={existingEmail} existingRole={existingRole} userData={userData} setUserData={setUserData} view={view} setView={setView} />
-          <LoginForm existingEmail={existingEmail} existingRole={existingRole} userData={userData} setUserData={setUserData} view={view} setView={setView} />
+          <LoginForm setIsSnackbarOpen={setIsSnackbarOpen} existingEmail={existingEmail} existingRole={existingRole} userData={userData} setUserData={setUserData} view={view} setView={setView} />
         </div>
         <motion.div
           initial={{ opacity: 0, y: "700px" }}
@@ -104,8 +108,23 @@ export default function Login({ existingRole, existingEmail}) {
           transition={{ duration: 0.3 }}
           className="sm:hidden h-max overflow-y-hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center flex flex-col">
           <LoginRole existingEmail={existingEmail} existingRole={existingRole} userData={userData} setUserData={setUserData} view={view} setView={setView} />
-          <LoginForm existingEmail={existingEmail} existingRole={existingRole} userData={userData} setUserData={setUserData} view={view} setView={setView} />
+          <LoginForm setIsSnackbarOpen={setIsSnackbarOpen} existingEmail={existingEmail} existingRole={existingRole} userData={userData} setUserData={setUserData} view={view} setView={setView} />
         </motion.div>
+
+        <Snackbar
+          autoHideDuration={4000}
+          open={isSnackbarOpen}
+          variant={"outlined"}
+          color={isSnackbarOpen.color}
+          onClose={(event, reason) => {
+            if (reason === 'clickaway') {
+              return;
+            }
+            setIsSnackbarOpen(false);
+          }}
+        >
+          {isSnackbarOpen.message}
+        </Snackbar>
     </div>
   );
 }

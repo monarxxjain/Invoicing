@@ -242,6 +242,15 @@ input[type=number] {
   display: none !important;
 }
 
+.MuiCircularProgress-root {
+  color: rgb(128, 128, 128) !important;
+}
+
+.MuiLoadingButton-loading {
+  color: rgb(128, 128, 128) !important;
+  padding-right: 30px !important;
+}
+
 .loader .MuiCircularProgress-root {
   color: #061c37 !important;
   width: 100px !important;

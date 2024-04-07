@@ -13,35 +13,40 @@ import { BACKEND_URL } from "@/content/values";
 import axios from "axios";
 import { useRouter } from 'next/navigation'
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useEffect } from "react";
 import { supabase } from "@/utils/supabase";
+import { initWallet } from "@/utils/etherInterface";
+import Link from "next/link";
 
-const FormSignUp = ({ userData, setUserData, view, setView }) => {
-  const [loading, setLoading] = useState(false)
+const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView }) => {
+  
+  
   const router = useRouter()
-  // useEffect(() => {
-  //   console.log(address)
-  //   let data = userData;
-  //   data.modelData.metaMaskId = address;
-  //   address && setUserData((prev) => ({
-  //     ...prev, modelData: {
-  //       ...prev.modelData,
-  //       metaMaskId: address
-  //     }
-  //   }))
-  //   if (address && userData.role == "INVESTOR") {
-  //     signUpInvestor(data)
-  //   }
-  // }, [address])
-
   const sellerFormRef = useRef(null);
   const investorFormRef = useRef(null);
+  const [loading, setLoading] = useState(false)
   const [sellerPageNo, setSellerPageNo] = useState(1);
+  
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: theme.palette.getContrastText("#061c37"),
+    backgroundColor: "#061c37",
+    "&:hover": {
+      backgroundColor: "#061c37",
+    },
+  }));
+  const ColorLoadingButton = styled(LoadingButton)(({ theme }) => ({
+    color: theme.palette.getContrastText("#061c37"),
+    backgroundColor: "#061c37",
+    "&:hover": {
+      backgroundColor: "#061c37",
+    },
+  }));
+
   const handleSellerPageNo = (number) => {
     if (number === 1) {
       setSellerPageNo(2);
     }
   };
+
   const handler = async (e) => {
     e.preventDefault();
     let field = e.target.name
@@ -60,17 +65,8 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
         console.log("Supabase error ", error);
       } else {
         console.log("Supabase data ", data);
-        // Handle success
       }
-
-        // ({ data, error } = await supabase.storage
-        //   .from('invoice')
-        //   .createSignedUrl(data.path, 3600))
-
-        // if (data) {
-        //   console.log(data.signedUrl)
-          value = data.path
-        // }
+      value = data.path
     }
 
     if (view == "DATA_INVESTOR") {
@@ -92,37 +88,53 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
       }))
     }
   };
-  const ColorButton = styled(Button)(({ theme }) => ({
-    color: theme.palette.getContrastText("#061c37"),
-    backgroundColor: "#061c37",
-    "&:hover": {
-      backgroundColor: "#061c37",
-    },
-  }));
-  const ColorLoadingButton = styled(LoadingButton)(({ theme }) => ({
-    color: theme.palette.getContrastText("#061c37"),
-    backgroundColor: "#061c37",
-    "&:hover": {
-      backgroundColor: "#061c37",
-    },
-  }));
-  
 
-  const signUpInvestor = async (userData) => {
-    console.log("TEEST:" , userData)
+
+  const connectWallet = async () => {
     try {
-      const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`,
-        { metaMaskId: userData.modelData.metaMaskId },
-        { withCredentials: true }
-      )
-      if (!(response.status == 200 || response.status == 201)) {
-        throw new Error("Error Signing you In")
+
+      setLoading(true)
+      const { signer, walletAddress, contractInstance } = await initWallet()
+      console.log({ signer, walletAddress, contractInstance })
+      setUserData((prev) => ({
+        ...prev, modelData: {
+          ...prev.modelData, wolleteAddr: walletAddress
+        }
+      }))
+      if(userData.role == "INVESTOR"){
+        await signUpInvestor(walletAddress)
       }
       else {
-        router.push('/investor')
+        await signUpSeller()
       }
+
     } catch (error) {
       console.log(error)
+      setLoading(false)
+    }
+  }
+
+
+  const signUpInvestor = async (walletAddr) => {
+    console.log("Wollete Address:", walletAddr)
+    try {
+      const res = await axios.post(`${BACKEND_URL}/auth/signup/investor`,
+        { wolleteAddr: walletAddr },
+        { withCredentials: true }
+      )
+      console.log(res)
+      if (res.data.message) {
+        setIsSnackbarOpen(() => ({ color: "success", message: res.data.message }))
+        router.push('/login')
+      }
+      else if (res.data.error) {
+        console.log(res.data.error)
+        setIsSnackbarOpen(() => ({ color: "danger", message: res.data.error }))
+        setLoading(false)
+      }
+    } catch (error) {
+      setLoading(false)
+      console.log("Error In Axios")
     }
 
   }
@@ -131,8 +143,8 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
 
     try {
       const response = await axios.post(`${BACKEND_URL}/auth/signup/seller`,
-      { ...userData.modelData },
-      { withCredentials: true }
+        { ...userData.modelData },
+        { withCredentials: true }
       )
       if (!(response.status == 200 || response.status == 201)) {
         throw new Error("Error Signing you In")
@@ -168,7 +180,7 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
             >
               <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
             </IconButton>
-            <p className="text-gray-700 text-2xl mx-auto">Investor Login</p>
+            <p className="text-gray-700 text-2xl mx-auto">Investor SignUp</p>
           </div>
           <div className="flex flex-col gap-4 pt-4 ">
             <Image src={MetaMaskWolf} alt="metaMaskLogo" className="w-24 mx-auto" />
@@ -176,8 +188,11 @@ const FormSignUp = ({ userData, setUserData, view, setView }) => {
               Connect your Wollete to Get Started🔥 {" "}
             </p>
             <form>
-              <ColorButton className="capitalize !px-4 text-lg !font-mono !font-light">Connect Web3</ColorButton>
+              <ColorLoadingButton loadingPosition="end" loading={loading} onClick={() => { connectWallet() }} className="capitalize !px-4 text-lg !font-mono !font-light">Connect Web3</ColorLoadingButton>
             </form>
+          </div>
+          <div className="mt-10">
+            <p>Have an account already? Click Here to <Link className="text-blue-500 hover:underline" href={"/login"}>login</Link></p>
           </div>
         </motion.div>
       )}

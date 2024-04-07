@@ -20,7 +20,8 @@ export default  function Home() {
   const cookieStore = cookies()
   const token = cookieStore.get('access_token')
   const decodedToken = jwt.decode(token?.value);
-  if(!decodedToken?.metaMaskId){
+  console.log(decodedToken)
+  if(!decodedToken?.wolleteAddr){
     redirect("/")
   }
   

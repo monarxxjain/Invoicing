@@ -8,7 +8,8 @@ import ImageCorousal from "./ImageCorousal";
 import Link from "next/link";
 
 
-const HeroSection = ({metaMaskId, token}) => {
+const HeroSection = ({wolleteAddr, token, role}) => {
+  const myRoute = role?.value.toLowerCase()
   return (
     <div className="lg:h-screen parentcss">
       <div className="lg:h-[90vh] px-12 sm:px-24 py-10 flex flex-col gap-10 bg-[url('/homeImages/heroImage.png')] bg-cover">
@@ -17,7 +18,7 @@ const HeroSection = ({metaMaskId, token}) => {
         <h1 className="text-5xl text-white font-normal xs:mt-8">
           Best Invoice Discounting Platform
         </h1>
-        <Link href={`${metaMaskId ? "/login" : "/signup"}`} className="py-2 px-5 sm:py-4 sm:px-10 transition duration-500 hover:shadow-none shadow-[0_0_100px_-10px_rgba(255,255,255)] text-left font-montserrat bg-green-500 font-medium rounded-lg w-fit text-white">
+        <Link href={`${token ? `/${myRoute}` : wolleteAddr ? "/login" : "/signup"}`} className="py-2 px-5 sm:py-4 sm:px-10 transition duration-500 hover:shadow-none shadow-[0_0_100px_-10px_rgba(255,255,255)] text-left font-montserrat bg-green-500 font-medium rounded-lg w-fit text-white">
         {token ? "DASHBOARD" : "GET STARTED"}
         </Link>
         <div className="">
