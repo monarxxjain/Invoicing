@@ -75,16 +75,36 @@ const investDeal = async (req, res) => {
       },
     });
 
-    if (existingInvestment) {
-      return res.status(200).json({ error: "You had alread invested ealier !" });
-    }
     if (amount + Number(deal.currentAmount) > Number(deal.targetAmount)) {
       return res
-        .status(200)
-        .json({
-          error:
-            "Amount should be less than or equal to available amount",
-        });
+      .status(200)
+      .json({
+        error:
+        "Amount should be less than or equal to available amount",
+      });
+    }
+    if (existingInvestment) {
+      await prisma.investorDeals.update({
+        where:{
+          dealId_investorId:{
+
+            dealId:existingInvestment.dealId,
+            investorId:existingInvestment.investorId
+          }
+        },
+        data:{
+          investmentAmount:Number(existingInvestment.investmentAmount)+Number(amount),
+        }
+      });
+      await prisma.deal.update({
+        where: {
+          id: deal.id,
+        },
+        data: {
+          currentAmount: Number(deal.currentAmount)+Number(amount),
+        },
+      });
+      return res.status(200).json({ message: "Success !" });
     }
     if (deal.currentAmount + amount == deal.targetAmount) {
       await prisma.investorDeals.create({

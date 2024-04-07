@@ -109,7 +109,7 @@ const Deal = ({ deal, investedDeals }) => {
   }
 
   let investedAmount = null;
-  for(let i=0; i<investedDeals.length; i++){
+  for(let i=0; i<investedDeals?.length; i++){
     if(deal.id == investedDeals[i].dealId){
       investedAmount = investedDeals[i].investmentAmount;
        break;
