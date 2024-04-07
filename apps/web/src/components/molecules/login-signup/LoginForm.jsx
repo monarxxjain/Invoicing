@@ -14,29 +14,18 @@ import axios from "axios";
 import { BACKEND_URL } from "@/content/values";
 import { useRouter } from 'next/navigation'
 import LoadingButton from '@mui/lab/LoadingButton';
+import Link from "next/link";
+import { initWallet, signMessage } from "@/utils/etherInterface";
 
-const LoginForm = ({ existingEmail, userData, setUserData, view, setView }) => {
+const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, view, setView }) => {
+
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
-  const [error, setError]= useState(null)
   const sellerFormRef = useRef(null);
   const investorFormRef = useRef(null);
+  const [loading, setLoading] = useState(false)
+  const [error, setError]= useState(null)
 
 
-  useEffect(() => {
-    console.log('use effect address ',address)
-    let data = userData;
-    data.modelData.metaMaskId = address;
-    address && setUserData((prev) => ({
-      ...prev, modelData: {
-        ...prev.modelData,
-        metaMaskId: address
-      }
-    }))
-    if (address && userData.role == "INVESTOR") {
-      loginInvestor(data)
-    }
-  }, [address])
   const handler = (e) => {
     e.preventDefault();
     let field = e.target.name
@@ -65,6 +54,7 @@ const LoginForm = ({ existingEmail, userData, setUserData, view, setView }) => {
       }))
     }
   };
+
   const ColorButton = styled(Button)(({ theme }) => ({
     color: theme.palette.getContrastText("#061c37"),
     backgroundColor: "#061c37",
@@ -80,23 +70,71 @@ const LoginForm = ({ existingEmail, userData, setUserData, view, setView }) => {
     },
   }));
 
-  const loginInvestor = async (userData) => {
-    console.log("TEEST:" , userData)
+  const connectWallet = async () => {
     try {
-      const response = await axios.post(`${BACKEND_URL}/auth/signup/investor`,
-        { metaMaskId: userData.modelData.metaMaskId },
-        { withCredentials: true }
-      )
-      if (!(response.status == 200 || response.status == 201)) {
-        throw new Error("Error Signing you In")
+
+      setLoading(true)
+      const { signer, walletAddress, contractInstance } = await initWallet()
+      setUserData((prev) => ({
+        ...prev, modelData: {
+          ...prev.modelData, wolleteAddr: walletAddress
+        }
+      }))
+      if(userData.role == "INVESTOR"){
+        await generateLoginRequest(signer, walletAddress, contractInstance)
       }
       else {
-        router.push('/investor')
+        await signUpSeller()
+      }
+
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
+
+  const generateLoginRequest = async (signer, wolleteAddr, contractInstance) => {
+    console.log("Wollete Address:", wolleteAddr)
+    try {
+      const res = await axios.put(`${BACKEND_URL}/auth/login/investor/request`,
+        { wolleteAddr: wolleteAddr },
+        { withCredentials: true }
+      )
+      if (res.data.message) {
+        console.log(res.data.accessString)
+        const signedMessage = await signMessage(signer, res.data.accessString)
+        console.log(signedMessage)
+        await loginInvestor(signedMessage, wolleteAddr)
+      }
+      else {
+        setLoading(false)
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
     }
 
+  }
+
+  const loginInvestor = async (signedMessage, wolleteAddr) => {
+    try {
+      const res = await axios.post(`${BACKEND_URL}/auth/login/investor/check`,
+        { signedMessage: signedMessage, wolleteAddr: wolleteAddr,  },
+        { withCredentials: true }
+      )
+      if(res.data.message) {
+        setIsSnackbarOpen(() => ({ color: "success", message: res.data.message }))
+        router.push('/investor')
+      }
+      else if(res.data.error) {
+        console.log(res.data.error)
+        setIsSnackbarOpen(() => ({ color: "danger", message: res.data.error }))
+        setLoading(false)
+      }
+    } catch (error) {
+      setLoading(false)
+      console.log("Error Logging In Investor")
+    }
   }
 
   const loginSeller = async () => {
@@ -152,33 +190,12 @@ const LoginForm = ({ existingEmail, userData, setUserData, view, setView }) => {
               Connect your Metamask Wollete to Get Started🔥 {" "}
             </p>
             <form>
-            <ConnectWallet
-                className="!bg-[#061c37] !text-white !font-mono active:scale-95 transition-all"
-                theme={darkTheme({
-                  colors: {
-                    accentText: "#86EFAC",
-                    accentButtonBg: "#bb00ff",
-                    borderColor: "#86EFAC",
-                    separatorLine: "#f1e4e4",
-                    modalBg: "#061c37",
-                  },
-                })}
-                btnTitle={"Connect Web3"}
-                modalTitle={"Connect to Investo"}
-                modalSize={"wide"}
-                welcomeScreen={{
-                  title: "Welcome to Investo",
-                  subtitle: "",
-                  img: {
-                    src: "https://hopin-prod-fe-page-builder.imgix.net/events/page_builder/000/288/066/original/4764288e-0018-44ec-afc5-1b4e48d6c235.GIF?ixlib=rb-4.0.0&s=3b978bc503fed36297bf33b1b72e702c",
-                    width: 350,
-                    height: 250,
-                  },
-                }}
-                modalTitleIconUrl={""}
-
-              />
+              <ColorLoadingButton loadingPosition="end" loading={loading} onClick={() => {connectWallet()}} className="capitalize !px-4 text-lg !font-mono !font-light">Connect Web3</ColorLoadingButton>
             </form>
+          </div>
+
+          <div className="mt-10 text-sm">
+            <p>Don't have an existing account? Click Here to <Link className="text-blue-500 hover:underline" href={"/signup"}>Sign Up</Link></p>
           </div>
         </motion.div>
       )}

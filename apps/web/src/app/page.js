@@ -9,13 +9,14 @@ import Navbar from '@/components/molecules/common/Navbar';
 
 export default function Home() {
     const cookieStore = cookies()
-    const metaMaskId = cookieStore.get('METAMASKID')
+    const wolleteAddr = cookieStore.get('WOLLETEADDR')
+    const role = cookieStore.get('ROLE')
     const token = cookieStore.get('access_token')
     const decodedToken = jwt.decode(token?.value);
   return (
     <div>
-      <Navbar metaMaskId={metaMaskId} token={token}/>
-      <HeroSection metaMaskId={metaMaskId} token={token} />
+      <Navbar role={role} wolleteAddr={wolleteAddr} token={token}/>
+      <HeroSection role={role} wolleteAddr={wolleteAddr} token={token} />
       <div className="flex flex-col gap-16">
         <TheProcess />
         <FAQS />
