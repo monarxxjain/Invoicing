@@ -1,5 +1,6 @@
 const { verify } = require("crypto");
 const prisma = require("../../db");
+const jwt = require('jsonwebtoken')
 const addDeal = async (req, res) => {
   const data = req.body;
   const billVerify = () => {
@@ -293,11 +294,30 @@ const verifyDeal = async (req, res) => {
     res.status(402).json({ error: "Error verifying Deal" });
   }
 };
-
+const getSellerDeals = async (req,res) =>
+{
+  const token = req.cookies.access_token;
+  const decodedToken = jwt.decode(token)
+  const { metaMaskId } = decodedToken
+  try{
+      const seller = await prisma.seller.findUnique({ where: { metaMaskId: metaMaskId },include:{deals:true} });
+      let data = seller.deals.map((v)=>{
+        let el = v;
+        el.id = v.id.toString();
+        return el;
+      })
+      res.status(200).jsons({deals:data})
+  }catch(error)
+  {
+    console.log("Error ",error);
+    return res.status(500).json({message:"Error while getting seller delas"})
+  }
+}
 module.exports = {
   addDeal,
   investDeal,
   verifyDeal,
   breakDeal,
-  breakDealReq
+  breakDealReq,
+  getSellerDeals
 };

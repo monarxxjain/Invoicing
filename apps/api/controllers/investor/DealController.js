@@ -5,6 +5,7 @@ const getAllDeals = async (req, res) => {
 
         let deals = await prisma.deal.findMany({
             where: {
+
                 status: "OPEN"
             },
             include: {
@@ -35,7 +36,7 @@ const getAllInvestedDeals = async (req, res) => {
     try {
         let investedDeals = await prisma.investorDeals.findMany({
             where: {
-                investorId: req.investor.id
+                id: req.investor.id
             },
             include : {
                 deal : {

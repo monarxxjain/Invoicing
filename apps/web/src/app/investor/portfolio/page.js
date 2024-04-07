@@ -1,4 +1,4 @@
-import InvestorPortfolioTab from "@/components/atoms/InverstorPortfolioTab";
+import InvestorPortfolioTab from "@/components/molecules/investor/InverstorPortfolioTab";
 import { investorTabs } from "@/content/homeContent";
 
 export default function Home() {
