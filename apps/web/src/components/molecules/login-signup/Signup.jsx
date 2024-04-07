@@ -16,20 +16,7 @@ import Image2 from '@/assets/signup/slide2.png'
 import Image3 from '@/assets/signup/slide3.png'
 import Image4 from '@/assets/signup/slide4.png'
 
-import {
-  ThirdwebProvider,
-  metamaskWallet,
-  coinbaseWallet,
-  walletConnect,
-  safeWallet,
-  localWallet,
-  trustWallet,
-  zerionWallet,
-  bloctoWallet,
-  frameWallet,
-  rainbowWallet,
-  phantomWallet,
-} from "@thirdweb-dev/react";
+
 
 export default function Signup() {
 
@@ -101,36 +88,7 @@ export default function Signup() {
         </Swiper>
       </section>
 
-      <ThirdwebProvider
-        activeChain="mumbai"
-        clientId="YOUR_CLIENT_ID"
-        supportedWallets={[
-          metamaskWallet({ recommended: true }),
-          coinbaseWallet(),
-          walletConnect(),
-          safeWallet({
-            personalWallets: [
-              metamaskWallet({ recommended: true }),
-              coinbaseWallet(),
-              walletConnect(),
-              localWallet(),
-              trustWallet(),
-              zerionWallet(),
-              bloctoWallet(),
-              frameWallet(),
-              rainbowWallet(),
-              phantomWallet(),
-            ],
-          }),
-          localWallet(),
-          trustWallet(),
-          zerionWallet(),
-          bloctoWallet(),
-          frameWallet(),
-          rainbowWallet(),
-          phantomWallet(),
-        ]}
-      >
+
         <div className="hidden py-44 px-8 sm:px-32 md:p-44 w-screen md:w-auto bg-white absolute top-32 bottom-0 md:right-0 rounded-t-[40px] md:rounded-tr-none md:rounded-tl-[80px] text-center sm:flex flex-col">
           <SelectRole userData={userData} setUserData={setUserData} view={view} setView={setView} />
           <FormSignUp userData={userData} setUserData={setUserData} view={view} setView={setView} />
@@ -144,7 +102,6 @@ export default function Signup() {
           <SelectRole userData={userData} setUserData={setUserData} view={view} setView={setView} />
           <FormSignUp userData={userData} setUserData={setUserData} view={view} setView={setView} />
         </motion.div>
-      </ThirdwebProvider>
     </div>
   );
 }

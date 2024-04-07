@@ -8,11 +8,7 @@ import MetaMaskWolf from "@/assets/icons/metamaskIcon.svg";
 import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import TextField from '@mui/material/TextField';
-import {
-  ConnectWallet,
-  darkTheme,
-  useAddress,
-} from "@thirdweb-dev/react";
+
 import { useEffect } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "@/content/values";
@@ -20,7 +16,6 @@ import { useRouter } from 'next/navigation'
 import LoadingButton from '@mui/lab/LoadingButton';
 
 const LoginForm = ({ existingEmail, userData, setUserData, view, setView }) => {
-  const address = useAddress()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError]= useState(null)
