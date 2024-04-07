@@ -1,50 +1,36 @@
 const prisma = require('../../db')
 const jwt = require("jsonwebtoken");
+const { verifySignedMessage } = require('../../web3-utils/Utils');
+
+
 const registerNewInvestor = async (req, res) => {
     try {
 
-        const userObj = { metaMaskId: req.body.metaMaskId, role: "INVESTOR" }
+        const userObj = { wolleteAddr: req.body.wolleteAddr, role: "INVESTOR" }
         const expiresIn = process.env.JWT_EXPIRY || '1d';
         const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn })
-        console.log("req ", req.body)
+
         if(req.investor){
-            return res
-                    .cookie("ROLE", "INVESTOR",  {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production",
-                    })
-                    .cookie("access_token", token,  {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production",
-                    })
-                    .cookie("METAMASKID", req.body.metaMaskId,  {
-                        httpOnly: true,
-                        secure: process.env.NODE_ENV === "production",
-                      })
-                    .status(200).json({message: "You have Logged In Successfully"})
+            return res.status(200).json({error: "You have already registered. Please Log In"})
         }
 
-    
         const investor = await prisma.investor.create({
             data: {
-                metaMaskId: req.body.metaMaskId
+              wolleteAddr: req.body.wolleteAddr
             }
         });
-        console.log("Investor: ", investor)
+
+        console.log("Investor: ", investor.wolleteAddr)
         res
           .cookie("ROLE", "INVESTOR",  {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
-          .cookie("access_token", token,  {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-          })  
-          .cookie("METAMASKID", req.body.metaMaskId,  {
+          .cookie("WOLLETEADDR", req.body.wolleteAddr,  {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
-          .status(201).json(investor)
+          .status(200).json({message: "Successfully Added Investor", investor})
           
     } catch (error) {
         console.log("Error Creating Investor: ", error)
@@ -53,6 +39,81 @@ const registerNewInvestor = async (req, res) => {
     }
 }
 
+const loginInvestorRequest = async (req, res) => {
+  try {
+
+    let date = new Date()
+    date = date.toISOString()
+
+    let random = Math.random()* 1000000
+    random = random.toString()
+
+    const investor = req.investor
+
+    const accessString = investor.wolleteAddr + date + random
+
+    const updatedInvestor = await prisma.investor.update({
+      where: {
+        wolleteAddr: investor.wolleteAddr
+      },
+      data: {
+        accessString: accessString
+      }
+    })
+
+    res.status(200).json({accessString, message: "AccessString GeneratedSuccessfully"})
+  } catch (error) {
+    console.log("Error In Requesting Login: " , error)
+
+    res.status(400).json({error: "Error In Requesting Login"})
+  }
+}
+
+const loginInvestor = async (req, res) => {
+  try {
+    const isUserVerified = await verifySignedMessage(req.investor.accessString, req.body.signedMessage, req.body.wolleteAddr)
+
+    if(!isUserVerified) {
+      res.status(200).json({error: "Incorrect User Credentials"})
+    }
+
+    else{
+
+      const userObj = {
+        role: "INVESTOR",
+        wolleteAddr: req.body.wolleteAddr,
+        accessString: req.investor.accessString
+      }
+      const expiresIn = process.env.JWT_EXPIRY || '1d';
+      const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn })
+      
+      res
+        .cookie("ROLE", "INVESTOR",  {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        })
+        .cookie("WOLLETEADDR", req.body.wolleteAddr,  {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        })
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+        })
+       .status(200).json({message: "Investor Logged In Successfully"})
+
+
+    }
+
+  } catch (error) {
+    console.log("Error Logging In Investor: ", error)
+
+    res.status(400).json({error: "Error Logging In Investor"})
+  }
+}
+
 module.exports = {
-    registerNewInvestor
+    registerNewInvestor,
+    loginInvestorRequest,
+    loginInvestor
 }

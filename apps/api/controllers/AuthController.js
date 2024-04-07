@@ -31,7 +31,7 @@ const addEmployee = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })
-          .cookie("METAMASKID", req.body.metaMaskId,  {
+          .cookie("WOLLETEADDR", req.body.wolleteAddr,  {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
           })

@@ -5,9 +5,9 @@ const extractInvestorFromToken = async (req, res, next) => {
     try {
         const token = req.cookies.access_token;
         const decodedToken = jwt.decode(token)
-        const { metaMaskId } = decodedToken
-        if(metaMaskId) {
-            const investor = await prisma.investor.findUnique({ where: { metaMaskId: metaMaskId } });
+        const { wolleteAddr } = decodedToken
+        if(wolleteAddr) {
+            const investor = await prisma.investor.findUnique({ where: { wolleteAddr: wolleteAddr } });
             if(investor){
                 req.investor = investor
             }

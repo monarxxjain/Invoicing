@@ -1,9 +1,9 @@
 const prisma = require('../../db')
 
 const getSeller = async (req, res, next) => {
-    const { metaMaskId } = req.body
-    if(metaMaskId) {
-        const seller = await prisma.seller.findUnique({ where: { metaMaskId: metaMaskId } });
+    const { wolleteAddr } = req.body
+    if(wolleteAddr) {
+        const seller = await prisma.seller.findUnique({ where: { wolleteAddr: wolleteAddr } });
         if(seller){
             req.seller = seller
         }
