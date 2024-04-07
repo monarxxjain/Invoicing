@@ -51,7 +51,7 @@ model Employee {
 
 model Seller {
   id               Int      @id @default(autoincrement())
-  metaMaskId       String   @unique
+  wolleteAddr      String   @unique
   name             String   @db.VarChar(191)
   email            String   @unique @db.VarChar(191)
   password         String
@@ -64,8 +64,6 @@ model Seller {
   created_at       DateTime @default(now())
   updated_at       DateTime @default(now())
 }
-
-
 
 model Deal {
   id                  BigInt          @id @default(autoincrement()) @db.BigInt // Custom Id from frontend
@@ -85,22 +83,22 @@ model Deal {
 }
 
 model Investor {
-  id         Int             @id @default(autoincrement())
-  metaMaskId String          @unique
-  deals      InvestorDeals[]
-  created_at DateTime        @default(now())
-  updated_at DateTime        @default(now())
+  id           Int             @id @default(autoincrement())
+  wolleteAddr  String          @unique
+  accessString String?        
+  deals        InvestorDeals[]
+  created_at   DateTime        @default(now())
+  updated_at   DateTime        @default(now())
 }
 
 model InvestorDeals {
-  deal             Deal     @relation(fields: [dealId], references: [id])
+  deal             Deal         @relation(fields: [dealId], references: [id])
   dealId           BigInt
-  investor         Investor @relation(fields: [investorId], references: [id])
+  investor         Investor     @relation(fields: [investorId], references: [id])
   investorId       Int
   investmentAmount Int
-  break            Boolean @default(false)
+  break            Boolean      @default(false)
   status           LiquidStatus @default(LIQUID)
+
   @@id([dealId, investorId])
 }
-
-
