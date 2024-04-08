@@ -77,7 +77,8 @@ model Deal {
   status              DealStatus
   tags                DealTags[]
   dealAim             String
-  tentativeDuration   Int
+  completionDate      DateTime
+  freezingDate        DateTime
   profitPercent       Int
   investors           InvestorDeals[]
   created_at          DateTime        @default(now())

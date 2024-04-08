@@ -2,6 +2,7 @@
 const nextConfig = {
   env: {
     PINATA_KEY: process.env.PINATA_KEY,
+    PINATA_BASE_URL: process.env.PINATA_BASE_URL
   },
   images: {
     remotePatterns: [

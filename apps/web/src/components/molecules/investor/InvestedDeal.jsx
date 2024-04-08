@@ -40,7 +40,7 @@ const InvestedDeal = ({ deal }) => {
     },
     {
       title: "Return in",
-      value: `${deal.tentativeDuration} days`,
+      value: `${deal.completionDate} days`,
       color: "text-blue-900"
     },
     {

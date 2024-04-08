@@ -246,6 +246,12 @@ input[type=number] {
   color: rgb(128, 128, 128) !important;
 }
 
+.warningLoader .MuiCircularProgress-root {
+  color: rgb(154, 90, 0) !important;
+  height: 20px !important;
+  width: 20px !important;
+}
+
 .MuiLoadingButton-loading {
   color: rgb(128, 128, 128) !important;
   padding-right: 30px !important;
@@ -262,4 +268,30 @@ input[type=number] {
 }
 .successButton.MuiButton-contained {
   background: #06de15;
+}
+
+.datePicker .MuiOutlinedInput-input {
+  padding: 8px !important;
+}
+
+.datePicker .MuiInputLabel-sizeMedium {
+  margin-top: -8px;
+}
+
+.datePicker .MuiInputLabel-shrink {
+  margin-top: 0px !important;
+  z-index: 10;
+}
+
+.datePicker .MuiStack-root {
+  padding: 0;
+  overflow: visible;
+}
+
+.datePicker .MuiTextField-root {
+  width: 100% !important;
+}
+
+.triangle-clip{
+  clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
 }
