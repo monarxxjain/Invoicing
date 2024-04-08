@@ -1,7 +1,7 @@
 export default function Home() {
     return (
       <div>
-        Admin Dashboard
+        Ask A.I. Page
       </div>
     );
 }

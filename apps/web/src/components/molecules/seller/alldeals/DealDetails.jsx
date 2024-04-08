@@ -15,7 +15,7 @@ const DealDatails = () => {
   ];
 
   return (
-    <div className="p-6 ">
+    <div className="">
       {dealData.map((deal, index) => (
         <DealCard key={index} dealData={deal} />
       ))}

@@ -6,8 +6,8 @@ const DealCard = ({ dealData }) => {
     raisedOn, totalRequested, totalCollected, minInvestment, timeLeft, amountToBeReturned, interestRate,} = dealData;
 
   return (
-    <div className="bg-gray-100 shadow-md p-8 rounded-md mb-4 flex flex-col gap-4">
-      <h2 className="text-xl font-semibold mb-4">Deal Details</h2>
+    <div className="shadow-md rounded-md flex flex-col gap-4">
+      <h2 className="text-2xl mb-4">Deal Details</h2>
       <div className="grid grid-cols-2 gap-4">
         <div className="flex gap-3">
           <p className="font-semibold">Deal Raised On :</p>

@@ -20,7 +20,7 @@ const addDeal = async (req, res) => {
         minInvestmentAmount: data.minInvestmentAmount,
         status: "PENDING",
         dealAim: data.dealAim,
-        tentativeDuration: data.tentativeDuration,
+        completionDate: data.completionDate,
         profitPercent: Number(data.interestRate),
         investors: { create: [] },
       },

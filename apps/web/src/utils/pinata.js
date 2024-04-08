@@ -5,6 +5,7 @@ const FormData = require("form-data");
 // const fs = require("fs");
 
 const JWT = process.env.PINATA_KEY
+const PINATA_BASE_URL = process.env.PINATA_BASE_URL
 
 const pinFileToIPFS = async (file) => {
   console.log("JWT ",JWT);
@@ -39,7 +40,7 @@ const pinFileToIPFS = async (file) => {
     const sellerAddress = "0xu3289483242";
     const metadataObj = {
       description: "The NFT to the Bill uploaded by the Company",
-      external_url: `https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/${res.data.IpfsHash}`,
+      external_url: `${PINATA_BASE_URL}/ipfs/${res.data.IpfsHash}`,
       image: "https://i1.sndcdn.com/avatars-000672907826-20999i-t240x240.jpg",
       name: `Company Bill NFT ${sellerAddress}`,
       attributes: [
@@ -58,7 +59,7 @@ const pinFileToIPFS = async (file) => {
         },
         {
           trait_type: "billAddress",
-          value: `https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/${res.data.IpfsHash}`
+          value: `${PINATA_BASE_URL}/ipfs/${res.data.IpfsHash}`
         }
       ]
     };

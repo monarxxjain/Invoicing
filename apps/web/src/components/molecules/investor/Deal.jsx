@@ -10,13 +10,12 @@ import DealSummary from '@/components/atoms/DealSummary';
 import DealRisks from '@/components/atoms/DealRisks';
 import axios from 'axios';
 import { BACKEND_URL } from '@/content/values';
-import { useEffect } from 'react';
-import ReportProblemIcon from '@mui/icons-material/ReportProblem';
-import Snackbar from '@mui/joy/Snackbar';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { IconButton } from '@mui/material';
+import { useRouter } from 'next/navigation'
 
 const Deal = ({ deal, investedDeals, role }) => {
+  const router = useRouter()
   const balance = 100000
   const tags = [
     {
@@ -41,7 +40,7 @@ const Deal = ({ deal, investedDeals, role }) => {
     },
     {
       title: "Return in",
-      value: `${deal.tentativeDuration} days`,
+      value: `${deal.completionDate} days`,
       color: "text-black"
     },
     {
@@ -136,7 +135,7 @@ const Deal = ({ deal, investedDeals, role }) => {
 
   return (
     <div className='relative h-full'>
-      <div className={`absolute left-8 z-10 -top-3 border  rounded px-10 text-sm  ${deal.status == "FREEZED" ? "border-yellow-500 bg-yellow-200 text-yellow-700" : deal.status == "FINAL" ? "border-blue-950 bg-blue-200 text-blue-950" : deal.status == "CANCELLED" ? "border-red-500 bg-red-200 text-red-700" : "border-green-400 bg-green-200 text-green-700"}`}>
+      <div  onClick={() => {role == "SELLER" && router.push(`/seller/deals/${deal.id}`)}}  className={`absolute cursor-pointer left-8 z-10 -top-3 border  rounded px-10 text-sm  ${deal.status == "FREEZED" ? "border-yellow-500 bg-yellow-200 text-yellow-700" : deal.status == "FINAL" ? "border-blue-950 bg-blue-200 text-blue-950" : deal.status == "CANCELLED" ? "border-red-500 bg-red-200 text-red-700" : "border-green-400 bg-green-200 text-green-700"}`}>
         ICT{deal.id}
       </div>
       <div className={`border h-full ${deal.status == "FREEZED" ? "border-yellow-500" : deal.status == "FINAL" ? "border-blue-950" : deal.status == "CANCELLED" ? "border-red-500" : ""} border-green-400 bg-white rounded px-3 pt-5 pb-3 flex flex-col gap-5`}>
@@ -185,7 +184,7 @@ const Deal = ({ deal, investedDeals, role }) => {
           </div>
           <div className='flex flex-col gap-1'>
             <div className='text-gray-500 font-semibold text-sm'>Freezing Point</div>
-            <div className={`font-bold text-xl `}>{deal.tentativeDuration}</div>
+            <div className={`font-bold text-xl `}>{deal.completionDate}</div>
           </div>
 
         </section>
