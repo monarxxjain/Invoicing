@@ -95,12 +95,13 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
 
       setLoading(true)
       const { signer, walletAddress, contractInstance } = await initWallet()
-      console.log({ signer, walletAddress, contractInstance })
+
       setUserData((prev) => ({
         ...prev, modelData: {
           ...prev.modelData, wolleteAddr: walletAddress
         }
       }))
+
       if(userData.role == "INVESTOR"){
         await signUpInvestor(walletAddress)
       }
@@ -122,7 +123,6 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
         { wolleteAddr: walletAddr },
         { withCredentials: true }
       )
-      console.log(res)
       if (res.data.message) {
         setIsSnackbarOpen(() => ({ color: "success", message: res.data.message }))
         router.push('/login')
@@ -142,19 +142,22 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
   const signUpSeller = async () => {
 
     try {
-      const response = await axios.post(`${BACKEND_URL}/auth/signup/seller`,
+      const res = await axios.post(`${BACKEND_URL}/auth/signup/seller`,
         { ...userData.modelData },
         { withCredentials: true }
       )
-      if (!(response.status == 200 || response.status == 201)) {
-        throw new Error("Error Signing you In")
-      }
-      else {
-        setLoading(true)
+      if (res.data.message) {
+        setIsSnackbarOpen(() => ({ color: "success", message: res.data.message }))
         router.push('/login')
       }
+      else if (res.data.error) {
+        console.log(res.data.error)
+        setIsSnackbarOpen(() => ({ color: "danger", message: res.data.error }))
+        setLoading(false)
+      }
     } catch (error) {
-      console.log(error)
+      setLoading(false)
+      console.log("Error In Axios")
     }
 
   }
@@ -273,6 +276,7 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
           </form>
         </motion.div>
       )}
+
       {view == "DATA_SELLER" && sellerPageNo === 2 && (
         <motion.div
           ref={sellerFormRef}
@@ -315,36 +319,7 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
 
               <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
                 <label htmlFor="metaMaskId">Connect metamask</label>
-                <Button variant="outlined" className="seller">
-                  <ConnectWallet
-                    className="!text-inherit !font-light !rounded !text-sm !bg-transparent !border !border-blue-600 !p-0.5"
-                    theme={darkTheme({
-                      colors: {
-                        accentText: "#86EFAC",
-                        accentButtonBg: "#bb00ff",
-                        borderColor: "#86EFAC",
-                        separatorLine: "#f1e4e4",
-                        modalBg: "#061c37",
-                      },
-                    })}
-                    btnTitle={"CONNECT WEB3"}
-                    modalTitle={"Connect to Investo"}
-                    modalSize={"wide"}
-                    welcomeScreen={{
-                      title: "Welcome to Investo",
-                      subtitle: "",
-                      img: {
-                        src: "https://hopin-prod-fe-page-builder.imgix.net/events/page_builder/000/288/066/original/4764288e-0018-44ec-afc5-1b4e48d6c235.GIF?ixlib=rb-4.0.0&s=3b978bc503fed36297bf33b1b72e702c",
-                        width: 350,
-                        height: 250,
-                      },
-                    }}
-                    modalTitleIconUrl={""}
-
-                  />
-
-                </Button>
-                {/* <Button variant="outlined" className="w-40" name="metaMaskId" type="submit" value={"metaMaskId"} onClick={(e) => handler(e)}>Connect</Button> */}
+                <LoadingButton variant="outlined" loadingPosition="end" loading={loading} onClick={() => { connectWallet() }} className="capitalize !px-4 text-lg !font-mono !font-light">Connect Web3</LoadingButton>
               </div>
 
             </div>

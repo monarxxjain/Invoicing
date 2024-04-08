@@ -3,9 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 const saltRounds = 12
 
-const generateJwtToken = (req, res, role) => {
-    const { name, email } = req.body
-    const userObj = { name, email, role }
+const generateJwtToken = (userObj) => {
     const expiresIn = process.env.JWT_EXPIRY || '1d';
     const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn })
     return token
@@ -56,7 +54,13 @@ const loginEmployee = async (req, res) => {
         const isPasswordCorrect = await bcrypt.compare(password, dbPassword)
         if(isPasswordCorrect) {
             const expiryTime = process.env.JWT_EXPIRY || '1d';
-            const token = generateJwtToken(req, res, req.employee.role)
+
+            const userObj = {
+                name: req.body.name,
+                email: req.body.email,
+                role: req.employee.rol,
+            }
+            const token = generateJwtToken(userObj)
             res
               .cookie("access_token", token, {
                 httpOnly: true,

@@ -14,9 +14,8 @@ import { useEffect } from 'react';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import Snackbar from '@mui/joy/Snackbar';
 
-const InvestedDeal = ({ investedDeals }) => {
-  console.log("Invested Deals ",investedDeals);
-  const deal = investedDeals.deal
+const InvestedDeal = ({ deal }) => {
+  console.log("Invested Deals ",deal);
   const balance = 100000
   const tags = [
     {
@@ -106,7 +105,7 @@ const InvestedDeal = ({ investedDeals }) => {
     }
   }
 
-  let investedAmount = investedDeals.investmentAmount;
+  let investedAmount = deal.investmentAmount;
 
 
 
@@ -164,8 +163,8 @@ const InvestedDeal = ({ investedDeals }) => {
           </ColorButton>
         </form>
 
-        {investedDeals?.investmentAmount ? <section className='text-sm text-[#061c37] border border-[#061c37] rounded bg-blue-100 w-full text-center px-3 py-1 '>
-          You have invested ETH <span>{investedDeals?.investmentAmount}</span> on this Deal
+        {deal?.investmentAmount ? <section className='text-sm text-[#061c37] border border-[#061c37] rounded bg-blue-100 w-full text-center px-3 py-1 '>
+          You have invested ETH <span>{deal?.investmentAmount}</span> on this Deal
         </section>
           : 
         <section className='text-sm text-yellow-600 border border-yellow-600 rounded bg-yellow-100 w-full text-center px-3 py-1 '>

@@ -23,6 +23,7 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
   const sellerFormRef = useRef(null);
   const investorFormRef = useRef(null);
   const [loading, setLoading] = useState(false)
+  const [submitLoading, setSubmitLoading] = useState(false)
   const [error, setError]= useState(null)
 
 
@@ -83,9 +84,8 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
       if(userData.role == "INVESTOR"){
         await generateLoginRequest(signer, walletAddress, contractInstance)
       }
-      else {
-        await signUpSeller()
-      }
+      setLoading(false)
+      setIsSnackbarOpen(() => ({ color: "success", message: "Wollete Connected  " }))
 
     } catch (error) {
       console.log(error)
@@ -145,15 +145,14 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
       )
       if (response.data.error) {
         console.log(response.data.error)
-        setError(response.data.error)
-        // throw new Error("Error Logging you In")
+        setIsSnackbarOpen(() => ({ color: "danger", message: response.data.error }))
       }
       else {
-        setLoading(true)
+        setSubmitLoading(true)
         router.push('/seller')
       }
     } catch (error) {
-      setLoading(false)
+      setSubmitLoading(false)
       console.log(error)
     }
 
@@ -248,39 +247,10 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
               />
             </div>
             <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between">
-              <label htmlFor="metaMaskId">Connect metamask</label>
-              <Button variant="outlined" className="seller">
-                  <ConnectWallet
-                    className="!text-inherit !font-light !rounded !text-sm !bg-transparent !border !border-blue-600 !p-0.5"
-                    theme={darkTheme({
-                      colors: {
-                        accentText: "#86EFAC",
-                        accentButtonBg: "#bb00ff",
-                        borderColor: "#86EFAC",
-                        separatorLine: "#f1e4e4",
-                        modalBg: "#061c37",
-                      },
-                    })}
-                    btnTitle={"CONNECT WEB3"}
-                    modalTitle={"Connect to Investo"}
-                    modalSize={"wide"}
-                    welcomeScreen={{
-                      title: "Welcome to Investo",
-                      subtitle: "",
-                      img: {
-                        src: "https://hopin-prod-fe-page-builder.imgix.net/events/page_builder/000/288/066/original/4764288e-0018-44ec-afc5-1b4e48d6c235.GIF?ixlib=rb-4.0.0&s=3b978bc503fed36297bf33b1b72e702c",
-                        width: 350,
-                        height: 250,
-                      },
-                    }}
-                    modalTitleIconUrl={""}
-
-                  />
-
-                </Button>
+              <label htmlFor="metaMaskId">Connect metamask: </label>
+              <LoadingButton variant="outlined" loadingPosition="end" loading={loading} onClick={() => { connectWallet() }} className="capitalize !px-4 text-lg !font-mono !font-light">Connect Web3</LoadingButton>
             </div>
-            { error && <div className="text-red-500">* {error}</div>}
-            <ColorLoadingButton loading={loading} onClick={()=>{loginSeller()}} variant="contained" >Submit</ColorLoadingButton>
+            <ColorLoadingButton loading={submitLoading} onClick={()=>{loginSeller()}} loadingPosition="end" variant="contained" >Submit</ColorLoadingButton>
           </form>
         </motion.div>
       )}

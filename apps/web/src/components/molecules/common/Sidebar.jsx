@@ -95,7 +95,6 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
               className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}
               onClick={() => {
                 logout()
-                disconnect()
               }}
             >
               <LogoutIcon />

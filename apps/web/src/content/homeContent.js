@@ -65,6 +65,6 @@ const faqs = [
 
 const investorTabs=["Ongoing Deals","Mature Deals","Liqudated Deals","Requested to Liquidate","Completed Deals"];
 
-const sellerTabs=["Ongoing Deals", "Past Deals"];
+const sellerTabs=["Deals under Review", "Ongoing Deals", "Deals to be Approved", "Payout Queue", "Completed Deals", "Cancelled Deals", "Drafts" ];
 
 export { features, statistic,faqs,investorTabs,sellerTabs};

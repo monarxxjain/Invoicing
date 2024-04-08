@@ -11,186 +11,95 @@ import { useEffect } from "react";
 import { BACKEND_URL } from "@/content/values";
 import CircularProgress from "@mui/material/CircularProgress";
 import { supabase } from "@/utils/supabase";
+import InvestedDeal from "../../investor/InvestedDeal";
+import Deal from "../../investor/Deal";
 
-export default function SellerPortfolioTab({ tabs }) {
-  const [value, setValue] = useState("1"); // Initially set value as string '1'
-  // const []
+export default function SellerPortfolioTab({ tabs, role }) {
+
+  const [value, setValue] = useState("1")
+  const [deals, setDeals] = useState(null)
   const handleChange = (event, newValue) => {
+    setDeals()
     setValue(newValue);
-    console.log(newValue); // Log the new value
   };
 
-  const [ongoingDeals, setOngoingDeals] = useState();
-  const [completedDeals, setCompletedDeals] = useState();
 
   const getSellerDeals = async () => {
-    console.log("sdfds");
-    let sellerDeals = await axios.get(
+
+    let sellerDeals = await axios.post(
       `${BACKEND_URL}/deal/getSellerDeals`,
+      { status: tabMapping[value] },
       { withCredentials: true }
     );
-    console.log("Ddta ",sellerDeals);
-    let ongoingDeals = [];
-    let completedDeals = [];
+    console.log("Data ",sellerDeals);
+    sellerDeals = await Promise.all(
+      sellerDeals.data.deals?.map(async (element) => {
+        const { data, error } = await supabase.storage
+          .from("invoice")
+          .createSignedUrl(element.seller.logo, 3600);
+
+        let te = element;
+        te.seller.logo = data.signedUrl;
+        return te;
+      })
+    );
+    setDeals(sellerDeals)
   
-
-    // seller.data.data.forEach((element) => {
-    //   if (element.break) reqLiquidateDeals.push(element);
-    //   else if (element.status == "SOLID") matureDeals.push(element);
-    //   else if (element.status == "LIQUID") ongoingDeals.push(element);
-    //   else if (element.status == "COMPLETED" || element.status == "CANCELLED") completedDeals.push(element);
-    //   else if (element.status == "BREAKED") liquidatedDeals.push(element);
-    // });
-    // // ongoingDeals = investedDeals.data.data.filter( (element) => {
-    // //   return (element.status === "LIQUID")
-    // // });
-    // ongoingDeals = await Promise.all(
-    //   ongoingDeals?.map(async (element) => {
-    //     const { data, error } = await supabase.storage
-    //       .from("invoice")
-    //       .createSignedUrl(element.deal.seller.logo, 3600);
-
-    //     let te = element;
-    //     te.deal.seller.logo = data.signedUrl;
-    //     return te;
-    //   })
-    // );
-    // matureDeals = await Promise.all(
-    //   matureDeals?.map(async (element) => {
-    //     const { data, error } = await supabase.storage
-    //       .from("invoice")
-    //       .createSignedUrl(element.deal.seller.logo, 3600);
-    //     let te = element;
-    //     te.deal.seller.logo = data.signedUrl;
-    //     return te;
-    //   })
-    // );
-    // completedDeals = await Promise.all(
-    //   completedDeals?.map(async (element) => {
-    //     const { data, error } = await supabase.storage
-    //       .from("invoice")
-    //       .createSignedUrl(element.deal.seller.logo, 3600);
-    //     let te = element;
-    //     te.deal.seller.logo = data.signedUrl;
-    //     return te;
-    //   })
-    // );
-    // liquidatedDeals = await Promise.all(
-    //   liquidatedDeals?.map(async (element) => {
-    //     const { data, error } = await supabase.storage
-    //       .from("invoice")
-    //       .createSignedUrl(element.deal.seller.logo, 3600);
-    //     let te = element;
-    //     te.deal.seller.logo = data.signedUrl;
-    //     return te;
-    //   })
-    // );
-    // reqLiquidateDeals = await Promise.all(
-    //   reqLiquidateDeals?.map(async (element) => {
-    //     const { data, error } = await supabase.storage
-    //       .from("invoice")
-    //       .createSignedUrl(element.deal.seller.logo, 3600);
-    //     let te = element;
-    //     te.deal.seller.logo = data.signedUrl;
-    //     return te;
-    //   })
-    // );
-    // // ongoingDeals = await Promise.all(ongoingDeals);
-    // // matureDeals = await Promise.all(matureDeals);
-
-    // setOngoingDeals(ongoingDeals);
-    // setMatureDeals(matureDeals);
-    // setCompletedDeals(completedDeals);
-    // setLiquidatedDeals(liquidatedDeals);
-    // setReqLiquidateDeals(reqLiquidateDeals);
   };
 
   useEffect(() => {
     getSellerDeals();
   }, []);
 
+  useEffect(() => {
+    getSellerDeals();
+  }, [value]);
+
+  const tabMapping = {
+    1 : "PENDING",
+    2 : "OPEN",
+    3 : "FREEZED",
+    4 : "FINAL",
+    5 : "CLOSED",
+    6 : "CANCELLED",
+    7 : "DRAFT",
+  }
+
   return (
-    <Box sx={{ width: "100%", typography: "body1" }}>
+    <Box sx={{ width: "100%", typography: "body1", background: "white" }}>
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
           aria-label="lab API tabs example"
-          className="px-6 py-4"
+          className="px-6"
         >
           {tabs.map(
-            (
-              tab,
-              index // Changed 'id' to 'index' for clarity
-            ) => (
+            (tab,index) => (
               <Tab
                 key={index}
-                label={tab}
+                label={`${tab}`}
                 value={(index + 1).toString()}
                 sx={{ textTransform: "none" }}
               />
             )
           )}
         </TabList>
-        {/* <TabPanel value={"1"}>
-          <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
-            <div className="grid grid-cols-2 gap-6 relative">
-              {!ongoingDeals && <CircularProgress className="mx-auto" />}
-              {ongoingDeals &&
-                ongoingDeals?.map((iv, id) => {
-                  return <InvestedDeal key={id} investedDeals={iv} />;
-                })}
-            </div>
-          </div>
-        </TabPanel>
 
-        <TabPanel value={"2"}>
-          <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
-            <div className="grid grid-cols-2 gap-6 relative">
-              {!matureDeals && <CircularProgress className="mx-auto" />}
-              {matureDeals &&
-                matureDeals?.map((iv, id) => {
-                  return <InvestedDeal key={id} investedDeals={iv} />;
-                })}
-            </div>
-          </div>
-        </TabPanel>       
-        <TabPanel value={"3"}>
-          <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
-            <div className="grid grid-cols-2 gap-6 relative">
-              {!liquidatedDeals && <CircularProgress className="mx-auto" />}
-              {liquidatedDeals &&
-                liquidatedDeals?.map((iv, id) => {
-                  return <InvestedDeal key={id} investedDeals={iv} />;
-                })}
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel value={"4"}>
-          <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
-            <div className="grid grid-cols-2 gap-6 relative">
-              {!reqLiquidateDeals && <CircularProgress className="mx-auto" />}
-              {reqLiquidateDeals &&
-                reqLiquidateDeals?.map((iv, id) => {
-                  return <InvestedDeal key={id} investedDeals={iv} />;
-                })}
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel value={"5"}>
-          <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
-            <div className="grid grid-cols-2 gap-6 relative">
-              {!completedDeals && <CircularProgress className="mx-auto" />}
-              {completedDeals &&
-                completedDeals?.map((iv, id) => {
-                  return <InvestedDeal key={id} investedDeals={iv} />;
-                })}
-            </div>
-          </div>
-        </TabPanel> */}
-
-        {/* {tabs.map((tab, index) => ( // Changed 'id' to 'index' for clarity
-          <TabPanel key={index} value={(index + 1).toString()}>Item {index + 1}</TabPanel>
-        ))} */}
+        {tabs.map((tab, id) => {
+          return (
+            <TabPanel className="bg-gray-100 p-2 xl:p-6" value={(id+1).toString()}>
+              <div className="px-2 xl:px-6 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-3 xl:gap-6 relative">
+                  {!deals && <CircularProgress className="mx-auto" />}
+                  {deals &&
+                    deals?.map((deal, id) => {
+                      return <Deal key={id} deal={deal} role={role} />;
+                    })}
+                </div>
+              </div>
+            </TabPanel>
+          )
+        })}
       </TabContext>
     </Box>
   );

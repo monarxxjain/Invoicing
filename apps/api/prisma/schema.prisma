@@ -23,16 +23,17 @@ enum Role {
 
 enum DealStatus {
   PENDING
+  DRAFT
   OPEN
-  FULL
+  FREEZED
+  CANCELLED
+  FINAL
   CLOSED
 }
 
 enum LiquidStatus {
-  LIQUID
-  SOLID
+  LIQUIDABLE
   BREAKED
-  CANCELLED
   COMPLETED
 }
 
@@ -98,7 +99,7 @@ model InvestorDeals {
   investorId       Int
   investmentAmount Int
   break            Boolean      @default(false)
-  status           LiquidStatus @default(LIQUID)
+  status           LiquidStatus @default(LIQUIDABLE)
 
   @@id([dealId, investorId])
 }

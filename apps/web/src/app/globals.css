@@ -256,3 +256,10 @@ input[type=number] {
   width: 100px !important;
   height: 100px !important;
 }
+
+.dangerButton.MuiButton-contained {
+  background: #DC2626;
+}
+.successButton.MuiButton-contained {
+  background: #06de15;
+}
