@@ -12,10 +12,11 @@ const DealsContainer = () => {
   const [investedDeals, setInvestedDeals] = useState()
 
   const getAllDeals = async () => {
-    let deals = await axios.get(`${BACKEND_URL}/deal/getDeals`,
+    let deals = await axios.post(`${BACKEND_URL}/deal/getDeals`, 
+      { status: "OPEN" },
       { withCredentials: true }
     )
-    deals = await Promise.all( deals.data.data.map(async (v) => {
+    deals = await Promise.all(deals?.data?.data?.map(async (v) => {
       const { data, error } = await supabase.storage
         .from('invoice')
         .createSignedUrl(v.seller.logo, 3600)

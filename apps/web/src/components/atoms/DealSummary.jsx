@@ -4,7 +4,7 @@ import WestOutlinedIcon from "@mui/icons-material/WestOutlined";
 import IconButton from "@mui/material/IconButton";
 import { Button } from "@mui/material";
 
-const DealSummary = ({ showMore, setShowMore }) => {
+const DealSummary = ({ showMore, setShowMore, role }) => {
   const summaryRef = useRef(null);
 
   const returnBack = () => {
@@ -71,7 +71,7 @@ const DealSummary = ({ showMore, setShowMore }) => {
               </p>
             </li>
           </ul>
-          <section className='flex justify-around text-gray-700 cursor-pointer font-medium'>
+          {role == "INVESTOR" && <section className='flex justify-around text-gray-700 cursor-pointer font-medium'>
             <Button onClick={() => { setShowMore("RISKS") }} variant='secondary'>
               <div>Risks</div>
             </Button>
@@ -81,7 +81,7 @@ const DealSummary = ({ showMore, setShowMore }) => {
             <Button onClick={() => { setShowMore("REPORT") }} variant='secondary'>
               <div>Deal Report</div>
             </Button>
-          </section>
+          </section>}
         </div>
       </motion.div>
     )

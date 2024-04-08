@@ -1,14 +1,12 @@
 const prisma = require('../../db')
 const jwt = require("jsonwebtoken");
 const { verifySignedMessage } = require('../../web3-utils/Utils');
+const { generateJwtToken } = require('../AuthController');
 
 
 const registerNewInvestor = async (req, res) => {
     try {
 
-        const userObj = { wolleteAddr: req.body.wolleteAddr, role: "INVESTOR" }
-        const expiresIn = process.env.JWT_EXPIRY || '1d';
-        const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn })
 
         if(req.investor){
             return res.status(200).json({error: "You have already registered. Please Log In"})
@@ -84,8 +82,7 @@ const loginInvestor = async (req, res) => {
         wolleteAddr: req.body.wolleteAddr,
         accessString: req.investor.accessString
       }
-      const expiresIn = process.env.JWT_EXPIRY || '1d';
-      const token = jwt.sign(userObj, process.env.JWT_SECRET, { expiresIn })
+      const token = generateJwtToken(userObj)
       
       res
         .cookie("ROLE", "INVESTOR",  {

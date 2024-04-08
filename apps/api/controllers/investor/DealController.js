@@ -5,7 +5,6 @@ const getAllDeals = async (req, res) => {
 
         let deals = await prisma.deal.findMany({
             where: {
-
                 status: "OPEN"
             },
             include: {

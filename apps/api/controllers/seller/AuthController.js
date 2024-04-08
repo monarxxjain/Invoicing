@@ -80,16 +80,21 @@ const loginSeller = async (req, res) => {
 
         // Comparing hashed password and request password
         const isPasswordCorrect = await bcrypt.compare(password, dbPassword)
-        console.log(isPasswordCorrect)
         if(isPasswordCorrect){
-            const token = generateJwtToken(req, res, "SELLER")
+            const userObj = {
+              name: req.seller.name,
+              email: req.body.email,
+              role: "SELLER",
+              wolleteAddr: req.body.wolleteAddr
+            }
+            const token = generateJwtToken(userObj)
 
             res
               .cookie("access_token", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
               })
-              .cookie("ROLE", req.body.role,  {
+              .cookie("ROLE", "SELLER",  {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
               })

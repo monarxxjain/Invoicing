@@ -300,17 +300,35 @@ const getSellerDeals = async (req,res) =>
   const decodedToken = jwt.decode(token)
   const { wolleteAddr } = decodedToken
   try{
-      const seller = await prisma.seller.findUnique({ where: { wolleteAddr: wolleteAddr },include:{deals:true} });
-      let data = seller.deals.map((v)=>{
-        let el = v;
-        el.id = v.id.toString();
-        return el;
+
+      const seller = await prisma.seller.findUnique({ 
+        where: { 
+          wolleteAddr: wolleteAddr,
+        },
+        include: { 
+          deals: {
+            where: {
+              status: req.body.status
+            },
+            include: {
+              seller: true,
+              investors: true
+            }
+          }
+        } 
+      });
+
+      let deals = seller.deals.map((deal)=>{
+        let elem = deal;
+        elem.id = deal.id.toString();
+        return elem;
       })
-      res.status(200).jsons({deals:data})
+      res.status(200).json({message: `${req.body.status} Deals Fetched successfully`, deals})
+      
   }catch(error)
   {
     console.log("Error ",error);
-    return res.status(500).json({message:"Error while getting seller delas"})
+    return res.status(500).json({message:"Error while getting seller deals"})
   }
 }
 module.exports = {
