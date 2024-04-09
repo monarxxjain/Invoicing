@@ -35,7 +35,7 @@ const DealRisks = ({ showMore, setShowMore }) => {
         </div>
         <div className="p-2 flex flex-col justify-between gap-6">
           <h3 className="text-lg">
-            I, {user.name}, understand the risks involved and acknowledge of
+            I, {user?.name}, understand the risks involved and acknowledge of
             the following risks:
           </h3>
           <ol className="pt-3 text-sm flex flex-col gap-5">

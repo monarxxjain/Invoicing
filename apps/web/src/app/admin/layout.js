@@ -8,15 +8,22 @@ import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import { useEffect } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 
 
 export default function RootLayout({ children }) {
-  const name = localStorage.getItem("NAME")
-  const email = localStorage.getItem("EMAIL")
-  const role = "ADMIN"
-  const user = { name, email, role }
+
+  let name, email, role = "";
+  const [user, setUser] = useState()
+  useEffect(()=>{
+    name = localStorage.getItem("NAME")
+    email = localStorage.getItem("EMAIL")
+    role = "ADMIN"
+
+    setUser({ name, email, role })
+  },[])
 
   const [isFull, setIsFull] = useState(true);
   
