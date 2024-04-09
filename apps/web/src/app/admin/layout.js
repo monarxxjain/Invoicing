@@ -8,17 +8,18 @@ import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-
 const inter = Inter({ subsets: ["latin"] });
 
 
 
 export default function RootLayout({ children }) {
-  const [user, setUser] = useState({
-    name: "Monark Jain",
-    role: "SELLER"
-  });
+  const name = localStorage.getItem("NAME")
+  const email = localStorage.getItem("EMAIL")
+  const role = "ADMIN"
+  const user = { name, email, role }
+
   const [isFull, setIsFull] = useState(true);
+  
   const notifications = [
     {
       title: "This is tilte 1",
@@ -56,12 +57,12 @@ export default function RootLayout({ children }) {
     {
       name: "Discover",
       icon: <LocalLibraryIcon />,
-      url: "/investor",
+      url: "/admin/dashboard",
     },
     {
-      name: "Portfolio",
+      name: "Sellers",
       icon: <BusinessCenterIcon />,
-      url: "/investor/portfolio",
+      url: "/admin/sellers",
     },
     {
       name: "Overview",
