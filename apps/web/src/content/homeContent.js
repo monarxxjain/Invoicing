@@ -67,6 +67,6 @@ const investorTabs=["Ongoing Deals","Mature Deals","Liqudated Deals","Requested 
 
 const sellerTabs=["Deals under Review", "Ongoing Deals", "Deals to be Approved", "Payout Queue", "Completed Deals", "Cancelled Deals", "Drafts" ];
 
-const adminSellerListTabs = ["Approve Sellers", "Verified Sellers"]
+const adminSellerListTabs = ["Approve Sellers", "Verified Sellers", "Rejected Sellers"]
 
 export { features, statistic,faqs,investorTabs,sellerTabs,adminSellerListTabs};

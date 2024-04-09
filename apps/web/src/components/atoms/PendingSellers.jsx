@@ -10,7 +10,7 @@ import { BACKEND_URL } from '@/content/values';
 import Snackbar from '@mui/joy/Snackbar';
 
 
-export default function Table({data}) {
+export default function PendingSellers({data}) {
 
   const [imageLoaded, setImageLoaded] = useState(false);
   const [openModal, setOpenModal] = useState(false)

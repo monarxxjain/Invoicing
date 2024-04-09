@@ -9,12 +9,12 @@ import axios from "axios";
 
 import { useEffect } from "react";
 import { BACKEND_URL } from "@/content/values";
-import CircularProgress from "@mui/material/CircularProgress";
 import { supabase } from "@/utils/supabase";
 import { useContext } from "react";
 import ThemeContext from "@/components/context/ThemeContext";
 import Loader from "@/components/atoms/Loader";
-import Table from "@/components/atoms/Table";
+import PendingSellers from "@/components/atoms/PendingSellers";
+import VerifiedSellers from "@/components/atoms/VerifiedSellers";
 
 export default function AdminSellerList({ tabs, role }) {
 
@@ -66,6 +66,7 @@ export default function AdminSellerList({ tabs, role }) {
   const tabMapping = {
     1 : "PENDING",
     2 : "APPROVED",
+    3 : "REJECTED"
   }
 
   return (
@@ -99,7 +100,7 @@ export default function AdminSellerList({ tabs, role }) {
                     </section>
 
                     {!loading && sellers.length!=0 && <section className="h-[65vh]">
-                      <Table data={sellers} />
+                      <PendingSellers data={sellers} />
                     </section>}
 
                     {!loading && sellers.length==0 &&
@@ -113,17 +114,48 @@ export default function AdminSellerList({ tabs, role }) {
             <TabPanel className="bg-gray-100 p-2 xl:p-6 h-full overflow-y-scroll" value={"2"}>
                 <div className="relative h-full">
                   {loading && <Loader className="fixed left-1/2 -translate-x-[45%] top-1/2 -translate-y-[50%]" />}
-                  <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-6 h-full">
                     <section className="flex flex-col gap-1">
                       <h1 className="text-2xl">Hey <span className="font-serif font-semibold italic">{user?.name}</span> !!</h1>
-                      {!loading && sellers.length!=0 && <p className="text- font-light text-gray-500">New sellers are waiting for your approval on the platform. Let's get them onboard!</p>}
-                      {!loading && sellers.length==0 && <p className="text- font-light text-gray-500">There are NO new Seller Requests as of now.</p>}
+                      {!loading && sellers.length!=0 && <p className="text- font-light text-gray-500">Here is the list of all of our prestigious Clients</p>}
+                      {!loading && sellers.length==0 && <p className="text- font-light text-gray-500">There are NO Approved Sellers as of now.</p>}
                     </section>
                       
 
-                    {sellers && <section>
-                            
+                    {!loading && sellers.length!=0 && <section className="h-[65vh]">
+                        <VerifiedSellers data={sellers} />
                     </section>} 
+
+                    {!loading && sellers.length==0 &&
+                    <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-8xl text-blue-950 t">
+                        NO Sellers Yet
+                      </div>
+                    }
+                  </div>
+
+                  
+                </div>
+            </TabPanel>
+            <TabPanel className="bg-gray-100 p-2 xl:p-6 h-full overflow-y-scroll" value={"3"}>
+                <div className="relative h-full">
+                  {loading && <Loader className="fixed left-1/2 -translate-x-[45%] top-1/2 -translate-y-[50%]" />}
+                  <div className="flex flex-col gap-6 h-full">
+                    <section className="flex flex-col gap-1">
+                      <h1 className="text-2xl">Hey <span className="font-serif font-semibold italic">{user?.name}</span> !!</h1>
+                      {!loading && sellers.length!=0 && <p className="text- font-light text-gray-500">Here is the list of all of Rejected Sellers</p>}
+                      {!loading && sellers.length==0 && <p className="text- font-light text-gray-500">There are NO Rejected Sellers as of now.</p>}
+                    </section>
+                      
+
+                    {!loading && sellers.length!=0 && <section className="h-[65vh]">
+                        <VerifiedSellers data={sellers} />
+                    </section>} 
+
+                    {!loading && sellers.length==0 &&
+                      <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-6xl text-blue-950 t">
+                        NO Rejected Sellers Yet
+                      </div>
+                    }
                   </div>
 
                   
