@@ -93,7 +93,7 @@ export default function AdminSellerList({ tabs, role }) {
                   {loading && <Loader className="absolute left-1/2 -translate-x-[45%] top-1/2 -translate-y-[50%]" />}
                   <div className="flex flex-col gap-6 h-full">
                     <section className="flex flex-col gap-1">
-                      <h1 className="text-2xl">Hey <span className="font-serif font-semibold italic">{user.name}</span> !!</h1>
+                      <h1 className="text-2xl">Hey <span className="font-serif font-semibold italic">{user?.name}</span> !!</h1>
                       {!loading && sellers.length!=0 && <p className="text- font-light text-gray-500">New sellers are waiting for your approval on the platform. Let's get them onboard!</p>}
                       {!loading && sellers.length==0 && <p className="text- font-light text-gray-500">There are NO new Seller Requests as of now.</p>}
                     </section>
@@ -115,7 +115,7 @@ export default function AdminSellerList({ tabs, role }) {
                   {loading && <Loader className="fixed left-1/2 -translate-x-[45%] top-1/2 -translate-y-[50%]" />}
                   <div className="flex flex-col gap-6">
                     <section className="flex flex-col gap-1">
-                      <h1 className="text-2xl">Hey <span className="font-serif font-semibold italic">{user.name}</span> !!</h1>
+                      <h1 className="text-2xl">Hey <span className="font-serif font-semibold italic">{user?.name}</span> !!</h1>
                       {!loading && sellers.length!=0 && <p className="text- font-light text-gray-500">New sellers are waiting for your approval on the platform. Let's get them onboard!</p>}
                       {!loading && sellers.length==0 && <p className="text- font-light text-gray-500">There are NO new Seller Requests as of now.</p>}
                     </section>

@@ -11,13 +11,12 @@ import { useContext } from "react";
 import ThemeContext from "@/components/context/ThemeContext";
 import { Logout } from "@mui/icons-material";
 import axios from "axios";
-import { useRouter } from 'next/navigation'
 import { BACKEND_URL } from "@/content/values";
 
 export default function Sidebar({ menu, isFull, setIsFull }) {
 
   const { user } = useContext(ThemeContext)
-  const role = user.role?.toLowerCase()
+  const role = user?.role?.toLowerCase()
   const [activeMenu, setActiveMenu] = useState(menu[0].url);
   const location = usePathname();
 
