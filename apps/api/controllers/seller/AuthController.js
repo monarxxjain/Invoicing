@@ -20,7 +20,7 @@ const addNewSellerRequest = async (req, res) => {
         const seller = await prisma.seller.create({
             data: {
                 ...req.body,
-                isSellerApproved: false,
+                status: "PENDING",
                 password: hashedPassword
             }
         });
@@ -51,19 +51,21 @@ const addNewSellerRequest = async (req, res) => {
     }
 }
 
-const approveSellerRequest = async (req, res) => {
+const handleSellerRequest = async (req, res) => {
     try {
 
         const seller = await prisma.seller.update({
-            where: { wolleteAddr: req.body.wolleteAddr },
-            data: { isSellerApproved: true }
+            where: { 
+              wolleteAddr: req.body.wolleteAddr 
+            },
+            data: { status: req.body.status }
         })
 
-        res.status(200).json({message: "Seller has been Approved Successfully!!"})
+        res.status(200).json({message: `Seller has been ${req.body.status} Successfully!!`})
     } catch (error) {
-        console.log("Error approving Seller: ", error)
+        console.log("Error Handling Seller: ", error)
 
-        res.status(403).json({error: "Error approving Seller"})
+        res.status(403).json({error: "Error handling Seller"})
     }
 }
 
@@ -72,7 +74,7 @@ const loginSeller = async (req, res) => {
         if(!req.seller){
             return res.status(404).json({error: "Seller Does not Exist"})
         }
-        if(!req.seller.isSellerApproved){
+        if(req.seller.status == "PENDING"){
             return res.status(200).json({error: "Your profile is currently under Review"})
         }
         const { password } = req.body
@@ -127,6 +129,6 @@ const loginSeller = async (req, res) => {
 
 module.exports = {
     addNewSellerRequest,
-    approveSellerRequest,
+    handleSellerRequest,
     loginSeller
 }

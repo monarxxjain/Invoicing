@@ -79,7 +79,7 @@ const loginEmployee = async (req, res) => {
                 secure: process.env.NODE_ENV === "production",
               })
               .status(200)
-              .json({message: "Employee Logged in Successfully"})
+              .json({message: "Employee Logged in Successfully", local: {name: req.employee.name, email: req.employee.email}})
         }
         else{
             res.status(200).json({error: "Incorrect Password"})
