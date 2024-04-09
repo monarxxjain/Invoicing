@@ -1,134 +1,141 @@
-const prisma = require('../../db')
+const prisma = require("../../db");
 
-const { generateJwtToken } = require('../AuthController');
-const bcrypt = require('bcrypt');
-const saltRounds = 12
+const { generateJwtToken } = require("../AuthController");
+const bcrypt = require("bcrypt");
+const saltRounds = 12;
 
 const addNewSellerRequest = async (req, res) => {
-    try {
-        
-        if(req.seller){
-            return res.status(200).json({error: "Seller Already Exists with this EmailID"})
-        }
-
-
-        const { password } = req.body
-
-        // Hashing password coming from frontend and then storing it 
-        const hashedPassword = await bcrypt.hash(password, saltRounds)
-    
-        const seller = await prisma.seller.create({
-            data: {
-                ...req.body,
-                status: "PENDING",
-                password: hashedPassword
-            }
-        });
-
-        res
-          .cookie("ROLE", "SELLER",  {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-          })
-          .cookie("WOLLETEADDR", req.body.wolleteAddr,  {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-          })
-          .cookie("SELLER_ID", seller.id,  {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-          })
-          .cookie("EMAIL", req.body.email,  {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-          })
-          .status(200).json({message: "Seller Request has been generated successfully"})
-
-    } catch (error) {
-        console.log("Error Creating Seller: ", error)
-
-        res.status(401).json({error: "Error Creating Seller"})
+  try {
+    if (req.seller) {
+      return res
+        .status(200)
+        .json({ error: "Seller Already Exists with this EmailID" });
     }
-}
+
+    const { password } = req.body;
+
+    // Hashing password coming from frontend and then storing it
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const seller = await prisma.seller.create({
+      data: {
+        ...req.body,
+        status: "PENDING",
+        password: hashedPassword,
+      },
+    });
+
+    res
+      .cookie("ROLE", "SELLER", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+      })
+      .cookie("WOLLETEADDR", req.body.wolleteAddr, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+      })
+      .cookie("SELLER_ID", seller.id, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+      })
+      .cookie("EMAIL", req.body.email, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+      })
+      .status(200)
+      .json({ message: "Seller Request has been generated successfully" });
+  } catch (error) {
+    console.log("Error Creating Seller: ", error);
+
+    res.status(401).json({ error: "Error Creating Seller" });
+  }
+};
 
 const handleSellerRequest = async (req, res) => {
-    try {
+  try {
+    const seller = await prisma.seller.update({
+      where: {
+        wolleteAddr: req.body.wolleteAddr,
+      },
+      data: { status: req.body.status },
+    });
 
-        const seller = await prisma.seller.update({
-            where: { 
-              wolleteAddr: req.body.wolleteAddr 
-            },
-            data: { status: req.body.status }
-        })
+    res
+      .status(200)
+      .json({ message: `Seller has been ${req.body.status} Successfully!!` });
+  } catch (error) {
+    console.log("Error Handling Seller: ", error);
 
-        res.status(200).json({message: `Seller has been ${req.body.status} Successfully!!`})
-    } catch (error) {
-        console.log("Error Handling Seller: ", error)
-
-        res.status(403).json({error: "Error handling Seller"})
-    }
-}
+    res.status(403).json({ error: "Error handling Seller" });
+  }
+};
 
 const loginSeller = async (req, res) => {
-    try {
-        if(!req.seller){
-            return res.status(404).json({error: "Seller Does not Exist"})
-        }
-        if(req.seller.status == "PENDING"){
-            return res.status(200).json({error: "Your profile is currently under Review"})
-        }
-        const { password } = req.body
-        const dbPassword = req.seller.password
-
-        // Comparing hashed password and request password
-        const isPasswordCorrect = await bcrypt.compare(password, dbPassword)
-        if(isPasswordCorrect){
-            const userObj = {
-              name: req.seller.name,
-              email: req.body.email,
-              role: "SELLER",
-              wolleteAddr: req.body.wolleteAddr
-            }
-            const token = generateJwtToken(userObj)
-
-            res
-              .cookie("access_token", token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-              })
-              .cookie("ROLE", "SELLER",  {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-              })
-              .cookie("WOLLETEADDR", req.body.wolleteAddr,  {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-              })
-              .cookie("SELLER_ID", req.seller.id,  {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-              })
-              .cookie("EMAIL", req.body.email,  {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-              })
-              .status(201)
-              .json({message: "Logged in Successfully"})
-        }
-
-        else 
-        res.status(401).json({message: "Wrong Password"})
-
-    } catch (error) {
-        console.error('Error logging in Seller:', error);
-
-        res.status(500).json({ error: 'Could not Log In Seller' });
+  try {
+    if (!req.seller) {
+      return res.status(404).json({ error: "Seller Does not Exist" });
     }
-}
+    if (req.seller.status == "PENDING") {
+      return res
+        .status(200)
+        .json({ error: "Your profile is currently under Review" });
+    }
+    const { password } = req.body;
+    const dbPassword = req.seller.password;
 
+    // Comparing hashed password and request password
+    const isPasswordCorrect = await bcrypt.compare(password, dbPassword);
+    if (isPasswordCorrect) {
+      const userObj = {
+        name: req.seller.name,
+        email: req.body.email,
+        role: "SELLER",
+        wolleteAddr: req.body.wolleteAddr,
+      };
+      const token = generateJwtToken(userObj);
+
+      res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
+        })
+        .cookie("ROLE", "SELLER", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
+        })
+        .cookie("WOLLETEADDR", req.body.wolleteAddr, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
+        })
+        .cookie("SELLER_ID", req.seller.id, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
+        })
+        .cookie("EMAIL", req.body.email, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "none",
+        })
+        .status(201)
+        .json({ message: "Logged in Successfully" });
+    } else res.status(401).json({ message: "Wrong Password" });
+  } catch (error) {
+    console.error("Error logging in Seller:", error);
+
+    res.status(500).json({ error: "Could not Log In Seller" });
+  }
+};
 
 module.exports = {
-    addNewSellerRequest,
-    handleSellerRequest,
-    loginSeller
-}
+  addNewSellerRequest,
+  handleSellerRequest,
+  loginSeller,
+};
