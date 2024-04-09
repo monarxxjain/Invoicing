@@ -24,6 +24,23 @@ const getSellers = async (req, res) => {
     }
 }
 
+const deleteSeller = async (req,res) => {
+    try {
+        console.log(req.seller.id)
+        const deletedUser = await prisma.seller.delete({
+            where: {
+                id: req.seller.id
+            }
+        })
+
+        res.status(200).json({message: "Seller Deleted Successfully"})
+    } catch (error) {
+        console.log("Error Deleting Seller: ", error)
+
+        res.status(400).json({error: "Error Deleting Seller"})
+    }
+}
 module.exports = {
-    getSellers
+    getSellers,
+    deleteSeller
 }
