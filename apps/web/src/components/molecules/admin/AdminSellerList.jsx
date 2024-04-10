@@ -23,7 +23,7 @@ export default function AdminSellerList({ tabs, role }) {
   const [sellers, setSellers] = useState([])
   const handleChange = (event, newValue) => {
     setLoading(true)
-    setSellers()
+    setSellers([])
     setValue(newValue);
   };
 
