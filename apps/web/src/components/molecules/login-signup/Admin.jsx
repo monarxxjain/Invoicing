@@ -10,22 +10,24 @@ import axios from "axios";
 import { BACKEND_URL } from "@/content/values";
 import { useRouter } from "next/navigation";
 import Snackbar from '@mui/joy/Snackbar';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const Admin = ({email}) => {
 
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
   const [snackbar, setSnackbar] = useState({
     color: "",
     open: "",
     message: "",
     autoHideDuration: null
   })
-  const ColorButton = styled(Button)(({ theme }) => ({
+  const ColorLoadingButton = styled(LoadingButton)(({ theme }) => ({
     color: theme.palette.getContrastText("#061c37"),
     backgroundColor: "#061c37",
-    '&:hover': {
+    "&:hover": {
       backgroundColor: "#061c37",
-    }
+    },
   }));
 
   const [formData, setFormData] = useState({
@@ -42,6 +44,7 @@ const Admin = ({email}) => {
   }
 
   const handleSubmit = async () => {
+    setLoading(true)
     console.log(formData)
     try {
       const res = await axios.post(`${BACKEND_URL}/auth/login/company`,
@@ -61,6 +64,7 @@ const Admin = ({email}) => {
         localStorage.setItem("NAME", res.data.local.name)
         localStorage.setItem("EMAIL", res.data.local.email)
         router.push("/admin/dashboard")
+        setLoading(false)
       } 
       else if(res.data.error){
         console.log(res.data.error)
@@ -70,9 +74,11 @@ const Admin = ({email}) => {
           color: "danger",
           autoHideDuration: 4000
         })
+        setLoading(false)
       }
     } catch (error) {
       console.log("Error Logging in Employee")
+      setLoading(false)
     }
   }
 
@@ -113,7 +119,7 @@ const Admin = ({email}) => {
               />
             </div>
           </form>
-          <ColorButton variant="contained" type="submit" onClick={() => {handleSubmit()}}>Login</ColorButton>
+          <ColorLoadingButton loadingPosition="end" loading={loading} variant="contained" type="submit" onClick={() => {handleSubmit()}}><div className="me-3">Login</div></ColorLoadingButton>
         </div>
       </div>
       <Snackbar
