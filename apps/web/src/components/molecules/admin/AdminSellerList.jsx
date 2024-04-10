@@ -152,7 +152,7 @@ export default function AdminSellerList({ tabs, role }) {
                     </section>} 
 
                     {!loading && sellers.length==0 &&
-                      <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-6xl text-blue-950 t">
+                      <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-6xl text-red-600 t">
                         NO Rejected Sellers Yet
                       </div>
                     }

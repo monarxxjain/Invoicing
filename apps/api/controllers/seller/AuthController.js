@@ -28,22 +28,22 @@ const addNewSellerRequest = async (req, res) => {
     res
       .cookie("ROLE", "SELLER", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "none",
       })
       .cookie("WOLLETEADDR", req.body.wolleteAddr, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "none",
       })
       .cookie("SELLER_ID", seller.id, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "none",
       })
       .cookie("EMAIL", req.body.email, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "none",
       })
       .status(200)
@@ -101,27 +101,27 @@ const loginSeller = async (req, res) => {
       res
         .cookie("access_token", token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .cookie("ROLE", "SELLER", {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .cookie("WOLLETEADDR", req.body.wolleteAddr, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .cookie("SELLER_ID", req.seller.id, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .cookie("EMAIL", req.body.email, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .status(201)

@@ -69,4 +69,6 @@ const sellerTabs=["Deals under Review", "Ongoing Deals", "Deals to be Approved",
 
 const adminSellerListTabs = ["Approve Sellers", "Verified Sellers", "Rejected Sellers"]
 
-export { features, statistic,faqs,investorTabs,sellerTabs,adminSellerListTabs};
+const adminDealTabs = ["Pending Deals", "Open Deals", "Deals at Freezing Point", "Freezed Deals", "Cancelled Deals", "Final Deals", "Closed Deals"]
+
+export { features, statistic,faqs,investorTabs,sellerTabs,adminSellerListTabs,adminDealTabs};
