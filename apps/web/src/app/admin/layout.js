@@ -4,8 +4,9 @@ import Header from "@/components/molecules/common/Header";
 import Sidebar from "@/components/molecules/common/Sidebar";
 import { Inter } from "next/font/google";
 import { useState } from "react";
-import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import WindowIcon from '@mui/icons-material/Window';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import { useEffect } from "react";
@@ -62,14 +63,19 @@ export default function RootLayout({ children }) {
 
   const menu = [
     {
-      name: "Discover",
-      icon: <LocalLibraryIcon />,
+      name: "Dashboard",
+      icon: <WindowIcon />,
       url: "/admin/dashboard",
     },
     {
       name: "Sellers",
-      icon: <BusinessCenterIcon />,
+      icon: <AccountBoxIcon />,
       url: "/admin/sellers",
+    },
+    {
+      name: "Deals",
+      icon: <BusinessCenterIcon />,
+      url: "/admin/deals",
     },
     {
       name: "Overview",

@@ -1,13 +1,15 @@
-const { verify } = require("crypto");
-const prisma = require("../../db");
+const { verify } = require("crypto")
+const prisma = require("../../db")
 const jwt = require('jsonwebtoken')
+
+
 const addDeal = async (req, res) => {
   const data = req.body;
   const billVerify = () => {
     return true;
   };
   if (!billVerify()) {
-    res.status(402).json({ error: "Bill can't be verified !" });
+    res.status(200).json({ error: "Bill can't be verified !" });
     return;
   }
   console.log("Deal ", data);
@@ -21,6 +23,7 @@ const addDeal = async (req, res) => {
         status: "PENDING",
         dealAim: data.dealAim,
         completionDate: data.completionDate,
+        freezingDate: data.freezingDate,
         profitPercent: Number(data.interestRate),
         investors: { create: [] },
       },

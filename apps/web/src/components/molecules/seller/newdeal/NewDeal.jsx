@@ -18,6 +18,7 @@ const CreateDealForm = ({ sellerId, token }) => {
   const [billFile, setBillFile] = useState(null);
   const [message, setMessage] = useState(null)
   const [success, setSuccess] = useState(null)
+  const [error, setError] = useState(null)
   const [formData, setFormData] = useState({
     targetAmount: "",
     completionDate: "",
@@ -67,18 +68,15 @@ function padMilliseconds(milliseconds) {
     const year = value.$y;
     const month = value.$M + 1; // JavaScript months are 0-indexed, so we add 1
     const day = value.$d.getDate();
-    const hours = value.$H || 0; // Assuming $H is the hour
-    const minutes = value.$m || 0; // Assuming $m is the minute
-    const seconds = value.$s || 0; // Assuming $s is the second
-    const milliseconds = value.$ms || 0; // Assuming $ms is the millisecond
+
 
     // Format the date components
-    const formattedDate = `${year}-${pad(month)}-${pad(day)} ${pad(hours)}:${pad(minutes)}:${pad(seconds)}.${padMilliseconds(milliseconds)}`;
-
-  console.log(formattedDate);
+    let date = new Date(`${year}-${pad(month)}-${pad(day)}`);
+    date = date.toISOString()
+    console.log(date);
     setFormData({
       ...formData,
-      [name]: formattedDate
+      [name]: date
     })
   }
 
@@ -99,16 +97,16 @@ function padMilliseconds(milliseconds) {
       bill: link,
     });
 
-    // console.log({
-    //   ...formData,
-    //   bill: link,
-    // });
+    console.log({
+      ...formData,
+      bill: link,
+    });
 
     await axios.post(BACKEND_URL + '/deal/postDeal', {
       ...formData,
       bill: link,
       sellerId: Number(sellerId.value),
-      completionDate: Number(formData.completionDate),
+      completionDate: formData.completionDate,
       freezingDate: formData.freezingDate,
       minInvestmentAmount: Number(formData.minInvestmentAmount),
       targetAmount: Number(formData.targetAmount),
@@ -126,20 +124,30 @@ function padMilliseconds(milliseconds) {
       setMessage("Connecting Wallet")
       let wallet = await initWallet();
       setMessage("Minting and Transferring NFT to PAMU")
-      await mintAndTransferToSystem(wallet.contractInstance, wallet.walletAddress, link)
-      setOpen(false)
 
-      setSuccess(true)
-      setLoading(false)
-      setFormData({
-        targetAmount: "",
-        completionDate: "",
-        freezingDate: "",
-        interestRate: "",
-        dealAim: "",
-        minInvestmentAmount: ""
-      })
-      setBillFile(null)
+      try {
+        await mintAndTransferToSystem(wallet.contractInstance, wallet.walletAddress, link)
+        setOpen(false)
+        setSuccess(true)
+        setLoading(false)
+        setFormData({
+          targetAmount: "",
+          completionDate: null,
+          freezingDate: null,
+          interestRate: "",
+          dealAim: "",
+          minInvestmentAmount: ""
+        })
+        setBillFile(null)
+        
+      } catch (error) {
+        setOpen(false)
+        setError("Unable to transfer NFT")
+        setLoading(false)
+      }
+        
+
+
   };
 
   const ColorLoadingButton = styled(LoadingButton)(({ theme }) => ({
@@ -237,7 +245,7 @@ function padMilliseconds(milliseconds) {
             Invoices at Stake
           </label>
           <div className="flex gap-6 items-center">
-            <PDFUpload billFile={billFile} handleFileChange={handleFileChange} />
+            <PDFUpload loading={loading} billFile={billFile} handleFileChange={handleFileChange} />
             {billFile && <IconButton className='w-fit' onClick={()=>{window.open(URL.createObjectURL(billFile))}}><DescriptionIcon className='text-3xl text-blue-950' /></IconButton>}          </div>
         </div>
         <div className="col-span-2">
@@ -291,6 +299,20 @@ function padMilliseconds(milliseconds) {
         }}
       >
         Deal Created Successfully
+      </Snackbar>}
+      {error && <Snackbar
+        autoHideDuration={4000}
+        open={error}
+        variant={"outlined"}
+        color={"danger"}
+        onClose={(event, reason) => {
+          if (reason === 'clickaway') {
+            return;
+          }
+          setError(false)
+        }}
+      >
+        {error}
       </Snackbar>}
     </form>
   );

@@ -24,12 +24,12 @@ const addEmployee = async (req, res) => {
     res
       .cookie("ROLE", req.body.role, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "none",
       })
       .cookie("WOLLETEADDR", req.body.wolleteAddr, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "none",
       })
       .status(201)
@@ -63,22 +63,22 @@ const loginEmployee = async (req, res) => {
       res
         .cookie("access_token", token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .cookie("EMAIL", req.body.email, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .cookie("NAME", req.employee.name, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .cookie("ROLE", req.employee.role, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .status(200)
@@ -101,7 +101,7 @@ const logout = (req, res) => {
     .cookie("access_token", "", {
       httpOnly: true,
       maxAge: 0,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       sameSite: "none",
     })
     .status(200)

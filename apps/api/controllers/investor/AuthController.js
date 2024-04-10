@@ -21,12 +21,12 @@ const registerNewInvestor = async (req, res) => {
     res
       .cookie("ROLE", "INVESTOR", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "none",
       })
       .cookie("WOLLETEADDR", req.body.wolleteAddr, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "none",
       })
       .status(200)
@@ -90,17 +90,17 @@ const loginInvestor = async (req, res) => {
       res
         .cookie("ROLE", "INVESTOR", {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .cookie("WOLLETEADDR", req.body.wolleteAddr, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .cookie("access_token", token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
+          secure: true,
           sameSite: "none",
         })
         .status(200)

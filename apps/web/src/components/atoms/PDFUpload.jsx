@@ -15,7 +15,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-export default function PDFUpload({handleFileChange, billFile}) {
+export default function PDFUpload({loading, handleFileChange, billFile}) {
 
     const ColorButton = styled(Button)(({ theme }) => ({
         color: theme.palette.getContrastText("#061c37"),
@@ -27,6 +27,7 @@ export default function PDFUpload({handleFileChange, billFile}) {
 
   return (
     <ColorButton
+      loading={loading}
       component="label"
       role={undefined}
       variant="contained"

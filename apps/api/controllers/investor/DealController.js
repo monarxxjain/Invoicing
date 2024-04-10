@@ -2,10 +2,11 @@ const prisma = require('../../db')
 
 const getAllDeals = async (req, res) => {
     try {
-
+        const status = req.body.status
+        console.log(status)
         let deals = await prisma.deal.findMany({
             where: {
-                status: "OPEN"
+                status: status
             },
             include: {
                 investors: true,
