@@ -123,6 +123,8 @@ function padMilliseconds(milliseconds) {
         freezingDate: formData.freezingDate,
         minInvestmentAmount: Number(formData.minInvestmentAmount),
         targetAmount: Number(formData.targetAmount),
+        nftTokenId: (nft.tokenID).toString(),
+        nftAddress: nft.nftAddress
       }, {
         withCredentials: true
       })

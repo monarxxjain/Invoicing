@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "hardhat compile",
-    "deploy:sepolia": "hardhat ignition deploy ./ignition/modules/PUMA.js --network sepolia"
+    "deploy:sepolia": "hardhat ignition deploy ./ignition/modules/Puma.js --network sepolia"
   },
   "keywords": [],
   "author": "",

@@ -25,6 +25,8 @@ const addDeal = async (req, res) => {
         completionDate: data.completionDate,
         freezingDate: data.freezingDate,
         profitPercent: Number(data.interestRate),
+        nftTokenId: data.nftTokenId,
+        nftAddress: data.nftAddress,
         investors: { create: [] },
       },
       include: {

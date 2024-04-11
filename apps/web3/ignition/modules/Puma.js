@@ -2,7 +2,7 @@ const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 
 module.exports = buildModule("PumaModule", (m) => {
   
-  const lock = m.contract("Puma", ["0x947221A97B5D546ad08AD0102a57eefA815B5f46"])
+  const lock = m.contract("Puma", ["0xCe52C63E5030879079c4C5B993A5EE8282a60A88"])
 
   return { lock };
 });

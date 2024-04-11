@@ -9,6 +9,7 @@ import AddCardIcon from '@mui/icons-material/AddCard';
 import BusinessIcon from '@mui/icons-material/Business';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import { initWallet } from "@/utils/etherInterface";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -81,8 +82,10 @@ export default function RootLayout({ children }) {
     }
   ];
 
+  const wolleteInfo = initWallet()
+
   return (
-    <ThemeContext.Provider value={{user, notifications}}>
+    <ThemeContext.Provider value={{user, notifications, wolleteInfo}}>
 
         <div className="absolute w-screen h-[0.5px] z-10 top-20 bg-gray-300"></div>
         <div className="flex overflow-y-hidden h-screen">

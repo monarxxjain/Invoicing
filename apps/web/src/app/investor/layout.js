@@ -9,6 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import { initWallet } from "@/utils/etherInterface";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -76,8 +77,10 @@ export default function RootLayout({ children }) {
     }
   ];
 
+  const wolleteInfo = initWallet()
+
   return (
-    <ThemeContext.Provider value={{user, notifications}}>
+    <ThemeContext.Provider value={{user, notifications, wolleteInfo}}>
         <div className="absolute w-screen h-[0.5px] z-10 top-20 bg-gray-300"></div>
         <div className="flex overflow-y-hidden h-screen">
           <Sidebar menu={menu} isFull={isFull} setIsFull={setIsFull} />

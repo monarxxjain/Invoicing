@@ -10,6 +10,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import { useEffect } from "react";
+import { initWallet } from "@/utils/etherInterface";
 const inter = Inter({ subsets: ["latin"] });
 
 
@@ -18,16 +19,10 @@ export default function RootLayout({ children }) {
 
   let name, email, role = "";
   const [user, setUser] = useState()
-  useEffect(()=>{
-    name = localStorage.getItem("NAME")
-    email = localStorage.getItem("EMAIL")
-    role = "ADMIN"
-
-    setUser({ name, email, role })
-  },[])
+  
 
   const [isFull, setIsFull] = useState(true);
-  
+  const [wolleteInfo, setWolleteInfo] = useState(null)
   const notifications = [
     {
       title: "This is tilte 1",
@@ -89,8 +84,24 @@ export default function RootLayout({ children }) {
     }
   ];
 
+  const InitWeb3Wallete = async () => {
+    const data = await initWallet()
+    setWolleteInfo(data)
+  }
+
+  useEffect(()=>{
+    name = localStorage.getItem("NAME")
+    email = localStorage.getItem("EMAIL")
+    role = "ADMIN"
+
+    setUser({ name, email, role })
+    InitWeb3Wallete()
+  },[])
+
+
+
   return (
-    <ThemeContext.Provider value={{user, notifications}}>
+    <ThemeContext.Provider value={{user, notifications, wolleteInfo}}>
         <div className="absolute w-screen h-[0.5px] z-10 top-20 bg-gray-300"></div>
         <div className="flex overflow-y-hidden h-screen">
           <Sidebar menu={menu} isFull={isFull} setIsFull={setIsFull} />
