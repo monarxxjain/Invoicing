@@ -33,6 +33,7 @@ async function main() {
       password: hashedPassword
     }
   })
+  console.log("Default Admin Added")
 }
 
 // main()

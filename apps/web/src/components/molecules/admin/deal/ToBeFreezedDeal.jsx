@@ -17,7 +17,7 @@ import Snackbar from '@mui/joy/Snackbar';
 import Modal from '@mui/material/Modal';
 import { LoadingButton } from '@mui/lab';
 
-const PendingDeal = ({ deal, updateDeals }) => {
+const ToBeFreezedDeal = ({ deal, updateDeals }) => {
   const router = useRouter()
   const [showMore, setShowMore] = useState(null)
   const [openModal, setOpenModal] = useState(null)
@@ -27,6 +27,9 @@ const PendingDeal = ({ deal, updateDeals }) => {
     message: "",
     open: false
   })
+
+  const [progressPercent, setProgressPercent] = useState(Math.floor((deal.currentAmount / deal.targetAmount) * 100))
+
 
   const style = {
     position: 'absolute',
@@ -115,10 +118,10 @@ const PendingDeal = ({ deal, updateDeals }) => {
 
   return (
     <div className='relative h-full'>
-      <div  onClick={() => {router.push(`/seller/deals/${deal.id}`)}} className={`absolute cursor-pointer left-8 z-10 -top-3 border  rounded px-10 text-sm  border-yellow-500 bg-yellow-200 text-yellow-700`}>
+      <div  onClick={() => {router.push(`/seller/deals/${deal.id}`)}} className={`absolute cursor-pointer left-8 z-10 -top-3 border  rounded px-10 text-sm  border-blue-500 bg-blue-200 text-blue-700`}>
         ICT{deal.id}
       </div>
-      <div className={`border h-full border-yellow-500 bg-white rounded p-6 flex flex-col gap-5`}>
+      <div className={`border h-full border-blue-500 bg-white rounded p-6 flex flex-col gap-5`}>
         <section className='flex gap-6 flex-wrap-reverse justify-between items-center'>
           <ul className='flex gap-3 h-fit'>
             {tags.map((tag, id) => {
@@ -130,7 +133,25 @@ const PendingDeal = ({ deal, updateDeals }) => {
           <Image alt="altText" src={deal.seller.logo} width={300} height={100} className='h-14 w-fit self-end' />
         </section>
 
+        <section className='w-full flex justify-between items-center ps-2'>
+          <div className={`w-[90%] h-2 ${progressPercent<5 ? "border border-gray-400 h-3 rounded" : ""}`}>
+            <div className="progressBar">
+              <motion.div
+                className={`bar ${progressPercent < 50 ? "bg-green-500" : "bg-red-500"}`}
+                initial={{ width: 0 }}
+                animate={{ width: `${progressPercent}%` }}
+                transition={{ duration: 1 + (progressPercent / 100) }}
+              ></motion.div>
+            </div>
+          </div>
+          <div className=''>{progressPercent}%</div>
+        </section>
 
+        <section className="flex justify-between items-center text-gray-700 -mt-3 px-5 text-sm">
+          <div>ETH <span className={`font-medium text-2xl ${progressPercent < 50 ? "text-red-600" : "text-green-600"}`}>{deal.currentAmount}</span>  (Colleted)</div>
+          <div className='text-xl font-thin text-gray-400 rounded'>|</div>
+          <div>ETH <span className="font-medium text-2xl text-gray-900">{deal.targetAmount}</span>  (Total)</div>
+        </section>
 
 
         <section className='grid grid-cols-3 gap-y-3 px-2 gap-x-6 items-center'>
@@ -169,35 +190,15 @@ const PendingDeal = ({ deal, updateDeals }) => {
             </Button>
           </div>
           <div className='flex justify-between gap-6'>
-            <Button onClick={() => {setOpenModal("REJECTED")}} color='error' variant='contained'>
-              <div>Reject</div>
-            </Button>
-            <Button onClick={() => {setOpenModal("OPEN")}} color='success' variant='contained'>
-              <div>Approve</div>
+            <Button onClick={() => {setOpenModal("FREEZED")}} color='primary' variant='contained'>
+              <div>FREEZE</div>
             </Button>
           </div>
         </section>
       </div>
 
-      {openModal == "REJECTED" && <Modal
-        className='fade-in text-white'
-        open={openModal}
-        onClose={() => {setOpenModal(false);}}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-         <div style={style} className='flex flex-col bg-white rounded'>
-            <p className='px-5 text-lg py-3 bg-[#061c37] rounded-t '>Are you Sure ?</p>
-            <p className='px-5 py-3 text-[#061c37]'>Do you want to REJECT this deal ?</p>
-            <div className='flex gap-6 px-5 py-3 justify-between'>
-              <Button onClick={() => {setOpenModal(false); setLoading(false)}}>Cancel</Button>
-              <LoadingButton className='loading-button' loadingPosition='end' loading={loading} color='error' variant='outlined' onClick={() => handleSubmit()} ><div className={`${loading && "me-3"}`}>REJECT</div></LoadingButton>
-            </div>
-        </div>
-            
-      </Modal>}
 
-      {openModal == "OPEN" && <Modal
+      <Modal
         className='fade-in text-white'
         open={openModal}
         onClose={() => {setOpenModal(false);}}
@@ -206,14 +207,14 @@ const PendingDeal = ({ deal, updateDeals }) => {
       >
          <div style={style} className='flex flex-col bg-white rounded'>
             <p className='px-5 text-lg py-3 bg-[#061c37] rounded-t '>Are you Sure ?</p>
-            <p className='px-5 py-3 text-[#061c37]'>Do you want to APPROVE this deal ?</p>
+            <p className='px-5 py-3 text-[#061c37]'>Do you want to FREEZE this deal ? <br/> <span className='text-sm'>After Freezing, no one will now be able to invest more in this deal.</span></p>
             <div className='flex gap-6 px-5 py-3 justify-between'>
-              <Button onClick={() => {setOpenModal(false); setLoading(false)}}>Cancel</Button>
-              <LoadingButton className='loading-button' loadingPosition='end' loading={loading} color='success' variant='outlined' onClick={() => handleSubmit()} ><div className={`${loading && "me-3"}`}>APPROVE</div></LoadingButton>
+              <Button color='error' onClick={() => {setOpenModal(false); setLoading(false)}}>Cancel</Button>
+              <LoadingButton className='loading-button' loadingPosition='end' loading={loading} color='primary' variant='outlined' onClick={() => handleSubmit()} ><div className={`${loading && "me-3"}`}>FREEZE</div></LoadingButton>
             </div>
         </div>
             
-      </Modal>}
+      </Modal>
 
       <DealSummary showMore={showMore} setShowMore={setShowMore} />
 
@@ -237,4 +238,4 @@ const PendingDeal = ({ deal, updateDeals }) => {
   )
 }
 
-export default PendingDeal
+export default ToBeFreezedDeal

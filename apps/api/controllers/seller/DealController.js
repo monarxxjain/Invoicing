@@ -183,6 +183,7 @@ const investDeal = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
 const breakDealReq = async (req, res) => {
   try {
     const data = req.body;
@@ -235,6 +236,7 @@ const breakDealReq = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
 const breakDeal = async (req, res) => {
   try {
     const data = req.body;
@@ -297,6 +299,7 @@ const verifyDeal = async (req, res) => {
     res.status(402).json({ error: "Error verifying Deal" });
   }
 };
+
 const getSellerDeals = async (req,res) =>
 {
   const token = req.cookies.access_token;
@@ -321,7 +324,7 @@ const getSellerDeals = async (req,res) =>
         } 
       });
 
-      let deals = seller.deals.map((deal)=>{
+      let deals = seller?.deals?.map((deal)=>{
         let elem = deal;
         elem.id = deal.id.toString();
         return elem;
@@ -334,6 +337,7 @@ const getSellerDeals = async (req,res) =>
     return res.status(500).json({message:"Error while getting seller deals"})
   }
 }
+
 module.exports = {
   addDeal,
   investDeal,

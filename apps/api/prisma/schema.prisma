@@ -23,10 +23,12 @@ enum Role {
 
 enum DealStatus {
   PENDING
+  REJECTED
   DRAFT
   OPEN
   FREEZED
   CANCELLED
+  ACCEPTED
   FINAL
   CLOSED
 }
