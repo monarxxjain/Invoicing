@@ -17,7 +17,7 @@ const registerNewInvestor = async (req, res) => {
       },
     });
 
-    console.log("Investor: ", investor.wolleteAddr);
+    console.log("Successfully Added Investor");
     res
       .cookie("ROLE", "INVESTOR", {
         httpOnly: true,
@@ -58,6 +58,8 @@ const loginInvestorRequest = async (req, res) => {
         accessString: accessString,
       },
     });
+    
+    console.log("AccessString GeneratedSuccessfully")
 
     res
       .status(200)
@@ -87,6 +89,8 @@ const loginInvestor = async (req, res) => {
       };
       const token = generateJwtToken(userObj);
 
+      console.log("Investor Logged In Successfully")
+      
       res
         .cookie("ROLE", "INVESTOR", {
           httpOnly: true,

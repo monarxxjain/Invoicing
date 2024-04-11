@@ -26,7 +26,7 @@ const getSellers = async (req, res) => {
 
 const deleteSeller = async (req,res) => {
     try {
-        console.log(req.seller.id)
+
         const deletedUser = await prisma.seller.delete({
             where: {
                 id: req.seller.id
@@ -40,6 +40,7 @@ const deleteSeller = async (req,res) => {
         res.status(400).json({error: "Error Deleting Seller"})
     }
 }
+
 module.exports = {
     getSellers,
     deleteSeller
