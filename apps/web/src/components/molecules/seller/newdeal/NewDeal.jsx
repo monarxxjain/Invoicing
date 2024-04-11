@@ -112,7 +112,7 @@ function padMilliseconds(milliseconds) {
     try {
 
       // Creating NFT and Transferring to Admin
-      await mintAndTransferToSystem(wallet.contractInstance, wallet.walletAddress, link)
+      const nft = await mintAndTransferToSystem(wallet.contractInstance, wallet.walletAddress, link)
 
       // Adding the Deal to the Database
       await axios.post(BACKEND_URL + '/deal/postDeal', {
