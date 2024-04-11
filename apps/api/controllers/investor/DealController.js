@@ -21,6 +21,8 @@ const getAllInvestedDeals = async (req, res) => {
             deal.deal.id = deal.deal.id.toString()
         })
 
+        console.log("Invested Deals fetched successfully")
+        
         res.status(200).json({message: "Invested Deals fetched successfully", data: investedDeals })
 
     } catch (error) {

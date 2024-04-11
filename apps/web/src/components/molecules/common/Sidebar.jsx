@@ -64,7 +64,7 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
               return (
                 <li key={i} className={`hover:text-blue-500 hover:font-medium ${d.url === activeMenu && "text-blue-500 font-medium"} group flex w-min`}>
                   <Link
-                    className={`flex items-center gap-3 p-2 rounded tab transition-all ${d.url === activeMenu && "active"} ${isFull ? "w-48 mx-2" : "ms-3"}`}
+                    className={`flex items-center gap-3 p-2 rounded tab transition-all duration-75 ${d.url === activeMenu && "active"} ${isFull ? "w-48 mx-2" : "ms-3"}`}
                     href={d.url}
                   >
                     {d.icon}
@@ -82,7 +82,7 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
 
           <div className="flex w-min">
             <Link href={`/${role}/ask`}
-              className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}
+              className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all duration-75 ${isFull ? "w-48 mx-2" : "ms-3"}`}
             >
               <LiveHelpIcon />
               {isFull && <span>Ask A.I.</span>}
@@ -91,7 +91,7 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
           </div>
           <div className="flex w-min">
             <Link href={"/"}
-              className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all ${isFull ? "w-48 mx-2" : "ms-3"}`}
+              className={`flex tab hover:text-blue-500 hover:font-medium items-center gap-3 p-2 rounded transition-all duration-75 ${isFull ? "w-48 mx-2" : "ms-3"}`}
               onClick={() => {
                 logout()
               }}

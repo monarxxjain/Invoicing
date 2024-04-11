@@ -21,6 +21,8 @@ const addEmployee = async (req, res) => {
       },
     });
 
+    console.log("Employee Added Successfully")
+
     res
       .cookie("ROLE", req.body.role, {
         httpOnly: true,
@@ -60,6 +62,9 @@ const loginEmployee = async (req, res) => {
         role: req.employee.role,
       };
       const token = generateJwtToken(userObj);
+
+      console.log("Employee Logged in Successfully")
+      
       res
         .cookie("access_token", token, {
           httpOnly: true,
