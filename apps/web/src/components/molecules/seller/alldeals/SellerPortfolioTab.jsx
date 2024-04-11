@@ -33,7 +33,7 @@ export default function SellerPortfolioTab({ tabs, role }) {
     );
     console.log("Data ",sellerDeals);
     sellerDeals = await Promise.all(
-      sellerDeals.data.deals?.map(async (element) => {
+      sellerDeals?.data?.deals?.map(async (element) => {
         const { data, error } = await supabase.storage
           .from("invoice")
           .createSignedUrl(element.seller.logo, 3600);

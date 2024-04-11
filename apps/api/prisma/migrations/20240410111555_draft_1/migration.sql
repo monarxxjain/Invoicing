@@ -2,31 +2,40 @@
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'MANAGER', 'INVESTOR', 'SELLER', 'PARTNER');
 
 -- CreateEnum
-CREATE TYPE "DealStatus" AS ENUM ('OPEN', 'FULL', 'CLOSED');
+CREATE TYPE "DealStatus" AS ENUM ('PENDING', 'DRAFT', 'OPEN', 'FREEZED', 'CANCELLED', 'FINAL', 'CLOSED');
+
+-- CreateEnum
+CREATE TYPE "SellerStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
+
+-- CreateEnum
+CREATE TYPE "LiquidStatus" AS ENUM ('LIQUIDABLE', 'BREAKED', 'COMPLETED');
+
+-- CreateEnum
+CREATE TYPE "DealTags" AS ENUM ('RF', 'ZC', 'FG');
 
 -- CreateTable
-CREATE TABLE "Users" (
+CREATE TABLE "Employee" (
     "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
     "role" "Role" NOT NULL,
-    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "password" TEXT NOT NULL,
 
-    CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Employee_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Seller" (
-    "id" INTEGER NOT NULL,
-    "metaMaskId" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "wolleteAddr" TEXT NOT NULL,
     "name" VARCHAR(191) NOT NULL,
     "email" VARCHAR(191) NOT NULL,
     "password" TEXT NOT NULL,
-    "panCardNumber" VARCHAR(20) NOT NULL,
     "gstNumber" VARCHAR(20) NOT NULL,
     "contactNumber" TEXT NOT NULL,
-    "panCardLink" TEXT NOT NULL,
+    "status" "SellerStatus" NOT NULL,
     "refCode" TEXT,
-    "logo" BYTEA NOT NULL,
+    "logo" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -35,12 +44,17 @@ CREATE TABLE "Seller" (
 
 -- CreateTable
 CREATE TABLE "Deal" (
-    "id" INTEGER NOT NULL,
+    "id" BIGSERIAL NOT NULL,
     "sellerId" INTEGER NOT NULL,
     "targetAmount" INTEGER NOT NULL,
+    "minInvestmentAmount" INTEGER NOT NULL DEFAULT 0,
+    "currentAmount" INTEGER NOT NULL DEFAULT 0,
+    "bill" TEXT NOT NULL DEFAULT '',
     "status" "DealStatus" NOT NULL,
+    "tags" "DealTags"[],
     "dealAim" TEXT NOT NULL,
-    "tentativeDuration" INTEGER NOT NULL,
+    "completionDate" TIMESTAMP(3) NOT NULL,
+    "freezingDate" TIMESTAMP(3) NOT NULL,
     "profitPercent" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -49,8 +63,9 @@ CREATE TABLE "Deal" (
 
 -- CreateTable
 CREATE TABLE "Investor" (
-    "id" INTEGER NOT NULL,
-    "metaMaskId" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
+    "wolleteAddr" TEXT NOT NULL,
+    "accessString" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -59,23 +74,23 @@ CREATE TABLE "Investor" (
 
 -- CreateTable
 CREATE TABLE "InvestorDeals" (
-    "dealId" INTEGER NOT NULL,
+    "dealId" BIGINT NOT NULL,
     "investorId" INTEGER NOT NULL,
+    "investmentAmount" INTEGER NOT NULL,
+    "break" BOOLEAN NOT NULL DEFAULT false,
+    "status" "LiquidStatus" NOT NULL DEFAULT 'LIQUIDABLE',
 
     CONSTRAINT "InvestorDeals_pkey" PRIMARY KEY ("dealId","investorId")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Seller_id_key" ON "Seller"("id");
+CREATE UNIQUE INDEX "Employee_email_key" ON "Employee"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Seller_metaMaskId_key" ON "Seller"("metaMaskId");
+CREATE UNIQUE INDEX "Seller_wolleteAddr_key" ON "Seller"("wolleteAddr");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Seller_email_key" ON "Seller"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Seller_panCardNumber_key" ON "Seller"("panCardNumber");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Seller_gstNumber_key" ON "Seller"("gstNumber");
@@ -84,19 +99,10 @@ CREATE UNIQUE INDEX "Seller_gstNumber_key" ON "Seller"("gstNumber");
 CREATE UNIQUE INDEX "Seller_contactNumber_key" ON "Seller"("contactNumber");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Investor_id_key" ON "Investor"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Investor_metaMaskId_key" ON "Investor"("metaMaskId");
-
--- AddForeignKey
-ALTER TABLE "Seller" ADD CONSTRAINT "Seller_id_fkey" FOREIGN KEY ("id") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+CREATE UNIQUE INDEX "Investor_wolleteAddr_key" ON "Investor"("wolleteAddr");
 
 -- AddForeignKey
 ALTER TABLE "Deal" ADD CONSTRAINT "Deal_sellerId_fkey" FOREIGN KEY ("sellerId") REFERENCES "Seller"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Investor" ADD CONSTRAINT "Investor_id_fkey" FOREIGN KEY ("id") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "InvestorDeals" ADD CONSTRAINT "InvestorDeals_dealId_fkey" FOREIGN KEY ("dealId") REFERENCES "Deal"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

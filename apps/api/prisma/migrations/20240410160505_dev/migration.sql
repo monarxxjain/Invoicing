@@ -1,4 +1,6 @@
--- AlterTable
+-- AlterEnum
+ALTER TYPE "DealStatus" ADD VALUE 'REJECTED';
+
 CREATE SEQUENCE deal_id_seq;
 ALTER TABLE "Deal" ALTER COLUMN "id" SET DEFAULT nextval('deal_id_seq');
 ALTER SEQUENCE deal_id_seq OWNED BY "Deal"."id";
