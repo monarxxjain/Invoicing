@@ -16,6 +16,9 @@ import { useRouter } from 'next/navigation'
 import Snackbar from '@mui/joy/Snackbar';
 import Modal from '@mui/material/Modal';
 import { LoadingButton } from '@mui/lab';
+import { useContext } from 'react';
+import ThemeContext from '@/components/context/ThemeContext';
+import { systemApprovesDeal } from '@/utils/etherInterface';
 
 const PendingDeal = ({ deal, updateDeals }) => {
   const router = useRouter()
@@ -27,6 +30,8 @@ const PendingDeal = ({ deal, updateDeals }) => {
     message: "",
     open: false
   })
+
+  const { wolleteInfo } = useContext(ThemeContext)
 
   const style = {
     position: 'absolute',
@@ -77,7 +82,27 @@ const PendingDeal = ({ deal, updateDeals }) => {
 
   const handleSubmit = async () => {
     setLoading(true)
+    
+    // console.log(typeof(deal.completionDate))
     try {
+      if(openModal=="REJECTED") {
+        await systemApprovesDeal(wolleteInfo.contractInstance, false, {
+          actorAddress: deal.seller.wolleteAddr,
+          tokenID: deal.nftTokenId
+        })
+      }
+      else {
+        await systemApprovesDeal(wolleteInfo.contractInstance, true, {
+          dealID: deal.id,
+          minAmt: deal.minInvestmentAmount * 1e18,
+          targetAmt: deal.targetAmount * 1e18,
+          floatingEndTimestamp: Date.parse(deal.freezingDate),
+          expirationTimestamp: Date.parse(deal.completionDate),
+          tokenID: deal.nftTokenId,
+          interestRate: Math.floor(deal.profitPercent),
+          companyAddress: deal.seller.wolleteAddr
+        })
+      }
       const res = await axios.put(`${BACKEND_URL}/deal/updateDealStatus`,
         {
           id: Number(deal.id),
