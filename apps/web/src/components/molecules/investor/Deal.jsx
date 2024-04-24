@@ -119,8 +119,8 @@ const Deal = ({ deal, investedDeals, role }) => {
         return { dealId: Number(v.dealId), investorId: Number(v.investorId) };
       });
 
-      // const isTransactionSuccess = await addInvestment(wolleteInfo.contractInstance, wolleteInfo.walletAddress, `${dealId}`, (Number(Math.abs(amount))) * 1e18)
-      // console.log("isTransactionSuccess: ", isTransactionSuccess)
+      const isTransactionSuccess = await addInvestment(wolleteInfo.contractInstance, wolleteInfo.walletAddress, `${dealId}`, (Number(Math.abs(amount))) * 1e18)
+      console.log("isTransactionSuccess: ", isTransactionSuccess)
       
       
       // Updating DB after Transaction
