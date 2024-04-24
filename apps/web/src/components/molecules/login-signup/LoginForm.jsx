@@ -71,6 +71,14 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
     },
   }));
 
+  const ColorIconButton = styled(IconButton)(({ theme }) => ({
+    color: theme.palette.getContrastText("#061c37"),
+    backgroundColor: "#061c37",
+    '&:hover': {
+      backgroundColor: "#061c37",
+    }
+  }));
+
   const connectWallet = async () => {
     try {
 
@@ -89,6 +97,7 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
 
     } catch (error) {
       console.log(error)
+      setIsSnackbarOpen(() => ({ color: "danger", message: "Please Create a Web3 Wollete First" }))
       setLoading(false)
     }
   }
@@ -139,6 +148,7 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
 
   const loginSeller = async () => {
     try {
+      setSubmitLoading(true)
       const response = await axios.post(`${BACKEND_URL}/auth/login/seller`,
         { ...userData.modelData },
         { withCredentials: true }
@@ -148,7 +158,6 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
         setIsSnackbarOpen(() => ({ color: "danger", message: response.data.error }))
       }
       else {
-        setSubmitLoading(true)
         router.push('/seller')
       }
     } catch (error) {
@@ -171,7 +180,7 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
           transition={{ duration: 0.2 }}
         >
           <div className="flex gap-2 items-center text-gray-700 font-medium md:-ms-6">
-            <IconButton
+            <ColorIconButton
               onClick={() => {
                 investorFormRef.current.classList.add("slide-left-out");
                 setTimeout(() => {
@@ -179,8 +188,8 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
                 }, 300);
               }}
             >
-              <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
-            </IconButton>
+              <WestOutlinedIcon className="text-lg text-white cursor-pointer" />
+            </ColorIconButton>
             <p className="text-gray-700 text-2xl mx-auto">Investor Login</p>
           </div>
           <div className="flex flex-col gap-4 pt-4 ">
@@ -208,7 +217,7 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
           transition={{ duration: 0.2 }}
         >
           <div className="flex gap-2 items-center text-gray-700 font-medium">
-            <IconButton
+            <ColorIconButton
               onClick={() => {
                 sellerFormRef.current.classList.add("slide-left-out");
                 setTimeout(() => {
@@ -216,8 +225,8 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
                 }, 300);
               }}
             >
-              <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
-            </IconButton>
+              <WestOutlinedIcon className="text-lg text-white cursor-pointer" />
+            </ColorIconButton>
             <p className="text-2xl xs:ms-8">Company Login</p>
           </div>
           <form name="orgForm" className="flex flex-col gap-4 py-4">

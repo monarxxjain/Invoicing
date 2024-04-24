@@ -106,7 +106,8 @@ const PendingDeal = ({ deal, updateDeals }) => {
       const res = await axios.put(`${BACKEND_URL}/deal/updateDealStatus`,
         {
           id: Number(deal.id),
-          status: openModal
+          status: openModal,
+          currentAmount: (30 * deal.targetAmount) / 100
         },
         {withCredentials: true}
       )

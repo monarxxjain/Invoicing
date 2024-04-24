@@ -40,6 +40,13 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
       backgroundColor: "#061c37",
     },
   }));
+  const ColorIconButton = styled(IconButton)(({ theme }) => ({
+    color: theme.palette.getContrastText("#061c37"),
+    backgroundColor: "#061c37",
+    '&:hover': {
+      backgroundColor: "#061c37",
+    }
+  }));
 
   const handleSellerPageNo = (number) => {
     if (number === 1) {
@@ -111,6 +118,7 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
 
     } catch (error) {
       console.log(error)
+      setIsSnackbarOpen(() => ({ color: "danger", message: "Please Create a Web3 Wollete First" }))
       setLoading(false)
     }
   }
@@ -173,7 +181,7 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
           transition={{ duration: 0.2 }}
         >
           <div className="flex gap-2 items-center text-gray-700 font-medium md:-ms-6">
-            <IconButton
+            <ColorIconButton
               onClick={() => {
                 investorFormRef.current.classList.add("slide-left-out");
                 setTimeout(() => {
@@ -181,8 +189,8 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
                 }, 300);
               }}
             >
-              <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
-            </IconButton>
+              <WestOutlinedIcon className="text-lg text-white cursor-pointer" />
+            </ColorIconButton>
             <p className="text-gray-700 text-2xl mx-auto">Investor SignUp</p>
           </div>
           <div className="flex flex-col gap-4 pt-4 ">
@@ -209,7 +217,7 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
           transition={{ duration: 0.2 }}
         >
           <div className="flex gap-2 items-center text-gray-700 font-medium">
-            <IconButton
+            <ColorIconButton
               onClick={() => {
                 sellerFormRef.current.classList.add("slide-left-out");
                 setTimeout(() => {
@@ -217,8 +225,8 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
                 }, 300);
               }}
             >
-              <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
-            </IconButton>
+              <WestOutlinedIcon className="text-lg text-white cursor-pointer" />
+            </ColorIconButton>
             <p className="text-2xl xs:ms-8">Organisation Details</p>
           </div>
           <form name="orgForm" className="flex flex-col gap-4 py-4">
@@ -286,7 +294,7 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
           transition={{ duration: 0.2 }}
         >
           <div className="flex gap-2 items-center text-gray-700 font-medium">
-            <IconButton
+            <ColorIconButton
               onClick={() => {
                 sellerFormRef.current.classList.add("slide-left-out");
                 setTimeout(() => {
@@ -294,8 +302,8 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
                 }, 300);
               }}
             >
-              <WestOutlinedIcon className="text-xl text-gray-700 cursor-pointer" />
-            </IconButton>
+              <WestOutlinedIcon className="text-lg text-white cursor-pointer" />
+            </ColorIconButton>
             <p className="text-2xl xs:ms-8">Organisation Details</p>
           </div>
           <form name="orgForm" className="flex flex-col gap-4 mt-4">

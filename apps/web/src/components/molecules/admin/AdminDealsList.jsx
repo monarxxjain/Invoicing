@@ -28,6 +28,7 @@ export default function AdminDealsList({ tabs, role }) {
   const [value, setValue] = useState("1")
   const [loading, setLoading] = useState(true)
   const [deals, setDeals] = useState([])
+
   const handleChange = (event, newValue) => {
     setLoading(true)
     setDeals([])
@@ -36,15 +37,15 @@ export default function AdminDealsList({ tabs, role }) {
 
   const {user} = useContext(ThemeContext)
 
-
   const getDealsList = async () => {
+
     let deals = await axios.post(
       `${BACKEND_URL}/deal/getDeals`,
       { status: tabMapping[value] },
       { withCredentials: true }
     );
     
-    console.log("List of Sellers: ", deals);
+    console.log("Deals: ", deals);
     deals = await Promise.all(
       deals.data.data?.map(async (element) => {
         const { data, error } = await supabase.storage

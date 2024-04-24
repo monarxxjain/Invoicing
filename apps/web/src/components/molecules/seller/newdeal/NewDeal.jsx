@@ -53,15 +53,6 @@ function pad(number) {
   return number;
 }
 
-// Helper function to pad milliseconds with leading zeros
-function padMilliseconds(milliseconds) {
-  if (milliseconds < 10) {
-    return '00' + milliseconds;
-  } else if (milliseconds < 100) {
-    return '0' + milliseconds;
-  }
-  return milliseconds;
-}
 
   const handleDateChange = (name, value) => {
     // Extract date components
@@ -138,7 +129,7 @@ function padMilliseconds(milliseconds) {
 
       // Reset the States
       setOpen(false)
-      setSuccess(true)
+      setSuccess("Deal Created Successfully !")
       setLoading(false)
       setFormData({
         targetAmount: "",
@@ -168,9 +159,57 @@ function padMilliseconds(milliseconds) {
     },
   }));
 
-  useEffect(()=>{
-    console.log(formData)
-  },[formData])
+
+  const saveAsDraft = async () => {
+    setLoading(true)
+    try {
+      setMessage("Uploading Invoices")
+      const ipfshash = await pinata(billFile);
+      setOpen(false)
+      setMessage(false)
+      const link = 'https://ipfs.io/ipfs/' + (ipfshash).IpfsHash;
+
+      setFormData({
+        ...formData,
+        bill: link,
+      });
+      const res = await axios.post(`${BACKEND_URL}/deal/saveDraft`,
+        {
+          ...formData,
+          bill: link,
+          sellerId: Number(sellerId.value),
+          completionDate: formData.completionDate,
+          freezingDate: formData.freezingDate,
+          minInvestmentAmount: Number(formData.minInvestmentAmount),
+          targetAmount: Number(formData.targetAmount),
+        },
+        {withCredentials: true}
+      )
+
+      if(res.data.message) {
+        setOpen(false)
+        setSuccess(res.data.message)
+        setLoading(false)
+        setFormData({
+          targetAmount: "",
+          completionDate: null,
+          freezingDate: null,
+          interestRate: "",
+          dealAim: "",
+          minInvestmentAmount: ""
+        })
+        setBillFile(null)
+      }
+      else if(res.data.error) {
+        console.log(res.data.error)
+        setOpen(false)
+        setLoading(false)
+      }
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+    }
+  }
   return (
     <form
       onSubmit={handleSubmit}
@@ -271,15 +310,28 @@ function padMilliseconds(milliseconds) {
           />
         </div>
       </div>
-      <ColorLoadingButton
-        loadingPosition="end"
-        variant="contained"
-        type="submit"
-        loading={loading}
-        className=" text-white py-2 !px-6 !mt-6 rounded-md"
-      >
-        <div className="me-3">Create Deal</div>
-      </ColorLoadingButton>
+      <section className="flex justify-between">
+        <ColorLoadingButton
+          loadingPosition="end"
+          variant="contained"
+          type="submit"
+          loading={loading}
+          className=" text-white py-2 !px-6 !mt-6 rounded-md"
+        >
+          <div className="me-3">Create Deal</div>
+        </ColorLoadingButton>
+
+        <LoadingButton
+          loadingPosition="end"
+          variant="outlined"
+          onClick={()=>saveAsDraft()}
+          loading={loading}
+          className=" py-2 !px-6 !mt-6 rounded-md"
+        >
+          <div className="me-3">Save as Draft</div>
+        </LoadingButton>
+
+      </section>
       <Snackbar
         open={open} 
         variant={"outlined"}
@@ -307,7 +359,7 @@ function padMilliseconds(milliseconds) {
           setSuccess(false)
         }}
       >
-        Deal Created Successfully
+        {success}
       </Snackbar>}
       {error && <Snackbar
         autoHideDuration={4000}

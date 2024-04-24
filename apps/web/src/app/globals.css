@@ -26,6 +26,7 @@
     border-right: 9px solid transparent;
     border-bottom: 14px solid white;
 }
+
 body{
     font-family: 'Montserrat', sans-serif;
 }
@@ -59,28 +60,28 @@ body{
     }
   }
   
-  .fade-in {
-    animation-name: fadeIn;
-    animation-duration: 300ms; /* Adjust the duration as needed */
-    animation-iteration-count: 1;
-  }
+.fade-in {
+  animation-name: fadeIn;
+  animation-duration: 300ms; /* Adjust the duration as needed */
+  animation-iteration-count: 1;
+}
 
 
-  @keyframes fadeOut {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-      display: none;
-    }
+@keyframes fadeOut {
+  from {
+    opacity: 1;
   }
-  
-  .fade-out {
-    animation: fadeOut 300ms forwards;
-    animation-iteration-count: 1;
-    animation-timing-function: ease-in;
+  to {
+    opacity: 0;
+    display: none;
   }
+}
+
+.fade-out {
+  animation: fadeOut 300ms forwards;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+}
 
   .tab:hover{
     background-color: rgba(0, 213, 255, 0.064);
@@ -257,11 +258,6 @@ input[type=number] {
   padding-right: 30px !important;
 }
 
-.loader .MuiCircularProgress-root {
-  color: #061c37 !important;
-  width: 100px !important;
-  height: 100px !important;
-}
 
 .dangerButton.MuiButton-contained {
   background: #DC2626;

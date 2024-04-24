@@ -7,7 +7,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import { supabase } from '@/utils/supabase'
 import CircularProgress from '@mui/material/CircularProgress';
-const DealsContainer = () => {
+const DealsContainer = ({role}) => {
   const [deals, setDeals] = useState()
   const [investedDeals, setInvestedDeals] = useState()
 
@@ -48,7 +48,7 @@ const DealsContainer = () => {
       {!deals && <CircularProgress className='mx-auto'/>}
       {deals?.map((deal, id) => {
         return (
-          <Deal key={id} deal={deal} investedDeals={investedDeals} />
+          <Deal key={id} role={role} deal={deal} investedDeals={investedDeals} />
         )
       })}
     </div>

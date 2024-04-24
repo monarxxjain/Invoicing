@@ -74,7 +74,7 @@ const FinalDeal = ({ deal }) => {
           <div className={`w-[90%] h-2 ${progressPercent<5 ? "border border-gray-400 h-3 rounded" : ""}`}>
             <div className="progressBar">
               <motion.div
-                className={`bar ${progressPercent < 50 ? "bg-green-500" : "bg-red-500"}`}
+                className={`bar ${progressPercent < 50 ? "bg-red-500" : "bg-green-500"}`}
                 initial={{ width: 0 }}
                 animate={{ width: `${progressPercent}%` }}
                 transition={{ duration: 1 + (progressPercent / 100) }}

@@ -108,7 +108,7 @@ model InvestorDeals {
   dealId           BigInt
   investor         Investor     @relation(fields: [investorId], references: [id])
   investorId       Int
-  investmentAmount Int
+  investmentAmount Float
   break            Boolean      @default(false)
   status           LiquidStatus @default(LIQUIDABLE)
 

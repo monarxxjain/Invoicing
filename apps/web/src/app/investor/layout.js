@@ -10,17 +10,18 @@ import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import { initWallet } from "@/utils/etherInterface";
+import { useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 
 
 export default function RootLayout({ children }) {
-  const [user, setUser] = useState({
-    name: "Monark Jain",
-    role: "SELLER"
-  });
+
+  const [user, setUser] = useState({role: "INVESTOR"})
   const [isFull, setIsFull] = useState(true);
+  const [wolleteInfo, setWolleteInfo] = useState(null)
+
   const notifications = [
     {
       title: "This is tilte 1",
@@ -77,7 +78,15 @@ export default function RootLayout({ children }) {
     }
   ];
 
-  const wolleteInfo = initWallet()
+  const InitWeb3Wallete = async () => {
+    const data = await initWallet()
+    setWolleteInfo(data)
+  }
+
+  useEffect(()=>{
+    InitWeb3Wallete()
+  },[])
+
 
   return (
     <ThemeContext.Provider value={{user, notifications, wolleteInfo}}>
