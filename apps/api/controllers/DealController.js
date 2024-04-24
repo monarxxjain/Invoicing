@@ -72,7 +72,7 @@ const getAllDeals = async (req, res) => {
 
 const updateDealStatus = async (req, res) => {
     try {
-
+        
         const deal = await prisma.deal.update({
             where: {
                 id: req.body.id
@@ -82,6 +82,17 @@ const updateDealStatus = async (req, res) => {
             }
             
         })
+
+        if(req.body.status == "OPEN") {
+            const deal = await prisma.deal.update({
+                where: {
+                    id: req.body.id
+                },
+                data: {
+                    currentAmount: req.body.currentAmount
+                }
+            })
+        }
 
         res.status(200).json({message: `Deal ${req.body.status} Successfully !!`})
     } catch (error) {

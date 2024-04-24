@@ -11,18 +11,28 @@ import { useEffect } from "react";
 import { BACKEND_URL } from "@/content/values";
 import CircularProgress from "@mui/material/CircularProgress";
 import { supabase } from "@/utils/supabase";
-import InvestedDeal from "../../investor/InvestedDeal";
-import Deal from "../../investor/Deal";
+import Deal from "./Deal";
+import { useContext } from "react";
+import ThemeContext from "@/components/context/ThemeContext";
+import PendingDeal from "../deal/PendingDeal";
+import Loader from "@/components/atoms/Loader";
+import OpenDeal from "../deal/OpenDeal";
+import FreezedDeal from "../deal/FreezedDeal";
+import CancelledDeal from "../deal/CancelledDeal";
 
 export default function SellerPortfolioTab({ tabs, role }) {
 
   const [value, setValue] = useState("1")
+  const [loading, setLoading] = useState(true)
   const [deals, setDeals] = useState(null)
+
   const handleChange = (event, newValue) => {
-    setDeals()
-    setValue(newValue);
+    setLoading(true)
+    setDeals([])
+    setValue(newValue)
   };
 
+  const {user} = useContext(ThemeContext)
 
   const getSellerDeals = async () => {
 
@@ -31,7 +41,8 @@ export default function SellerPortfolioTab({ tabs, role }) {
       { status: tabMapping[value] },
       { withCredentials: true }
     );
-    console.log("Data ",sellerDeals);
+
+    console.log("Seller Deals:  ",sellerDeals);
     sellerDeals = await Promise.all(
       sellerDeals?.data?.deals?.map(async (element) => {
         const { data, error } = await supabase.storage
@@ -44,8 +55,12 @@ export default function SellerPortfolioTab({ tabs, role }) {
       })
     );
     setDeals(sellerDeals)
-  
+    setLoading(false)
   };
+
+  const updateDeals = (deal) => {
+    setDeals(deals.filter(elem => elem.id !== deal.id))
+  }
 
   useEffect(() => {
     getSellerDeals();
@@ -59,14 +74,15 @@ export default function SellerPortfolioTab({ tabs, role }) {
     1 : "PENDING",
     2 : "OPEN",
     3 : "FREEZED",
-    4 : "FINAL",
-    5 : "CLOSED",
+    4 : "CANCELLED",
+    5 : "ACCEPTED",
     6 : "CANCELLED",
-    7 : "DRAFT",
+    7 : "CLOSED",
+    8 : "REJECTED"
   }
 
   return (
-    <Box sx={{ width: "100%", typography: "body1", background: "white" }}>
+    <Box sx={{ width: "100%", height: "83vh", typography: "body1", background: "white" }}>
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
@@ -85,21 +101,114 @@ export default function SellerPortfolioTab({ tabs, role }) {
           )}
         </TabList>
 
-        {tabs.map((tab, id) => {
-          return (
-            <TabPanel className="bg-gray-100 p-2 xl:p-6" value={(id+1).toString()}>
-              <div className="px-2 xl:px-6 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-3 xl:gap-6 relative">
-                  {!deals && <CircularProgress className="mx-auto" />}
-                  {deals &&
-                    deals?.map((deal, id) => {
-                      return <Deal key={id} deal={deal} role={role} />;
+        <TabPanel className="bg-gray-100 p-2 xl:p-6 h-full overflow-y-scroll" value={"1"}>
+            <div className="relative h-full">
+              {loading && <Loader className="absolute left-1/2 -translate-x-[45%] top-1/2 -translate-y-[50%]" />}
+              <div className="flex flex-col gap-6">
+                <section className="flex flex-col gap-1">
+                  <h1 className="text-2xl">Hey <span className="font-serif font-semibold italic">{user?.name}</span> !!</h1>
+                  {!loading && deals.length!=0 && <p className="text- font-light text-gray-500">New sellers are waiting for your approval on the platform. Let's get them onboard!</p>}
+                  {!loading && deals.length==0 && <p className="text- font-light text-gray-500">There are NO new Seller Requests as of now.</p>}
+                </section>
+
+                {!loading && deals.length!=0 && <section className=" grid grid-cols-2 gap-6">
+                    {deals.map((deal,id) => {
+                        return(
+                            <PendingDeal key={id} deal={deal} updateDeals={updateDeals} />
+                        )
                     })}
+                </section>}
+
+                {!loading && deals.length==0 &&
+                <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-8xl text-blue-950 t">
+                    NO New Deals
                 </div>
+                } 
               </div>
-            </TabPanel>
-          )
-        })}
+            </div>
+        </TabPanel>
+        <TabPanel className="bg-gray-100 p-2 xl:p-6 h-full overflow-y-scroll" value={"2"}>
+            <div className="relative h-full">
+              {loading && <Loader className="absolute left-1/2 -translate-x-[45%] top-1/2 -translate-y-[50%]" />}
+              <div className="flex flex-col gap-6 h-full">
+                <section className="flex flex-col gap-1">
+                  <h1 className="text-2xl">Hey <span className="font-serif font-semibold italic">{user?.name}</span> !!</h1>
+                  {!loading && deals.length!=0 && <p className="text- font-light text-gray-500">Here is the list of all of our prestigious Clients</p>}
+                  {!loading && deals.length==0 && <p className="text- font-light text-gray-500">There are NO Approved Sellers as of now.</p>}
+                </section>
+                  
+
+                {!loading && deals.length!=0 && <section className=" grid grid-cols-2 gap-6">
+                    {deals.map((deal,id) => {
+                        return(
+                            <OpenDeal key={id} deal={deal} updateDeals={updateDeals} />
+                        )
+                    })}
+                </section>}
+
+                {!loading && deals.length==0 &&
+                <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-8xl text-blue-950 t">
+                    NO Sellers Yet
+                  </div>
+                }
+              </div>
+            </div>
+        </TabPanel>
+        <TabPanel className="bg-gray-100 p-2 xl:p-6 h-full overflow-y-scroll" value={"3"}>
+            <div className="relative h-full">
+              {loading && <Loader className="absolute left-1/2 -translate-x-[45%] top-1/2 -translate-y-[50%]" />}
+              <div className="flex flex-col gap-6 h-full">
+                <section className="flex flex-col gap-1">
+                  <h1 className="text-2xl">Hey <span className="font-serif font-semibold italic">{user?.name}</span> !!</h1>
+                  {!loading && deals.length!=0 && <p className="text- font-light text-gray-500">Here is the list of all of our prestigious Clients</p>}
+                  {!loading && deals.length==0 && <p className="text- font-light text-gray-500">There are NO Approved Sellers as of now.</p>}
+                </section>
+                  
+
+                {!loading && deals.length!=0 && <section className="grid grid-cols-2 gap-6">
+                    {deals.map((deal,id) => {
+                      return (
+                        <FreezedDeal key={id} deal={deal} updateDeals={updateDeals} />
+                    )
+                  })}
+                </section>} 
+
+                {!loading && deals.length==0 &&
+                <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-8xl text-blue-950 t">
+                    NO Sellers Yet
+                  </div>
+                }
+              </div>
+            </div>
+        </TabPanel>
+
+        <TabPanel className="bg-gray-100 p-2 xl:p-6 h-full overflow-y-scroll" value={"6"}>
+            <div className="relative h-full">
+              {loading && <Loader className="absolute left-1/2 -translate-x-[45%] top-1/2 -translate-y-[50%]" />}
+              <div className="flex flex-col gap-6 h-full">
+                <section className="flex flex-col gap-1">
+                  <h1 className="text-2xl">Hey <span className="font-serif font-semibold italic">{user?.name}</span> !!</h1>
+                  {!loading && deals.length!=0 && <p className="text- font-light text-gray-500">Here is the list of all of our prestigious Clients</p>}
+                  {!loading && deals.length==0 && <p className="text- font-light text-gray-500">There are NO Approved Sellers as of now.</p>}
+                </section>
+                  
+
+                {!loading && deals.length!=0 && <section className="grid grid-cols-2 gap-6">
+                    {deals.map((deal,id) => {
+                      return (
+                        <CancelledDeal key={id} deal={deal} updateDeals={updateDeals} />
+                    )
+                  })}
+                </section>}  
+
+                {!loading && deals.length==0 &&
+                <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-8xl text-blue-950 t">
+                    NO Sellers Yet
+                  </div>
+                }
+              </div>
+            </div>  
+        </TabPanel>
       </TabContext>
     </Box>
   );

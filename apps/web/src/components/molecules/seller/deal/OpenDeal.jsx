@@ -8,7 +8,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import { IconButton } from '@mui/material';
 import { useRouter } from 'next/navigation'
 
-const RejectedDeal = ({ deal }) => {
+const OpenDeal = ({ deal }) => {
   const router = useRouter()
   const [showMore, setShowMore] = useState(null)
   const [progressPercent, setProgressPercent] = useState(Math.floor((deal.currentAmount / deal.targetAmount) * 100))
@@ -54,10 +54,10 @@ const RejectedDeal = ({ deal }) => {
 
   return (
     <div className='relative h-full'>
-      <div  onClick={() => {router.push(`/seller/deals/${deal.id}`)}} className={`absolute cursor-pointer left-8 z-10 -top-3 border  rounded px-10 text-sm  border-red-500 bg-red-200 text-red-700`}>
+      <div  onClick={() => {router.push(`/seller/deals/${deal.id}`)}} className={`absolute cursor-pointer left-8 z-10 -top-3 border  rounded px-10 text-sm  border-green-500 bg-green-200 text-green-700`}>
         ICT{deal.id}
       </div>
-      <div className={`border h-full border-red-500 bg-white rounded p-6 flex flex-col gap-5`}>
+      <div className={`border h-full border-green-500 bg-white rounded p-6 flex flex-col gap-5`}>
         <section className='flex gap-6 flex-wrap-reverse justify-between items-center'>
           <ul className='flex gap-3 h-fit'>
             {tags.map((tag, id) => {
@@ -117,15 +117,13 @@ const RejectedDeal = ({ deal }) => {
           })}
         </section>
 
-        <section className='flex justify-between gap-10 text-gray-700 cursor-pointer font-medium mt-4'>
-          <div className='flex justify-between gap-6'>
-            <Button variant='secondary' onClick={() => { setShowMore("SUMMARY") }} >
+        <section className='flex justify-around gap-10 text-gray-700 cursor-pointer font-medium mt-4'>
+            <Button variant='' onClick={() => { setShowMore("SUMMARY") }} >
               <div>Summary</div>
             </Button>
-            <Button variant='secondary' onClick={() => { setShowMore("KNOW MORE") }} >
+            <Button variant='' onClick={() => { setShowMore("KNOW MORE") }} >
               <div>Know More</div>
             </Button>
-          </div>
         </section>
       </div>
 
@@ -136,4 +134,4 @@ const RejectedDeal = ({ deal }) => {
   )
 }
 
-export default RejectedDeal
+export default OpenDeal

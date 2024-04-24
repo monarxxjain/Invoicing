@@ -7,7 +7,7 @@ import { useState } from "react";
 import WindowIcon from '@mui/icons-material/Window';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import InsertChartIcon from '@mui/icons-material/InsertChart';
+import BusinessIcon from '@mui/icons-material/Business';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import { useEffect } from "react";
 import { initWallet } from "@/utils/etherInterface";
@@ -73,14 +73,14 @@ export default function RootLayout({ children }) {
       url: "/admin/deals",
     },
     {
-      name: "Overview",
-      icon: <InsertChartIcon />,
-      url: "/investor/overview",
+      name: "Company",
+      icon: <BusinessIcon />,
+      url: "/admin/company",
     },
     {
       name: "Transactions",
       icon: <ManageHistoryIcon />,
-      url: "/investor/transactions",
+      url: "/admin/transactions",
     }
   ];
 

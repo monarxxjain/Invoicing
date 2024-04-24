@@ -11,6 +11,7 @@ import { BACKEND_URL } from "@/content/values";
 import { useRouter } from "next/navigation";
 import Snackbar from '@mui/joy/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { initWallet } from "@/utils/etherInterface";
 
 const Admin = ({email}) => {
 
@@ -55,6 +56,7 @@ const Admin = ({email}) => {
         {withCredentials: true}
       )
       if(res.data.message) {
+        await initWallet()
         setSnackbar({
           open: true,
           message: res.data.message,

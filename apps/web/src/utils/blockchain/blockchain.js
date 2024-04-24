@@ -111,7 +111,7 @@ export async function addInvestment(contract, investorAddress, dealID, amount) {
     return;
   }
 
-  try {
+  // try {
     const tx = await contract.addInvestment(investorAddress, dealID, amount, {
       value: amount, // Sending ETH along with the transaction
     });
@@ -121,10 +121,10 @@ export async function addInvestment(contract, investorAddress, dealID, amount) {
 
     console.log("Investment added successfully.");
     return true;
-  } catch (error) {
-    console.error("Error adding investment:", error);
-    return false;
-  }
+  // } catch (error) {
+  //   console.error("Error adding investment:", error);
+  //   return false;
+  // }
 }
 
 export async function addDeal(
