@@ -156,6 +156,7 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
       if (response.data.error) {
         console.log(response.data.error)
         setIsSnackbarOpen(() => ({ color: "danger", message: response.data.error }))
+        setSubmitLoading(false)
       }
       else {
         router.push('/seller')

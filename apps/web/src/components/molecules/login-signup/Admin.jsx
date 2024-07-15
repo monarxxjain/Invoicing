@@ -65,7 +65,7 @@ const Admin = ({email}) => {
         })
         localStorage.setItem("NAME", res.data.local.name)
         localStorage.setItem("EMAIL", res.data.local.email)
-        router.push("/admin/dashboard")
+        router.push("/admin/sellers")
         setLoading(false)
       } 
       else if(res.data.error){
@@ -80,6 +80,12 @@ const Admin = ({email}) => {
       }
     } catch (error) {
       console.log("Error Logging in Employee")
+      setSnackbar({
+        open:true,
+        message: "Error Logging in Employee",
+        color: "danger",
+        autoHideDuration: 4000
+      })
       setLoading(false)
     }
   }

@@ -16,6 +16,9 @@ import { useRouter } from 'next/navigation'
 import Snackbar from '@mui/joy/Snackbar';
 import Modal from '@mui/material/Modal';
 import { LoadingButton } from '@mui/lab';
+import { dealStartApproval } from '@/utils/etherInterface';
+import { useContext } from 'react';
+import ThemeContext from '@/components/context/ThemeContext';
 
 const AcceptedDeal = ({ deal, updateDeals }) => {
   const router = useRouter()
@@ -30,6 +33,7 @@ const AcceptedDeal = ({ deal, updateDeals }) => {
 
   const [progressPercent, setProgressPercent] = useState(Math.floor((deal.currentAmount / deal.targetAmount) * 100))
 
+  const { wolleteInfo } = useContext(ThemeContext)
 
   const style = {
     position: 'absolute',
@@ -79,8 +83,11 @@ const AcceptedDeal = ({ deal, updateDeals }) => {
   ]
 
   const handleSubmit = async () => {
+    console.log("object")
     setLoading(true)
     try {
+      const status = await dealStartApproval(wolleteInfo.contractInstance, deal.id, true)
+      console.log(status)
       const res = await axios.put(`${BACKEND_URL}/deal/updateDealStatus`,
         {
           id: Number(deal.id),
@@ -97,7 +104,7 @@ const AcceptedDeal = ({ deal, updateDeals }) => {
         })
         setLoading(false)
         setOpenModal(false)
-        updateDeals(deal)
+        // updateDeals(deal)
       }
       else if(res.data.error) {
         setSnackbar({

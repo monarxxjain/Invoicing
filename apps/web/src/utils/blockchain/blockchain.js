@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { MyNFT } from "./MyNFT";
 
 const NETWORK = "sepolia";
-const NFTContractAddress = "0x2bE57CF000409815Bcdc8Ed5CfC4EA493F1459c2";
+const NFTContractAddress = "0x6Dc9e4f90818D09f6de6c2955bE2b2b49CEA76b2";
 const NFT_ABI = MyNFT.abi;
 
 export { NFT_ABI, NFTContractAddress };
@@ -213,17 +213,9 @@ export async function dealStartApproval(contract, dealID, approved) {
     return;
   }
 
-  try {
     const tx = await contract.dealStartApproval(dealID, approved);
     await tx.wait();
     console.log("Deal approval status updated successfully for deal:", dealID);
     return true;
-  } catch (error) {
-    console.error(
-      "Error updating deal approval status for deal:",
-      dealID,
-      error
-    );
-    return false;
-  }
+
 }

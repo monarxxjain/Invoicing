@@ -1,4 +1,4 @@
-import Signup from "@/components/molecules/login-signup/Signup";
+import Signup from '@/components/molecules/login-signup/Signup';
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import jwt from 'jsonwebtoken';
