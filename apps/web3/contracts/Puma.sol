@@ -215,7 +215,7 @@ contract Puma is ERC721URIStorage {
         require(deals[dealID].targetAmt > 0, "Deal Does not exists!");
         if (deals[dealID].amountRaised == deals[dealID].targetAmt || approved) {
             require(
-                balanceOf(systemAddress) >= deals[dealID].amountRaised,
+                msg.value >= deals[dealID].amountRaised,
                 "Insufficient Funds!"
             );
             payable(deals[dealID].companyAddress).transfer(
