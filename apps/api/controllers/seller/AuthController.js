@@ -103,26 +103,31 @@ const loginSeller = async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          maxAge: 86400000
         })
         .cookie("ROLE", "SELLER", {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          maxAge: 2600000000
         })
         .cookie("WOLLETEADDR", req.body.wolleteAddr, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          maxAge: 2600000000
         })
         .cookie("SELLER_ID", req.seller.id, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          maxAge: 2600000000
         })
         .cookie("EMAIL", req.body.email, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          maxAge: 2600000000
         })
         .status(200)
         .json({ message: "Logged in Successfully" });

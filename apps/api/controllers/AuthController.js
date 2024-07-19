@@ -28,11 +28,13 @@ const addEmployee = async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        maxAge: 2600000000
       })
       .cookie("WOLLETEADDR", req.body.wolleteAddr, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        maxAge: 2600000000
       })
       .status(201)
       .json({ message: "Employee Added Successfully" });
@@ -70,21 +72,25 @@ const loginEmployee = async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          maxAge: 86400000
         })
         .cookie("EMAIL", req.body.email, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          maxAge: 2600000000
         })
         .cookie("NAME", req.employee.name, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          maxAge: 2600000000
         })
         .cookie("ROLE", req.employee.role, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          maxAge: 2600000000
         })
         .status(200)
         .json({
