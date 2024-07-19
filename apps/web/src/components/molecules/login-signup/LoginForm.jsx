@@ -159,7 +159,7 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
         setSubmitLoading(false)
       }
       else {
-        router.push('/seller')
+        // router.push('/seller')
       }
     } catch (error) {
       setSubmitLoading(false)
