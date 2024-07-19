@@ -124,9 +124,9 @@ const loginSeller = async (req, res) => {
           secure: true,
           sameSite: "none",
         })
-        .status(201)
+        .status(200)
         .json({ message: "Logged in Successfully" });
-    } else res.status(401).json({ message: "Wrong Password" });
+    } else res.status(200).json({ message: "Wrong Password" });
   } catch (error) {
     console.error("Error logging in Seller:", error);
 
