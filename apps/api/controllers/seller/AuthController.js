@@ -103,29 +103,38 @@ const loginSeller = async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          path: "/seller"
         })
         .cookie("ROLE", "SELLER", {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          path: "/seller"
         })
         .cookie("WOLLETEADDR", req.body.wolleteAddr, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          path: "/seller"
         })
         .cookie("SELLER_ID", req.seller.id, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          path: "/seller"
         })
         .cookie("EMAIL", req.body.email, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          path: "/seller"
         })
         .status(200)
         .json({ message: "Logged in Successfully" });
+
+        console.log("in /admin/login route")
+        console.log(res);
+
     } else res.status(200).json({ message: "Wrong Password" });
   } catch (error) {
     console.error("Error logging in Seller:", error);
