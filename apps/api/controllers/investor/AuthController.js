@@ -96,19 +96,16 @@ const loginInvestor = async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          maxAge: 3600000,
         })
         .cookie("WOLLETEADDR", req.body.wolleteAddr, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          maxAge: 3600000,
         })
         .cookie("access_token", token, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          maxAge: 3600000,
         })
         .status(200)
         .json({ message: "Investor Logged In Successfully" });
