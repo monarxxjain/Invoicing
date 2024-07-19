@@ -6,10 +6,10 @@ import jwt from 'jsonwebtoken';
 
 export default function Home() {
 
-  const cookieStore = cookies()
-  const token = cookieStore.get('access_token')
-  const decodedToken = jwt.decode(token?.value);
-  const sellerId = cookieStore.get('SELLER_ID')
+  // const cookieStore = cookies()
+  // const token = cookieStore.get('access_token')
+  // const decodedToken = jwt.decode(token?.value);
+  // const sellerId = cookieStore.get('SELLER_ID')
   // if(!decodedToken){
   //   redirect("/")
   // }
