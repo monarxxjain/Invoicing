@@ -103,14 +103,12 @@ const loginInvestor = async (req, res) => {
           secure: true,
           sameSite: "none",
           maxAge: 2600000000,
-          path: "/"
         })
         .cookie("WOLLETEADDR", req.body.wolleteAddr, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
           maxAge: 2600000000,
-          path: "/"
         })
         
         .status(200)

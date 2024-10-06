@@ -13,7 +13,7 @@ import { useEffect } from "react";
 import DescriptionIcon from '@mui/icons-material/Description';
 import BasicDatePicker from "@/components/atoms/DatePicker";
 
-const CreateDealForm = ({ sellerId, token }) => {
+const CreateDealForm = ({ sellerId }) => {
   const [open, setOpen] = useState()
   const [billFile, setBillFile] = useState(null);
   const [message, setMessage] = useState(null)
