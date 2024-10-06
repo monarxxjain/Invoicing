@@ -8,16 +8,16 @@ import { BACKEND_URL } from "@/content/values";
 
 
 export default  function Home() {
-  // const cookieStore = cookies()
-  // const token = cookieStore.get('access_token')
-  // const role = cookieStore.get('ROLE')
-  // const decodedToken = jwt.decode(token?.value);
-  // if(!decodedToken?.wolleteAddr){
-  //   redirect("/")
-  // }
+  const cookieStore = cookies()
+  const token = cookieStore.get('access_token')
+  const role = cookieStore.get('ROLE')
+  const decodedToken = jwt.decode(token?.value);
+  if(!decodedToken?.wolleteAddr){
+    redirect("/")
+  }
 
   
-  return (
+  else return (
     <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
       <WelcomeUser />
       <DealsContainer role={role.value} />
