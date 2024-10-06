@@ -78,19 +78,22 @@ const loginEmployee = async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          maxAge: 2600000000
+          maxAge: 2600000000,
+          path: "/"
         })
         .cookie("NAME", req.employee.name, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          maxAge: 2600000000
+          maxAge: 2600000000,
+          path: "/"
         })
         .cookie("ROLE", req.employee.role, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          maxAge: 2600000000
+          maxAge: 2600000000,
+          path: "/"
         })
         .status(200)
         .json({
