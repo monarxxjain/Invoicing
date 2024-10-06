@@ -1,8 +1,67 @@
-# Turborepo starter
+# INVESTO :: P2P Lending & Invoice Discounting Platform
+![1](https://github.com/user-attachments/assets/1c1106fe-eeda-4d30-a5e1-1fbc1712956b)
 
-This is an official starter Turborepo.
 
-## To start 
+
+## Overview
+
+**INVESTO** is a blockchain-based platform designed to provide a secure and transparent P2P lending and invoice discounting solution for Small and Medium Enterprises (SMEs). Leveraging the power of **Solidity, EtherJs, NodeJs, and NextJs** within a **monorepo** architecture, we aim to revolutionize traditional financing processes by introducing **smart contracts** that manage lending and invoice discounting, with the additional benefits of **transparency**, **automation**, and **trust**. 
+
+The platform also includes dashboards for **companies**, **investors**, and **admins** to manage, analyze, and track transactions and collaterals efficiently.
+![7](https://github.com/user-attachments/assets/54fd69b5-b9ca-441f-ba0a-e2dbaa0a45cb)
+![9](https://github.com/user-attachments/assets/9e481981-460f-452b-ae26-1051cb5da43b)
+![8](https://github.com/user-attachments/assets/5be0322f-5ad1-4030-8d90-0fafcd885d18)
+
+
+## Problem Statement
+
+Traditional invoice discounting processes are **inefficient**, leading to prolonged payment cycles and cash-flow issues for businesses. Lack of **transparency** and **trust** between involved parties often results in **disputes** and **delays**. Blockchain technology addresses these issues by creating a **secure**, **transparent**, and **automated platform** for invoice discounting, improving operational efficiency and trust in financial transactions.
+
+![2](https://github.com/user-attachments/assets/45da9177-cf2d-4463-9669-7b70e7711e77)
+
+
+
+## Idea Description
+
+**Invoice Discounting** is a process where businesses (specifically targeting **mid-sized companies**) can receive upfront cash by selling their unpaid invoices to lenders or investors. Instead of waiting for customers to pay, businesses can secure funding quickly, though at a slightly discounted rate. Our platform helps businesses find investors, manage the paperwork securely, and keep everything transparent and organized.
+
+Using blockchain technology adds an extra layer of **security** and **efficiency**. 
+
+### Key Features:
+
+- **Decentralized Invoice Discounting**: Businesses sell their unpaid invoices to investors in exchange for upfront liquidity.
+- **Blockchain-powered Smart Contracts**: These ensure **automatic execution** of transactions and secure the process for both businesses and investors.
+- **NFT as Collateral**: NFTs can be pledged as collateral for loans, with smart contracts managing liquidation in the case of defaults. If a borrower defaults, the NFT collateral is automatically converted into monetary value and distributed among investors, reducing risks.
+
+
+
+## Technical Stack
+
+- **Blockchain**: Solidity, EtherJs
+- **Frontend**: NextJs
+- **Backend**: NodeJs
+- **Database**: Supabase, PostgreSQL
+- **Monorepo**: A unified codebase structure for streamlined development and deployment
+
+
+## Revenue Model
+
+Our platform follows a **commission-based revenue model**, earning a percentage from each successful investment or invoice discounting transaction. This model has already led to a **25% increase in user engagement** by providing seamless investment opportunities to individual investors.
+
+
+
+## How It Works
+
+1. **Businesses** upload their invoices to the platform.
+2. **Investors** browse available deals and invest in invoices, receiving a return once the invoices are paid.
+3. **Smart Contracts** handle the entire process, ensuring transparency, security, and automation of the payments.
+4. In case of a **loan default**, NFTs pledged as collateral are automatically liquidated and distributed to investors.
+
+---
+
+## Installation & Setup
+
+### To start 
 
 ```bash
 pnpm i  
