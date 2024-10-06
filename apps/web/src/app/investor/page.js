@@ -11,9 +11,9 @@ export default  function Home() {
   const role = cookieStore.get('ROLE')
   const decodedToken = jwt.decode(token?.value);
   console.log(token, role, decodedToken)
-  if(!decodedToken?.wolleteAddr){
-    redirect("/")
-  }
+  // if(!decodedToken?.wolleteAddr){
+  //   redirect("/")
+  // }
 
   
   return (
