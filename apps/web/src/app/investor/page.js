@@ -8,7 +8,7 @@ import { BACKEND_URL } from "@/content/values";
 
 
 export default  function Home() {
-  // const cookieStore = cookies()
+  const cookieStore = cookies()
   // const token = cookieStore.get('access_token')
   // const role = cookieStore.get('ROLE')
   // const decodedToken = jwt.decode(token?.value);
