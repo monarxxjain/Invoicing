@@ -92,27 +92,25 @@ const loginInvestor = async (req, res) => {
       console.log("Investor Logged In Successfully")
       
       res
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          maxAge: 86400000
+        })
         .cookie("ROLE", "INVESTOR", {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          domain: ".vercel.app", 
           maxAge: 2600000000
         })
         .cookie("WOLLETEADDR", req.body.wolleteAddr, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
-          domain: ".vercel.app", 
           maxAge: 2600000000
         })
-        .cookie("access_token", token, {
-          httpOnly: true,
-          secure: true,
-          sameSite: "none",
-          domain: ".vercel.app", 
-          maxAge: 86400000
-        })
+        
         .status(200)
         .json({ message: "Investor Logged In Successfully" });
     }
