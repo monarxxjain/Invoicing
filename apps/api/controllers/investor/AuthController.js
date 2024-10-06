@@ -96,18 +96,21 @@ const loginInvestor = async (req, res) => {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          domain: ".vercel.app", 
           maxAge: 2600000000
         })
         .cookie("WOLLETEADDR", req.body.wolleteAddr, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          domain: ".vercel.app", 
           maxAge: 2600000000
         })
         .cookie("access_token", token, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          domain: ".vercel.app", 
           maxAge: 86400000
         })
         .status(200)
