@@ -3,6 +3,14 @@ import stats2 from "@/assets/home/stats2.svg";
 import stats3 from "@/assets/home/stats3.svg";
 import stats4 from "@/assets/home/stats4.svg";
 import stats5 from "@/assets/home/stats5.svg";
+
+const heroPoints = [
+  "Gain 2-5x additional returns with zero overheads",
+  "Digitise vendor management. Gain 3x participation",
+  "Avail flexible finance options for early invoice payment",
+  "Go live in days with quickest ERP integration"
+]
+
 const features = [
   { title: "Easy Access", description: "By using a mobile app within seconds" },
   { title: "Liquidity", description: "Description of object 2" },
@@ -71,4 +79,4 @@ const adminSellerListTabs = ["Approve Sellers", "Verified Sellers", "Rejected Se
 
 const adminDealTabs = ["Pending Deals", "Open Deals", "Deals at Freezing Point", "Freezed Deals", "Cancelled Deals", "Accepted Deals", "Final Deals", "Completed Deals", "Rejected Deals"]
 
-export { features, statistic,faqs,investorTabs,sellerTabs,adminSellerListTabs,adminDealTabs};
+export { heroPoints, features, statistic,faqs,investorTabs,sellerTabs,adminSellerListTabs,adminDealTabs};

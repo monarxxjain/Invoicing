@@ -1,0 +1,14 @@
+* {
+    cursor: none;
+}
+.cursor {
+    background-color: white;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    position: fixed;
+    top: 170;
+    left: 183;
+    pointer-events: none;
+    z-index: 10;
+}

@@ -1,68 +1,79 @@
-import React from "react";
-import { features } from "@/content/homeContent";
-import { statistic } from "@/content/homeContent";
-import arrow from "@/assets/home/arrow.svg";
+import React from 'react'
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import { heroPoints } from '@/content/homeContent';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
-import Image from "next/image";
-import ImageCorousal from "./ImageCorousal";
-import Link from "next/link";
+const HeroSection = ({setCursorVariant}) => {
 
-
-const HeroSection = ({wolleteAddr, token, role}) => {
-  const myRoute = role?.value.toLowerCase()
   return (
-    <div className="lg:h-screen parentcss">
-      <div className="lg:h-[90vh] px-12 sm:px-24 py-10 flex flex-col gap-10 bg-[url('/homeImages/heroImage.png')] bg-cover">
-        {/* <Image  alt="altText" className="absolute top-0 left-0 h-screen w-full "  width={1000} height={1000}/> */}
+    <div onMouseEnter={()=>setCursorVariant("default")} className={`w-screen h-screen flex items-center px-40`}>
+      <div className='flex flex-col -mt-20'>
 
-        <h1 className="text-5xl text-white font-normal xs:mt-8">
-          Best Invoice Discounting Platform
-        </h1>
-        <Link href={`${token ? `/${myRoute}` : wolleteAddr ? "/login" : "/signup"}`} className="py-2 px-5 sm:py-4 sm:px-10 transition duration-500 hover:shadow-none shadow-[0_0_100px_-10px_rgba(255,255,255)] text-left font-montserrat bg-green-500 font-medium rounded-lg w-fit text-white">
-        {token ? "DASHBOARD" : "GET STARTED"}
-        </Link>
-        <div className="">
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-            {features.map((item, index) => (
-              <div
-                className="bg-gray-50/15 px-6 py-3 blurFeat text-white rounded-tr-2xl rounded-bl-2xl"
-                key={index}
+        <div className='relative w-fit'>
+          <SideAnimate color={"white"} />
+          <div onMouseEnter={()=>setCursorVariant("text")} onMouseLeave={()=>setCursorVariant("default")} className='text-gray-200 text-xl w-fit tracking-tight'>Maximise Profit with Invoice Discounting</div>
+        </div>
+
+        <div className='relative w-fit'>
+          <SideAnimate color={"#41CFA2"} />
+          <h1 onMouseEnter={()=>setCursorVariant("title")} onMouseLeave={()=>setCursorVariant("default")} className='text-white text-6xl font-bold max-w-[900px] leading-tight'>
+            Increase business savings by paying your vendors early
+          </h1>
+        </div>
+
+        <div className='flex flex-col gap-3 mt-20 text-lg w-fit' onMouseEnter={()=>setCursorVariant("text")} onMouseLeave={()=>setCursorVariant("default")} >
+          {heroPoints.map((val, id) => 
+              <motion.div 
+                key={id} 
+                className='flex items-center gap-2 w-fit' 
+                variants={{
+                  hidden: { opacity: 0, x: 80 },
+                  visible: { opacity: 1, x: 0 }
+                }}
+                initial="hidden"
+                animate="visible"
+                transition={{ duration: 0.5, delay: 0.25+(id*0.07) }}
               >
-                <div className="flex z-10">
-                  <h2 className="text-xl font-semibold px-2 py-3">
-                    {item.title}
-                  </h2>
-                  <Image alt="altText" src={arrow} width={20} height={20} />
-                </div>
-                <p className="text-l text-white/70 font-normal px-2">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </ul>
+                <TaskAltIcon  className='text-green-500'/>
+                <p className='text-gray-300'>{val}</p>
+              </motion.div>
+            )}
         </div>
-
-        <div className="">
-          <ul className="flex justify-around gap-10 flex-wrap align-middle">
-            {statistic.map((item, index) => (
-              <div className="flex flex-col items-center gap-3 " key={index}>
-                <Image alt="altText" src={item.chitra} width={75} height={75} />
-                <h3 className="text-3xl font-bold text-white">{item.amount}</h3>
-                <p className="text-sm text-white">{item.title}</p>
-              </div>
-            ))}
-          </ul>
-        </div>
-      </div>
-      <div className="lg:h-[10vh] flex justify-evenly gap-14 p-4 bg-gray-100">
-        <div className="hidden xs:block ms-0 sm:ms-10">
-          <h3 className="text-l !w-32">Listed Brands</h3>
-        </div>
-        <ImageCorousal/>
-        
+        <Link href="/signup" 
+          onMouseEnter={()=>setCursorVariant("button")} onMouseLeave={()=>setCursorVariant("default")} 
+          className='bg-white relative w-fit text-lg text-blue-800 font-medium rounded px-6 py-2 mt-10 hover:scale-105 active:scale-90 transition-all'
+        >
+          <SideAnimate color={"#41CFA2"} />
+          Get Started
+        </Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default HeroSection;
+const SideAnimate = ({color}) => {
+  return (
+      <motion.div
+          variants={{
+            hidden: { left: 0 },
+            visible: { left: "100%" }
+          }}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.5, delay: 0.25, ease: "easeIn" }}
+          style={{
+            position: "absolute",
+            top:0 ,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            background: color,
+            zIndex:20
+          }}
+      >
+      </motion.div>
+  )
+}
+
+export default HeroSection
