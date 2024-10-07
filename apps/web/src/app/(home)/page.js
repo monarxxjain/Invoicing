@@ -5,6 +5,7 @@ import "./home.css"
 import { motion } from "framer-motion";
 import Features from "@/components/molecules/homePage/Features";
 import Overview from "@/components/molecules/homePage/Overview";
+import Stats from "@/components/molecules/homePage/Stats";
 
 export default function Home() {
 
@@ -147,6 +148,7 @@ export default function Home() {
       <HeroSection setCursorVariant={setCursorVariant} />
       <Features setCursorVariant={setCursorVariant} />
       <Overview setCursorVariant={setCursorVariant} />
+      <Stats setCursorVariant={setCursorVariant} />
     </div>
   );
 }

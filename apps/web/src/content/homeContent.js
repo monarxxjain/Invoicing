@@ -61,11 +61,10 @@ const features = [
 ];
 
 const statistic = [
-  { chitra: stats1, amount: "0", title: "Defaults" },
-  { chitra: stats2, amount: "25000+", title: "Active Customers" },
-  { chitra: stats3, amount: "200,000+", title: "Unique Transactions" },
-  { chitra: stats4, amount: "600+", title: "Unique Companies" },
-  { chitra: stats5, amount: "6000 Cr+", title: "Annualised GMV" },
+  { icon: stats2, value: "25000", title: "Active Customers" },
+  { icon: stats3, value: "200,000", title: "Unique Transactions" },
+  { icon: stats4, value: "600", title: "Unique Companies" },
+  { icon: stats5, value: "6000 Cr", title: "Annualised GMV" },
 ];
 
 const faqs = [
@@ -107,6 +106,27 @@ const faqs = [
   },
 ];
 
+const userTypes = [
+  {
+    id:1,
+    name: "Investor",
+    description: "Increase EBITDA by discounting invoices of your large supplier base using treasury funds, banks or TReDs. Fully integrated with ERP.",
+    image: "/homeImages/7.jpg"
+  },
+  {
+    id:2,
+    name: "Seller",
+    description: "Use EarlyPay to access affordable financing anytime on your pending invoices. Get real-time status on invoice processing and payments.",
+    image: "/homeImages/9.jpg"
+  },
+  {
+    id:3,
+    name: "Employee",
+    description: "Enable low-risk vendor financing via AI/ML powered platform. Increase limit utilisation by getting access to good-rated corporates.",
+    image: "/homeImages/8.jpg"
+  },
+]
+
 const investorTabs=["Ongoing Deals","Mature Deals","Liqudated Deals","Requested to Liquidate","Completed Deals"];
 
 const sellerTabs=["Deals under Review", "Ongoing Deals", "Deals to be Approved", "Payout Queue", "Completed Deals", "Cancelled Deals", "Drafts" ];
@@ -115,4 +135,4 @@ const adminSellerListTabs = ["Approve Sellers", "Verified Sellers", "Rejected Se
 
 const adminDealTabs = ["Pending Deals", "Open Deals", "Deals at Freezing Point", "Freezed Deals", "Cancelled Deals", "Accepted Deals", "Final Deals", "Completed Deals", "Rejected Deals"]
 
-export { heroPoints, features, statistic,faqs,investorTabs,sellerTabs,adminSellerListTabs,adminDealTabs};
+export { heroPoints, features, statistic, userTypes, faqs, investorTabs, sellerTabs, adminSellerListTabs, adminDealTabs};

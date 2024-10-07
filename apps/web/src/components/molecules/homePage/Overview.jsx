@@ -10,7 +10,7 @@ const Overview = ({setCursorVariant}) => {
     }, []);
 
   return (
-    <div className='h-screen bg-#121F4F px-40 bg-[#0a1437] flex flex-col justify-center relative'>
+    <div className='h-screen bg-#121F4F px-40 bg-[#0a1437] flex flex-col justify-center relative overflow-hidden'>
       <div className='absolute bg-white opacity-30 w-[1300px] h-screen -right-1/4 bottom-0 top-1/3 -rotate-45'></div>
       
       <div onMouseEnter={()=>setCursorVariant("title")} onMouseLeave={()=>setCursorVariant("default")} className='text-5xl text-center text-white tracking-tight font-semibold'>How does Invoice Discounting work?</div>
