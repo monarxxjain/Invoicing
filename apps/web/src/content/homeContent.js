@@ -21,42 +21,42 @@ const features = [
   { 
     title: "2-5x Returns", 
     description: "60% plus vendor participation resulting in  2x discounted invoices; ability to discount invoices throughout the year",
-    icon: <SignalCellularAltIcon className="text-purple-500"/>
+    icon: <SignalCellularAltIcon className="text-purple-500  text-3xl"/>
   },
   {
     title: "Dynamic bidding",
     description: "Flexibility for vendors to bid discount rates and days at each invoice level",
-    icon: <SpaceDashboardIcon  className="text-red-500"/>
+    icon: <SpaceDashboardIcon  className="text-red-500  text-3xl"/>
   },
   { 
     title: "AI/ML powered solution",
     description: "Solve for invoices, taxes, payments and credits together making it an all-in-one solution",
-    icon: <EngineeringIcon className="text-yellow-600"/>
+    icon: <EngineeringIcon className="text-yellow-600  text-3xl"/>
   },
   { 
     title: "AI/ML powered solution",
     description: "Solve for invoices, taxes, payments and credits together making it an all-in-one solution",
-    icon: <TipsAndUpdatesIcon className="text-yellow-600"/>
+    icon: <TipsAndUpdatesIcon className="text-red-600  text-3xl"/>
   },
   {
     title: "Multiple avenues to earn",
     description: "Blue chip invoices,Leasing,AA debt",
-    icon: <AssuredWorkloadIcon className="text-red-500"/>
+    icon: <AssuredWorkloadIcon className="text-red-500  text-3xl"/>
   },
   { 
     title: "AI/ML powered solution",
     description: "Solve for invoices, taxes, payments and credits together making it an all-in-one solution",
-    icon: <TipsAndUpdatesIcon className="text-yellow-600"/>
+    icon: <TipsAndUpdatesIcon className="text-yellow-600  text-3xl"/>
   },
   {
     title: "Multiple avenues to earn",
     description: "Blue chip invoices,Leasing,AA debt",
-    icon: <AssuredWorkloadIcon className="text-red-500"/>
+    icon: <AssuredWorkloadIcon className="text-red-500 text-3xl"/>
   },
   { 
     title: "AI/ML powered solution",
     description: "Solve for invoices, taxes, payments and credits together making it an all-in-one solution",
-    icon: <TipsAndUpdatesIcon className="text-yellow-600"/>
+    icon: <TipsAndUpdatesIcon className="text-yellow-600 text-3xl"/>
   },
 ];
 

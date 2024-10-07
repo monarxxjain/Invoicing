@@ -92,6 +92,48 @@ export default function Home() {
       mixBlendMode: "difference"
     },
 
+
+    featureBody: {
+      height: 10,
+      width: 10,
+      x: mousePosition.x - 5,
+      y: mousePosition.y - 5,
+      transition: {
+        type: "smooth",
+        duration: 0,
+      },
+      backgroundColor: "black",
+      mixBlendMode: "difference"
+    },
+
+    featureTitle: {
+      height: 70,
+      width: 70,
+      x: mousePosition.x - 35,
+      y: mousePosition.y - 35,
+      transition: {
+        type: "smooth",
+        duration: 0,
+      },
+      backgroundColor: "black",
+      mixBlendMode: "difference"
+    },
+
+    featureGrid: {
+      height: 40,
+      width: 40,
+      x: mousePosition.x - 20,
+      y: mousePosition.y - 20,
+      transition: {
+        type: "smooth",
+        duration: 0,
+      },
+      backgroundColor: "white",
+      mixBlendMode: "difference"
+    },
+
+    
+
   }
 
   return (
