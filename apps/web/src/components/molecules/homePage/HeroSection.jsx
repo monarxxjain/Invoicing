@@ -1,5 +1,6 @@
 import React from 'react'
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import SouthIcon from '@mui/icons-material/South';
 import { heroPoints } from '@/content/homeContent';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -7,7 +8,7 @@ import { motion } from 'framer-motion';
 const HeroSection = ({setCursorVariant}) => {
 
   return (
-    <div onMouseEnter={()=>setCursorVariant("default")} className={`w-screen h-screen flex items-center px-40`}>
+    <div onMouseEnter={()=>setCursorVariant("default")} className={`w-screen h-screen flex relative items-center px-40`}>
       <div className='flex flex-col -mt-20'>
 
         <div className='relative w-fit'>
@@ -40,6 +41,7 @@ const HeroSection = ({setCursorVariant}) => {
               </motion.div>
             )}
         </div>
+
         <Link href="/signup" 
           onMouseEnter={()=>setCursorVariant("button")} onMouseLeave={()=>setCursorVariant("default")} 
           className='bg-white relative w-fit text-lg text-blue-800 font-medium rounded px-6 py-2 mt-10 hover:scale-105 active:scale-90 transition-all'
@@ -48,6 +50,19 @@ const HeroSection = ({setCursorVariant}) => {
           Get Started
         </Link>
       </div>
+      <motion.div 
+        onMouseEnter={()=>setCursorVariant("scrollBtn")} onMouseLeave={()=>setCursorVariant("default")} 
+        className='bg-white p-3 absolute bottom-5 left-1/2 -translate-x-[50%] text-[#0A0B1F] rounded-full animate-bounce'
+        variants={{
+          hidden: { opacity: 0, y: -200 },
+          visible: { opacity: 1, y: 0 }
+        }}
+        initial="hidden"
+        animate="visible"
+        transition={{ duration: 0.5, delay: 1.25 }}
+      >
+        <SouthIcon />
+      </motion.div>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import HeroSection from "@/components/molecules/homePage/HeroSection";
 import "./home.css"
 import { motion } from "framer-motion";
+import Features from "@/components/molecules/homePage/Features";
 
 export default function Home() {
 
@@ -76,7 +77,20 @@ export default function Home() {
       },
       backgroundColor: "white",
       mixBlendMode: "difference"
-    }
+    },
+
+    scrollBtn: {
+      height: 48,
+      width: 48,
+      x: mousePosition.x - 24,
+      y: mousePosition.y - 24,
+      transition: {
+        type: "smooth",
+        duration: 0,
+      },
+      backgroundColor: "white",
+      mixBlendMode: "difference"
+    },
 
   }
 
@@ -88,24 +102,7 @@ export default function Home() {
         animate={cursorVariant}
       />
       <HeroSection setCursorVariant={setCursorVariant} />
+      <Features setCursorVariant={setCursorVariant} />
     </div>
   );
 }
-// export default function Home() {
-//     const cookieStore = cookies()
-//     const wolleteAddr = cookieStore.get('WOLLETEADDR')
-//     const role = cookieStore.get('ROLE')
-//     const token = cookieStore.get('access_token')
-//     const decodedToken = jwt.decode(token?.value);
-//   return (
-//     <div>
-//       <Navbar role={role} wolleteAddr={wolleteAddr} token={token}/>
-//       <HeroSection role={role} wolleteAddr={wolleteAddr} token={token} />
-//       <div className="flex flex-col gap-16">
-//         <TheProcess />
-//         <FAQS />
-//         <Footer/>
-//       </div>
-//     </div>
-//   );
-// }

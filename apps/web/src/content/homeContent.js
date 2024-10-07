@@ -4,6 +4,12 @@ import stats3 from "@/assets/home/stats3.svg";
 import stats4 from "@/assets/home/stats4.svg";
 import stats5 from "@/assets/home/stats5.svg";
 
+import SignalCellularAltIcon from '@mui/icons-material/SignalCellularAlt';
+import EngineeringIcon from '@mui/icons-material/Engineering';
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
+import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
+import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
+
 const heroPoints = [
   "Gain 2-5x additional returns with zero overheads",
   "Digitise vendor management. Gain 3x participation",
@@ -12,15 +18,45 @@ const heroPoints = [
 ]
 
 const features = [
-  { title: "Easy Access", description: "By using a mobile app within seconds" },
-  { title: "Liquidity", description: "Description of object 2" },
+  { 
+    title: "2-5x Returns", 
+    description: "60% plus vendor participation resulting in  2x discounted invoices; ability to discount invoices throughout the year",
+    icon: <SignalCellularAltIcon className="text-purple-500"/>
+  },
   {
-    title: "Start with INR 1 lac",
-    description: "Start with little as INR 1 lac",
+    title: "Dynamic bidding",
+    description: "Flexibility for vendors to bid discount rates and days at each invoice level",
+    icon: <SpaceDashboardIcon  className="text-red-500"/>
+  },
+  { 
+    title: "AI/ML powered solution",
+    description: "Solve for invoices, taxes, payments and credits together making it an all-in-one solution",
+    icon: <EngineeringIcon className="text-yellow-600"/>
+  },
+  { 
+    title: "AI/ML powered solution",
+    description: "Solve for invoices, taxes, payments and credits together making it an all-in-one solution",
+    icon: <TipsAndUpdatesIcon className="text-yellow-600"/>
   },
   {
     title: "Multiple avenues to earn",
     description: "Blue chip invoices,Leasing,AA debt",
+    icon: <AssuredWorkloadIcon className="text-red-500"/>
+  },
+  { 
+    title: "AI/ML powered solution",
+    description: "Solve for invoices, taxes, payments and credits together making it an all-in-one solution",
+    icon: <TipsAndUpdatesIcon className="text-yellow-600"/>
+  },
+  {
+    title: "Multiple avenues to earn",
+    description: "Blue chip invoices,Leasing,AA debt",
+    icon: <AssuredWorkloadIcon className="text-red-500"/>
+  },
+  { 
+    title: "AI/ML powered solution",
+    description: "Solve for invoices, taxes, payments and credits together making it an all-in-one solution",
+    icon: <TipsAndUpdatesIcon className="text-yellow-600"/>
   },
 ];
 
