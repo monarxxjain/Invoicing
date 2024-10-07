@@ -1,3 +1,4 @@
+"use client"
 import WelcomeUser from "@/components/atoms/WelcomeUser";
 import DealsContainer from "@/components/molecules/investor/DealsContainer";
 import { cookies } from 'next/headers'
