@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Features from "@/components/molecules/homePage/Features";
 import Overview from "@/components/molecules/homePage/Overview";
 import Stats from "@/components/molecules/homePage/Stats";
+import FAQ from "@/components/molecules/homePage/FAQ";
 
 export default function Home() {
 
@@ -149,6 +150,7 @@ export default function Home() {
       <Features setCursorVariant={setCursorVariant} />
       <Overview setCursorVariant={setCursorVariant} />
       <Stats setCursorVariant={setCursorVariant} />
+      <FAQ setCursorVariant={setCursorVariant} />
     </div>
   );
 }

@@ -12,17 +12,20 @@ const Stats = ({setCursorVariant}) => {
     <div onMouseEnter={()=>setCursorVariant("featureBody")} className='h-screen relative px-52 flex flex-col justify-center overflow-hidden'>
       <div className='absolute bg-[#20378b]/75 opacity-30 w-[1300px] h-screen -right-1/4 bottom-1/3 rotate-45'></div>
       
-      <div className='text-gray-500 text-4xl text-center font-bold'>
+      <div 
+        onMouseEnter={()=>setCursorVariant("featureTitle")} onMouseLeave={()=>setCursorVariant("featureBody")}
+        className='text-gray-500 z-10 text-4xl text-center font-bold'
+      >
         Investo Invoice Discounting enables
       </div>
-      <div className='flex justify-center gap-8 mt-10'>
+      <div className='flex justify-center gap-8 mt-10 z-10' onMouseEnter={()=>setCursorVariant("featureTitle")} onMouseLeave={()=>setCursorVariant("featureBody")}>
         {statistic.map((stat, id)=>(
             <div key={id} className='flex flex-col gap-4'>
                 <div className='flex items-center gap-1'>
                     <div className='text-[#20378b] text-5xl font-semibold tracking-tighter'>{stat.value}</div>
                     <div className='text-green-500 text-3xl font-semibold'>+</div>
                 </div>
-                <div className='text-gray-600'>{stat.title}</div>
+                <div className='text-gray-600 hover:text-gray-400'>{stat.title}</div>
             </div>
         ))}
       </div>
@@ -34,7 +37,7 @@ const Stats = ({setCursorVariant}) => {
                     {/* <div>Show more</div> */}
                 </motion.div>
             ))}
-            <div className='absolute left-1/2 -translate-x-[50%] top-1/2 -translate-y-[50%] border shadow-md rounded-xl'>
+            <div className='absolute left-1/2 -translate-x-[50%] top-1/2 -translate-y-[50%] border shadow-md rounded-xl z-10'>
                 <AnimatePresence >
                     {selected && (
                         <motion.div layoutId={selected.id} className='relative bg-white'>
