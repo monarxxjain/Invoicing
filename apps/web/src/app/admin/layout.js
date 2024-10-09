@@ -57,11 +57,11 @@ export default function RootLayout({ children }) {
   ]
 
   const menu = [
-    {
-      name: "Dashboard",
-      icon: <WindowIcon />,
-      url: "/admin/dashboard",
-    },
+    // {
+    //   name: "Dashboard",
+    //   icon: <WindowIcon />,
+    //   url: "/admin/dashboard",
+    // },
     {
       name: "Sellers",
       icon: <AccountBoxIcon />,

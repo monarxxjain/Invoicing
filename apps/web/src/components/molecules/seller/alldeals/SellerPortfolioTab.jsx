@@ -148,7 +148,7 @@ export default function SellerPortfolioTab({ tabs, role }) {
 
                 {!loading && deals.length==0 &&
                 <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-8xl text-blue-950 t">
-                    NO Sellers Yet
+                    NO Open Deals
                   </div>
                 }
               </div>
@@ -175,7 +175,7 @@ export default function SellerPortfolioTab({ tabs, role }) {
 
                 {!loading && deals.length==0 &&
                 <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-8xl text-blue-950 t">
-                    NO Sellers Yet
+                    NO Freezed Deals
                   </div>
                 }
               </div>
@@ -203,7 +203,7 @@ export default function SellerPortfolioTab({ tabs, role }) {
 
                 {!loading && deals.length==0 &&
                 <div className="absolute left-1/2 font-extrabold -translate-x-[50%] top-1/2 -translate-y-[100%] w-full text-center text-8xl text-blue-950 t">
-                    NO Sellers Yet
+                    NO Cancelled Deals
                   </div>
                 }
               </div>
