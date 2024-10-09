@@ -18,6 +18,12 @@ const registerNewInvestor = async (req, res) => {
     });
 
     console.log("Successfully Added Investor");
+
+    const result = {
+      role: "INVESTOR",
+      wolleteAddr: req.body.wolleteAddr
+    }
+
     res
       .cookie("ROLE", "INVESTOR", {
         httpOnly: true,
@@ -30,7 +36,7 @@ const registerNewInvestor = async (req, res) => {
         sameSite: "none",
       })
       .status(200)
-      .json({ message: "Successfully Added Investor", investor });
+      .json({ message: "Successfully Added Investor", investor, result });
   } catch (error) {
     console.log("Error Creating Investor: ", error);
 
@@ -90,6 +96,12 @@ const loginInvestor = async (req, res) => {
       const token = generateJwtToken(userObj);
 
       console.log("Investor Logged In Successfully")
+
+      const result = {
+        access_token: token,
+        role: "INVESTOR",
+        wolleteAddr: req.body.wolleteAddr
+      }
       
       res
         .cookie("access_token", token, {
@@ -112,7 +124,7 @@ const loginInvestor = async (req, res) => {
         })
         
         .status(200)
-        .json({ message: "Investor Logged In Successfully" });
+        .json({ message: "Investor Logged In Successfully", result });
     }
   } catch (error) {
     console.log("Error Logging In Investor: ", error);

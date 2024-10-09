@@ -25,6 +25,14 @@ const addNewSellerRequest = async (req, res) => {
       },
     });
 
+    const result = {
+      role: "SELLER",
+      wolleteAddr: req.body.wolleteAddr,
+      sellerId: seller.id,
+      email: req.body.email,
+      status: "PENDING"
+    }
+
     res
       .cookie("ROLE", "SELLER", {
         httpOnly: true,
@@ -47,7 +55,7 @@ const addNewSellerRequest = async (req, res) => {
         sameSite: "none",
       })
       .status(200)
-      .json({ message: "Seller Request has been generated successfully" });
+      .json({ message: "Seller Request has been generated successfully", result });
   } catch (error) {
     console.log("Error Creating Seller: ", error);
 
@@ -95,8 +103,17 @@ const loginSeller = async (req, res) => {
         email: req.body.email,
         role: "SELLER",
         wolleteAddr: req.body.wolleteAddr,
+        status: "APPROVED"
       };
       const token = generateJwtToken(userObj);
+
+      const result = {
+        role: "SELLER",
+        wolleteAddr: req.body.wolleteAddr,
+        sellerId: req.seller.id,
+        email: req.body.email,
+        access_token: token
+      }
 
       res
         .cookie("access_token", token, {
@@ -130,7 +147,7 @@ const loginSeller = async (req, res) => {
           maxAge: 2600000000,
         })
         .status(200)
-        .json({ message: "Logged in Successfully" });
+        .json({ message: "Logged in Successfully", result });
         
     } else res.status(200).json({ message: "Wrong Password" });
   } catch (error) {

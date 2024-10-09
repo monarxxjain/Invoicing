@@ -28,6 +28,7 @@ export default function Sidebar({ menu, isFull, setIsFull }) {
     try {
       console.log("object")
       const response = await axios.get(`${BACKEND_URL}/auth/logout`,{withCredentials: true})
+      sessionStorage.clear()
       console.log(response.message)
       router.push('/')
     } catch (error) {

@@ -20,8 +20,8 @@ const LoginRole = ({existingSellerStatus, existingRole, userData, setUserData, v
     }
 
     useEffect(()=>{
-      if(existingRole?.value) {
-        handler(existingRole?.value)
+      if(existingRole) {
+        handler(existingRole)
       }
     },[])
 

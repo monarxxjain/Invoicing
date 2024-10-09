@@ -23,6 +23,11 @@ const addEmployee = async (req, res) => {
 
     console.log("Employee Added Successfully")
 
+    const result = {
+      role: req.body.role,
+      wolleteAddr: req.body.wolleteAddr
+    }
+
     res
       .cookie("ROLE", req.body.role, {
         httpOnly: true,
@@ -37,7 +42,7 @@ const addEmployee = async (req, res) => {
         maxAge: 2600000000
       })
       .status(201)
-      .json({ message: "Employee Added Successfully" });
+      .json({ message: "Employee Added Successfully", result });
   } catch (error) {
     console.log("Error Creating Employee: ", error);
 
@@ -66,6 +71,13 @@ const loginEmployee = async (req, res) => {
       const token = generateJwtToken(userObj);
 
       console.log("Employee Logged in Successfully")
+
+      const result = {
+        access_token: token,
+        email: req.body.email,
+        name: req.employee.name,
+        role: req.employee.role
+      }
       
       res
         .cookie("access_token", token, {
@@ -95,7 +107,7 @@ const loginEmployee = async (req, res) => {
         .status(200)
         .json({
           message: "Employee Logged in Successfully",
-          local: { name: req.employee.name, email: req.employee.email },
+          result
         });
     } else {
       res.status(200).json({ error: "Incorrect Password" });

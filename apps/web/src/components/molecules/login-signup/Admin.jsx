@@ -63,8 +63,13 @@ const Admin = ({email}) => {
           color: "success",
           autoHideDuration: false
         })
-        localStorage.setItem("NAME", res.data.local.name)
-        localStorage.setItem("EMAIL", res.data.local.email)
+
+        const result = res.data.result
+        sessionStorage.setItem("TOKEN", result.access_token)
+        localStorage.setItem("NAME", result.name)
+        localStorage.setItem("EMAIL", result.email)
+        localStorage.setItem("ROLE", result.role)
+
         router.push("/admin/sellers")
         setLoading(false)
       } 

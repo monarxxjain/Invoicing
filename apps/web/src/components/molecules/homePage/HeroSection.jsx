@@ -4,8 +4,23 @@ import SouthIcon from '@mui/icons-material/South';
 import { heroPoints } from '@/content/homeContent';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import jwt from 'jsonwebtoken';
 
 const HeroSection = ({setCursorVariant}) => {
+
+  const [token, setToken] = useState(typeof window !== 'undefined' ? JSON.parse(sessionStorage.getItem("TOKEN")) : null)
+  const [role, setRole] = useState(typeof window !== 'undefined' ? JSON.parse(localStorage.getItem("ROLE")) : null )
+  const [link, setLink] = useState("/signup")
+  useEffect(() => {
+    const token = sessionStorage.getItem('TOKEN');
+    const decodedToken = jwt.decode(token);
+
+
+    if (role === 'ADMIN') setLink('/admin');
+    else if (role) setLink('/login');
+
+  }, []);
 
   return (
     <div onMouseEnter={()=>setCursorVariant("default")} className={`w-screen h-screen flex relative items-center px-40`}>
@@ -42,13 +57,13 @@ const HeroSection = ({setCursorVariant}) => {
             )}
         </div>
 
-        <Link href="/signup" 
+        <a href={link} 
           onMouseEnter={()=>setCursorVariant("button")} onMouseLeave={()=>setCursorVariant("default")} 
           className='bg-white relative w-fit text-lg text-blue-800 font-medium rounded px-6 py-2 mt-10 hover:scale-105 active:scale-90 transition-all'
         >
           <SideAnimate color={"#41CFA2"} />
-          Get Started
-        </Link>
+          {token ? "Dashboard" : "Get Started"}
+        </a>
       </div>
       <motion.div 
         onMouseEnter={()=>setCursorVariant("scrollBtn")} onMouseLeave={()=>setCursorVariant("default")} 

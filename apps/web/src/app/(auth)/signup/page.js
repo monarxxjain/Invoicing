@@ -1,22 +1,23 @@
+"use client"
 import Signup from '@/components/molecules/login-signup/Signup';
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import jwt from 'jsonwebtoken';
 
 export default function Home() {
+  const router = useRouter();
 
-    const cookieStore = cookies()
+  useEffect(() => {
+    const token = sessionStorage.getItem('TOKEN');
+    const decodedToken = jwt.decode(token);
 
-    const token = cookieStore.get('access_token')
-    const decodedToken = jwt.decode(token?.value);
-
-
-    if(decodedToken?.role == "INVESTOR" ){
-      redirect("/investor")
+    if (decodedToken?.role === 'INVESTOR') {
+      router.push('/investor');
+    } 
+    else if (decodedToken?.role === 'SELLER') {
+      router.push('/seller');
     }
-    else if(decodedToken?.role == "SELLER" ){
-      redirect("/seller")
-    }
+  }, []);
 
   return (
     <div>

@@ -1,28 +1,30 @@
+"use client"
 import Login from "@/components/molecules/login-signup/Login";
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import jwt from 'jsonwebtoken';
 
 export default function Home() {
-    const cookieStore = cookies()
-    const existingRole = cookieStore.get('ROLE')
-    const existingEmail = cookieStore.get('EMAIL')
-    const existingSellerStatus = cookieStore.get('STATUS')
+  const router = useRouter();
+  const [existingRole, setExistingRole] = useState(typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('ROLE')) : null )
+  const [existingEmail, setExistingEmail] = useState(typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('EMAIL')) : null )
 
-    const token = cookieStore.get('access_token')
-    const decodedToken = jwt.decode(token?.value);
+  useEffect(() => {
+    const token = sessionStorage.getItem('TOKEN');
+    const decodedToken = jwt.decode(token);
 
 
-    if(decodedToken?.role == "INVESTOR" ){
-      redirect("/investor")
+    if (decodedToken?.role === 'INVESTOR') {
+      router.push('/investor');
+    } 
+    else if (decodedToken?.role === 'SELLER') {
+      router.push('/seller');
     }
-    else if(decodedToken?.role == "SELLER" ){
-      redirect("/seller")
-    }
+  }, []);
     
     return (
       <div>
-        <Login existingRole={existingRole} existingEmail={existingEmail} existingSellerStatus={existingSellerStatus} />
+        <Login existingRole={existingRole} existingEmail={existingEmail} />
       </div>
     );
 }

@@ -15,7 +15,8 @@ app.use(cookieParser());
 // cors policy
 app.use(
     cors({
-      origin: 'https://invoicing-web.vercel.app', // Your allowed origin
+      origin: "http://localhost:3000", // Your allowed origin
+      // origin: 'https://invoicing-web.vercel.app', // Your allowed origin
       credentials: true, // Allow cookies to be sent
     })
 );

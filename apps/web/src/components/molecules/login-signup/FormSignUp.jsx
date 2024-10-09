@@ -133,6 +133,11 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
       )
       if (res.data.message) {
         setIsSnackbarOpen(() => ({ color: "success", message: res.data.message }))
+
+        const result = res.data.result
+        localStorage.setItem("WOLLETEADDR", result.wolleteAddr)
+        localStorage.setItem("ROLE", result.role)
+        
         router.push('/login')
       }
       else if (res.data.error) {
@@ -156,6 +161,12 @@ const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView })
       )
       if (res.data.message) {
         setIsSnackbarOpen(() => ({ color: "success", message: res.data.message }))
+        const result = res.data.result
+        localStorage.setItem("WOLLETEADDR", result.wolleteAddr)
+        localStorage.setItem("EMAIL", result.email)
+        localStorage.setItem("ROLE", result.role)
+        localStorage.setItem("SELLER_ID", result.sellerId)
+
         router.push('/login')
       }
       else if (res.data.error) {

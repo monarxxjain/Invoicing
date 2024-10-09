@@ -133,6 +133,12 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
       )
       if(res.data.message) {
         setIsSnackbarOpen(() => ({ color: "success", message: res.data.message }))
+
+        const result = res.data.result
+        sessionStorage.setItem("TOKEN", result.access_token)
+        localStorage.setItem("WOLLETEADDR", result.wolleteAddr)
+        localStorage.setItem("ROLE", result.role)
+
         router.push('/investor')
       }
       else if(res.data.error) {
@@ -156,6 +162,15 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
       if (response.data.error) {
         console.log(response.data.error)
         setIsSnackbarOpen(() => ({ color: "danger", message: response.data.error }))
+
+        const result = response.data.result
+        sessionStorage.setItem("TOKEN", result.access_token)
+        localStorage.setItem("WOLLETEADDR", result.wolleteAddr)
+        localStorage.setItem("EMAIL", result.email)
+        localStorage.setItem("ROLE", result.role)
+        localStorage.setItem("SELLER_ID", result.sellerId)
+        localStorage.setItem("STATUS", result.status)
+
         setSubmitLoading(false)
       }
       else {
@@ -239,7 +254,7 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
                 label="Email"
                 id="outlined-size-small"
                 size="small"
-                defaultValue={existingEmail?.value}
+                defaultValue={existingEmail}
                 className="w-full xs:w-auto"
                 onChange={(e) => { handler(e) }}
               />

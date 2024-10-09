@@ -22,9 +22,9 @@ import Snackbar from '@mui/joy/Snackbar';
 export default function Login({ existingRole, existingEmail}) {
 
   const [userData, setUserData] = useState({
-    role: existingRole?.value || "",
+    role: existingRole || "",
     modelData: {
-      email : existingEmail?.value || ""
+      email : existingEmail || ""
     }
   })
 
