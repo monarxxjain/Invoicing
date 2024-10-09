@@ -1,25 +1,25 @@
 import WelcomeUser from "@/components/atoms/WelcomeUser";
 import DealsContainer from "@/components/molecules/investor/DealsContainer";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
 
-const getCookie = (name) => {
-  const cookieArr = document.cookie.split(";"); // Split cookies into an array
-  for (let i = 0; i < cookieArr.length; i++) {
-    let cookie = cookieArr[i].trim();
-    // Check if this cookie contains the name
-    if (cookie.startsWith(name + "=")) {
-      return cookie.substring(name.length + 1, cookie.length);
-    }
-  }
-  return null; // Return null if cookie doesn't exist
-};
+export async function getData(context) {
+  const requestHeaders = headers();
+  const cookieHeader = requestHeaders.get("cookie"); // Get raw cookie header string
+  console.log("CookieHeader ", cookieHeader);
+  const myCookie = cookieHeader
+    ?.split("; ")
+    .find((row) => row.startsWith("myCookieName="))
+    ?.split("=")[1];
+  console.log("My Cookie ", myCookie);
+}
 
 export default function Home() {
+  getData();
   const cookieStore = cookies();
-  const token = getCookie("access_token");
-  const role = getCookie("ROLE");
+  const token = cookieStore.get("access_token");
+  const role = cookieStore.get("ROLE");
   const decodedToken = jwt.decode(token?.value);
   console.log(token, role, decodedToken);
   // if(!decodedToken?.wolleteAddr){
