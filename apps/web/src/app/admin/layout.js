@@ -11,11 +11,27 @@ import BusinessIcon from '@mui/icons-material/Business';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import { useEffect } from "react";
 import { initWallet } from "@/utils/etherInterface";
+import { useRouter } from "next/navigation";
+import jwt from "jsonwebtoken";
 const inter = Inter({ subsets: ["latin"] });
 
 
 
 export default function RootLayout({ children }) {
+
+  const router = useRouter();
+
+  const [render, setRender] = useState(false);
+  useEffect(() => {
+    const token = sessionStorage.getItem("TOKEN");
+    const decodedToken = jwt.decode(token);
+
+    if (!token || decodedToken?.role !== "ADMIN") {
+      router.push("/");
+    } else {
+      setRender(true);
+    }
+  }, [router]);
 
   let name, email, role = "";
   const [user, setUser] = useState()

@@ -10,7 +10,7 @@ export default function Home() {
   const decodedToken = jwt.decode(token?.value);
 
   if(decodedToken?.role=="ADMIN") {
-    redirect("/admin/dashboard")
+    redirect("/admin/sellers")
   }
     return (
       <div>
