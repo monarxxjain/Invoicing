@@ -1,18 +1,9 @@
 import WelcomeUser from "@/components/atoms/WelcomeUser";
 import DealsContainer from "@/components/molecules/investor/DealsContainer";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
 
-export async function getData() {
-  const res = await fetch("https://invoicing-web.vercel.app/investor", {
-    cache: "no-store",
-  });
-  const data = await res.json();
-  console.log("Data ", data);
-  const myCookie = data.myCookie;
-  console.log("Cookie ", myCookie);
-}
 
 export default function Home() {
   getData();
