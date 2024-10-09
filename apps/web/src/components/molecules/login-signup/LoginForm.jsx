@@ -162,18 +162,19 @@ const LoginForm = ({ setIsSnackbarOpen, existingEmail, userData, setUserData, vi
       if (response.data.error) {
         console.log(response.data.error)
         setIsSnackbarOpen(() => ({ color: "danger", message: response.data.error }))
-
+        setSubmitLoading(false)
+      }
+      else {
+        
         const result = response.data.result
+
         sessionStorage.setItem("TOKEN", result.access_token)
         localStorage.setItem("WOLLETEADDR", result.wolleteAddr)
         localStorage.setItem("EMAIL", result.email)
         localStorage.setItem("ROLE", result.role)
+        localStorage.setItem("NAME", result.name)
         localStorage.setItem("SELLER_ID", result.sellerId)
-        localStorage.setItem("STATUS", result.status)
 
-        setSubmitLoading(false)
-      }
-      else {
         router.push('/seller')
       }
     } catch (error) {

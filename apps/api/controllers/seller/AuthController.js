@@ -112,7 +112,8 @@ const loginSeller = async (req, res) => {
         wolleteAddr: req.body.wolleteAddr,
         sellerId: req.seller.id,
         email: req.body.email,
-        access_token: token
+        access_token: token,
+        name: req.seller.name
       }
 
       res
