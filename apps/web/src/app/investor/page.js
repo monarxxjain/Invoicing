@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 
 
 export default  function Home() {
+  console.log("I am here")
   const cookieStore = cookies();
   const token = cookieStore.get('access_token');
   const role = cookieStore.get('ROLE');
