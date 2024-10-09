@@ -1,20 +1,26 @@
+"use client"
 import Admin from "@/components/molecules/login-signup/Admin";
-import { cookies } from 'next/headers'
-import jwt from 'jsonwebtoken';
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import jwt from "jsonwebtoken";
 
 export default function Home() {
-  const cookieStore = cookies()
-  const email = cookieStore.get('EMAIL')
-  const token = cookieStore.get('access_token')
-  const decodedToken = jwt.decode(token?.value);
+  const router = useRouter();
+  const [existingEmail, setExistingEmail] = useState(
+    typeof window !== "undefined" ? localStorage.getItem("EMAIL") : null
+  );
 
-  if(decodedToken?.role=="ADMIN") {
-    redirect("/admin/sellers")
-  }
+  useEffect(() => {
+    const token = sessionStorage.getItem("TOKEN");
+    const decodedToken = jwt.decode(token);
+
+    if (decodedToken?.role === "ADMIN") {
+      router.push("/admin/sellers");
+    } 
+  }, []);
     return (
       <div>
-        <Admin email={email?.value} />
+        <Admin email={existingEmail} />
       </div>
     );
 }
