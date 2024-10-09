@@ -4,15 +4,12 @@ import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
 
-export async function getData(context) {
-  const requestHeaders = headers();
-  const cookieHeader = requestHeaders.get("cookie"); // Get raw cookie header string
-  console.log("CookieHeader ", cookieHeader);
-  const myCookie = cookieHeader
-    ?.split("; ")
-    .find((row) => row.startsWith("myCookieName="))
-    ?.split("=")[1];
-  console.log("My Cookie ", myCookie);
+export async function getData() {
+  const res = await fetch("/investor", { cache: "no-store" });
+  const data = await res.json();
+  console.log("Data ", data);
+  const myCookie = data.myCookie;
+  console.log("Cookie ", myCookie);
 }
 
 export default function Home() {
