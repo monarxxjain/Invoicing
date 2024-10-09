@@ -5,7 +5,9 @@ import { redirect } from "next/navigation";
 import jwt from "jsonwebtoken";
 
 export async function getData() {
-  const res = await fetch("/investor", { cache: "no-store" });
+  const res = await fetch("https://invoicing-web.vercel.app/investor", {
+    cache: "no-store",
+  });
   const data = await res.json();
   console.log("Data ", data);
   const myCookie = data.myCookie;
