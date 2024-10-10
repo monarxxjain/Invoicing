@@ -9,8 +9,8 @@ import axios from "axios";
 import InvestedDeal from "./InvestedDeal";
 import { useEffect } from "react";
 import { BACKEND_URL } from "@/content/values";
-import CircularProgress from "@mui/material/CircularProgress";
 import { supabase } from "@/utils/supabase";
+import LoadDeals from "../common/LoadDeals";
 
 export default function InvestorPortfolioTab({ tabs }) {
   const [value, setValue] = useState("1"); // Initially set value as string '1'
@@ -119,7 +119,7 @@ export default function InvestorPortfolioTab({ tabs }) {
         <TabList
           onChange={handleChange}
           aria-label="lab API tabs example"
-          className="px-6 py-4"
+          className="px-6 pt-4"
         >
           {tabs.map(
             (
@@ -138,7 +138,7 @@ export default function InvestorPortfolioTab({ tabs }) {
         <TabPanel value={"1"}>
           <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
             <div className="grid grid-cols-2 gap-6 relative">
-              {!ongoingDeals && <CircularProgress className="mx-auto" />}
+              {!ongoingDeals && <LoadDeals />}
               {ongoingDeals &&
                 ongoingDeals?.map((iv, id) => {
                   return <InvestedDeal key={id} investedDeals={iv} />;
@@ -150,7 +150,7 @@ export default function InvestorPortfolioTab({ tabs }) {
         <TabPanel value={"2"}>
           <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
             <div className="grid grid-cols-2 gap-6 relative">
-              {!matureDeals && <CircularProgress className="mx-auto" />}
+              {!matureDeals && <LoadDeals />}
               {matureDeals &&
                 matureDeals?.map((iv, id) => {
                   return <InvestedDeal key={id} investedDeals={iv} />;
@@ -161,7 +161,7 @@ export default function InvestorPortfolioTab({ tabs }) {
         <TabPanel value={"3"}>
           <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
             <div className="grid grid-cols-2 gap-6 relative">
-              {!liquidatedDeals && <CircularProgress className="mx-auto" />}
+              {!liquidatedDeals && <LoadDeals />}
               {liquidatedDeals &&
                 liquidatedDeals?.map((iv, id) => {
                   return <InvestedDeal key={id} investedDeals={iv} />;
@@ -172,7 +172,7 @@ export default function InvestorPortfolioTab({ tabs }) {
         <TabPanel value={"4"}>
           <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
             <div className="grid grid-cols-2 gap-6 relative">
-              {!reqLiquidateDeals && <CircularProgress className="mx-auto" />}
+              {!reqLiquidateDeals && <LoadDeals />}
               {reqLiquidateDeals &&
                 reqLiquidateDeals?.map((iv, id) => {
                   return <InvestedDeal key={id} investedDeals={iv} />;
@@ -183,7 +183,7 @@ export default function InvestorPortfolioTab({ tabs }) {
         <TabPanel value={"5"}>
           <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
             <div className="grid grid-cols-2 gap-6 relative">
-              {!completedDeals && <CircularProgress className="mx-auto" />}
+              {!completedDeals && <LoadDeals />}
               {completedDeals &&
                 completedDeals?.map((iv, id) => {
                   return <InvestedDeal key={id} investedDeals={iv} />;

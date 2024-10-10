@@ -76,9 +76,7 @@ const InvestorStats = () => {
     const [currency, setCurrency] = useState("USD")
     const [input, setInput] = useState(1)
     const [value, setValue] = useState({
-        "USD": null,
-        "INR": null,
-        "EUR": null
+        
     })
     const balance = 12000
     const address = "0xCe52C63E5030879079c4C5B993A5EE8282a60A88"
@@ -135,7 +133,13 @@ const InvestorStats = () => {
                             <p onClick={()=>setCurrency("INR")} className={`w-7 h-7 text-center pt-[1px] hover:bg-blue-600/10 border rounded-full transition-all cursor-pointer ${currency=="INR" ? "border-blue-600 text-blue-600 bg-blue-600/10" : "border-gray-400"}`}>₹</p>
                             <p onClick={()=>setCurrency("EUR")} className={`w-7 h-7 text-center pt-[1px] hover:bg-blue-600/10 border rounded-full transition-all cursor-pointer ${currency=="EUR" ? "border-blue-600 text-blue-600 bg-blue-600/10" : "border-gray-400"}`}>€</p>
                         </div>
-                        <div className='text-2xl'>{(value[currency])*input}</div>
+                        {(value[currency]) ? 
+                            <div className='text-2xl'>{(value[currency])*input}</div>
+                        : 
+                            <div class="typing">
+                                <span class="dots"></span>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

@@ -383,3 +383,29 @@ input[type=number] {
   }
 }
 
+/* .css-13xfq8m-MuiTabPanel-root{
+  padding: 0 !important;
+} */
+
+.typing {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.dots::after {
+  content: '.';
+  animation: dots 1.5s steps(1, end) infinite;
+}
+
+@keyframes dots {
+  0%, 20% {
+    content: '.';
+  }
+  40% {
+    content: '..';
+  }
+  60%, 100% {
+    content: '...';
+  }
+}

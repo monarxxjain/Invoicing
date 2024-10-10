@@ -6,7 +6,7 @@ import { BACKEND_URL } from '@/content/values'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { supabase } from '@/utils/supabase'
-import CircularProgress from '@mui/material/CircularProgress';
+import LoadDeals from '../common/LoadDeals'
 const DealsContainer = ({role}) => {
   const [deals, setDeals] = useState()
   const [investedDeals, setInvestedDeals] = useState()
@@ -45,7 +45,9 @@ const DealsContainer = ({role}) => {
 
   return (
     <div className='mt-10 grid grid-cols-2 gap-6 relative loader'>
-      {!deals && <CircularProgress className='mx-auto'/>}
+      {!deals && <>
+        <LoadDeals />
+      </>}
       {deals?.map((deal, id) => {
         return (
           <Deal key={id} role={role} deal={deal} investedDeals={investedDeals} />
