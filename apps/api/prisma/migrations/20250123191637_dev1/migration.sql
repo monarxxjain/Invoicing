@@ -2,7 +2,7 @@
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'MANAGER', 'INVESTOR', 'SELLER', 'PARTNER');
 
 -- CreateEnum
-CREATE TYPE "DealStatus" AS ENUM ('PENDING', 'DRAFT', 'OPEN', 'FREEZED', 'CANCELLED', 'FINAL', 'CLOSED');
+CREATE TYPE "DealStatus" AS ENUM ('PENDING', 'REJECTED', 'DRAFT', 'OPEN', 'FREEZED', 'CANCELLED', 'ACCEPTED', 'FINAL', 'CLOSED');
 
 -- CreateEnum
 CREATE TYPE "SellerStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
@@ -11,7 +11,7 @@ CREATE TYPE "SellerStatus" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
 CREATE TYPE "LiquidStatus" AS ENUM ('LIQUIDABLE', 'BREAKED', 'COMPLETED');
 
 -- CreateEnum
-CREATE TYPE "DealTags" AS ENUM ('RF', 'ZC', 'FG');
+CREATE TYPE "DealTags" AS ENUM ('RF', 'ZC');
 
 -- CreateTable
 CREATE TABLE "Employee" (
@@ -46,16 +46,18 @@ CREATE TABLE "Seller" (
 CREATE TABLE "Deal" (
     "id" BIGSERIAL NOT NULL,
     "sellerId" INTEGER NOT NULL,
-    "targetAmount" INTEGER NOT NULL,
-    "minInvestmentAmount" INTEGER NOT NULL DEFAULT 0,
-    "currentAmount" INTEGER NOT NULL DEFAULT 0,
+    "targetAmount" DOUBLE PRECISION NOT NULL,
+    "minInvestmentAmount" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "currentAmount" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "bill" TEXT NOT NULL DEFAULT '',
     "status" "DealStatus" NOT NULL,
     "tags" "DealTags"[],
     "dealAim" TEXT NOT NULL,
     "completionDate" TIMESTAMP(3) NOT NULL,
     "freezingDate" TIMESTAMP(3) NOT NULL,
-    "profitPercent" INTEGER NOT NULL,
+    "nftTokenId" TEXT NOT NULL,
+    "nftAddress" TEXT NOT NULL,
+    "profitPercent" DOUBLE PRECISION NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Deal_pkey" PRIMARY KEY ("id")
@@ -76,7 +78,7 @@ CREATE TABLE "Investor" (
 CREATE TABLE "InvestorDeals" (
     "dealId" BIGINT NOT NULL,
     "investorId" INTEGER NOT NULL,
-    "investmentAmount" INTEGER NOT NULL,
+    "investmentAmount" DOUBLE PRECISION NOT NULL,
     "break" BOOLEAN NOT NULL DEFAULT false,
     "status" "LiquidStatus" NOT NULL DEFAULT 'LIQUIDABLE',
 
