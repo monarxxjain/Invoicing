@@ -5,7 +5,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import Snackbar from '@mui/joy/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { initWallet, mintAndTransferToSystem } from "@/utils/etherInterface";
+import { initWallet, mintAndTransferToSystem, transferNFTtoInvesto } from "@/utils/etherInterface";
 import { CircularProgress, IconButton, TextField } from "@mui/material";
 import PDFUpload from "@/components/atoms/PDFUpload";
 import { styled } from '@mui/material/styles';
@@ -103,7 +103,7 @@ function pad(number) {
     try {
 
       // Creating NFT and Transferring to Admin
-      const nft = await mintAndTransferToSystem(wallet.contractInstance, wallet.walletAddress, link)
+      const nft = await transferNFTtoInvesto(wallet.contractInstance, wallet.walletAddress, link)
 
       // Adding the Deal to the Database
       await axios.post(BACKEND_URL + '/deal/postDeal', {
@@ -251,10 +251,10 @@ function pad(number) {
         </div>
         <div className="datePicker">
           <label htmlFor="interestRate" className="text-sm text-blue-950 block  mb-4">
-            Tentative date when you will be returning money back to investors:-
+            Date when deal will be freezed:-
           </label>
           <BasicDatePicker 
-            label="Money Returning Date"
+            label="Start Date"
             handler={handleDateChange}
             id="completionDate"
             name="completionDate"
@@ -262,10 +262,10 @@ function pad(number) {
         </div>
         <div className="datePicker">
           <label htmlFor="interestRate" className="text-sm text-blue-950 block  mb-4">
-            Date on which deal will be Freezed :-
+            Date before which money has to be returned back to investors:-
           </label>
           <BasicDatePicker 
-            label="Freezing point Date"
+            label="End Date"
             handler={handleDateChange}
             id="freezingDate"
             name="freezingDate"
@@ -296,7 +296,7 @@ function pad(number) {
             <PDFUpload loading={loading} billFile={billFile} handleFileChange={handleFileChange} />
             {billFile && <IconButton className='w-fit' onClick={()=>{window.open(URL.createObjectURL(billFile))}}><DescriptionIcon className='text-3xl text-blue-950' /></IconButton>}          </div>
         </div>
-        <div className="col-span-2">
+        {/* <div className="col-span-2">
           <label htmlFor="dealAim" className="block text-gray-600">
             Deal Description
           </label>
@@ -308,7 +308,7 @@ function pad(number) {
             className="w-full border-gray-300 border shadow rounded-md py-2 px-4 mt-1"
             rows="3"
           />
-        </div>
+        </div> */}
       </div>
       <section className="flex justify-between">
         <ColorLoadingButton
