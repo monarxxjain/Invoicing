@@ -1,7 +1,7 @@
 const express = require('express')
 const cookieParser = require("cookie-parser");
 const cors = require('cors')
-// const prisma = require('./db');
+const prisma = require('./db');
 // const bcrypt = require('bcrypt');
 const authRouter = require('./routes/authRoutes');
 const dealRouter = require('./routes/dealRoutes')

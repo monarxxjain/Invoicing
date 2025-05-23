@@ -2,6 +2,7 @@
 import { BACKEND_URL } from "@/content/values";
 import pinata from "@/utils/pinata";
 import axios from "axios";
+import logo from "@/assets/logo.png";
 import React, { useState } from "react";
 import Snackbar from '@mui/joy/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -12,19 +13,24 @@ import { styled } from '@mui/material/styles';
 import { useEffect } from "react";
 import DescriptionIcon from '@mui/icons-material/Description';
 import BasicDatePicker from "@/components/atoms/DatePicker";
+import { addDeal } from "@/utils/blockchain";
+import Image from "next/image";
 
 const CreateDealForm = ({ sellerId }) => {
   const [open, setOpen] = useState()
   const [billFile, setBillFile] = useState(null);
+  const [nfts, setNfts] = useState([]);
   const [message, setMessage] = useState(null)
   const [success, setSuccess] = useState(null)
   const [error, setError] = useState(null)
   const [formData, setFormData] = useState({
-    targetAmount: "",
-    completionDate: "",
-    freezingDate: "",
-    interestRate: "",
-    dealAim: "",
+    minInvestmentAmount: 0,
+    targetAmount: 0,
+    freezingDate: null,
+    completionDate: null,
+    interestRate: 0,
+    bill: "",
+    tokenId: null
   });
 
   const [loading, setLoading] = useState(false)
@@ -36,6 +42,10 @@ const CreateDealForm = ({ sellerId }) => {
 
     }
   },[message])
+
+  useEffect(() => {
+    fetchNFTs();
+  },[])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,45 +85,67 @@ function pad(number) {
     setBillFile(e.target.files[0])
   };
 
+
+  function shortenAddress(address) {
+    if (!address) return "";
+    return `${address.slice(0, 4)}...${address.slice(-3)}`;
+  }
+
+  const fetchNFTs = async () => {
+
+    let wallet = await initWallet();
+    const address = wallet.walletAddress;
+    if (!address) return alert('Enter a wallet address!');
+
+    const baseURL = "https://eth-sepolia.g.alchemy.com/nft/v2/nRt9ALS9znWen17KP0FXrO7rkVDxjabG/getNFTs";
+
+    try {
+      const url = `${baseURL}?owner=${address}`;
+      const response = await fetch(url);
+      const data = await response.json();
+
+      setNfts(data.ownedNfts || []);
+      console.log(data.ownedNfts);
+    } catch (err) {
+      console.error('Error fetching NFTs:', err);
+      alert('Something went wrong while fetching NFTs.');
+    } 
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true)
 
     // Uploading PDF to Pinata
-    setMessage("Uploading Invoices")
-    const ipfshash = await pinata(billFile);
-    const link = 'https://ipfs.io/ipfs/' + (ipfshash).IpfsHash;
-
-    setFormData({
-      ...formData,
-      bill: link,
-    });
-
-    console.log({
-      ...formData,
-      bill: link,
-    });
-
     
-
-    setMessage("Connecting Wallet")
-    let wallet = await initWallet();
-    setMessage("Minting and Transferring NFT to PAMU")
 
     try {
 
-      // Creating NFT and Transferring to Admin
-      const nft = await transferNFTtoInvesto(wallet.contractInstance, wallet.walletAddress, link)
+      setMessage("Uploading Invoices")
+      const ipfshash = await pinata(billFile);
+      const link = 'https://ipfs.io/ipfs/' + (ipfshash).IpfsHash;
 
+      setFormData({
+        ...formData,
+        bill: link,
+      });
+      
+      setMessage(null)
+      let wallet = await initWallet();
+
+      const nft = await addDeal(wallet.contractInstance, 
+        formData.minInvestmentAmount,
+        formData.targetAmount,
+        formData.interestRate,
+        formData.freezingDate,
+        formData.completionDate,
+        1
+      )
+      
       // Adding the Deal to the Database
       await axios.post(BACKEND_URL + '/deal/postDeal', {
         ...formData,
-        bill: link,
         sellerId: Number(sellerId.value),
-        completionDate: formData.completionDate,
-        freezingDate: formData.freezingDate,
-        minInvestmentAmount: Number(formData.minInvestmentAmount),
-        targetAmount: Number(formData.targetAmount),
         nftTokenId: (nft.tokenID).toString(),
         nftAddress: nft.nftAddress
       }, {
@@ -143,7 +175,8 @@ function pad(number) {
       
     } catch (error) {
       setOpen(false)
-      setError("Unable to transfer NFT")
+      console.log(error)
+      setError("Unable to create deal")
       setLoading(false)
     }
         
@@ -216,100 +249,114 @@ function pad(number) {
       className="rounded-md"
     >
       <h2 className="text-2xl mb-4">Create Deal</h2>
-      <div className="grid grid-cols-2 gap-8 bg-white p-6 rounded-md shadow-md">
-        <div>
-          <label htmlFor="targetAmount" className="text-sm text-blue-950 block mb-4">
-            Total Target Amount which you wish to raise :-
-          </label>
-          <TextField
-            className="w-full"
-            type="number"
-            label="Target Amount"
-            value={formData.targetAmount}
-            onChange={handleChange}
-            id="targetAmount"
-            name="targetAmount"
-            size="small"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="minInvestmentAmount" className="text-sm text-blue-950 block  mb-4">
-            Minimum amount that anyone can invest :-
-          </label>
-          <TextField
-            className="w-full"
-            type="number"
-            label="Minimum Investment"
-            onChange={handleChange}
-            id="minInvestmentAmount"
-            name="minInvestmentAmount"
-            value={formData.minInvestmentAmount}
-            size="small"
-            required
-          />
-        </div>
-        <div className="datePicker">
-          <label htmlFor="interestRate" className="text-sm text-blue-950 block  mb-4">
-            Date when deal will be freezed:-
-          </label>
-          <BasicDatePicker 
-            label="Start Date"
-            handler={handleDateChange}
-            id="completionDate"
-            name="completionDate"
-          />
-        </div>
-        <div className="datePicker">
-          <label htmlFor="interestRate" className="text-sm text-blue-950 block  mb-4">
-            Date before which money has to be returned back to investors:-
-          </label>
-          <BasicDatePicker 
-            label="End Date"
-            handler={handleDateChange}
-            id="freezingDate"
-            name="freezingDate"
-          />
-        </div>
-        <div>
-          <label htmlFor="interestRate" className="block text-gray-600 mb-4">
-            Interest rate per year (%)
-          </label>
+      <div className="flex flex-col gap-8 bg-white p-6 rounded-md shadow-md">
+        <div className="grid grid-cols-2 gap-8">
+          <div>
+            <label htmlFor="targetAmount" className="text-sm text-blue-950 block mb-4">
+              Total Target Amount which you wish to raise :-
+            </label>
+            <TextField
+              className="w-full"
+              type="number"
+              label="Target Amount"
+              value={formData.targetAmount}
+              onChange={handleChange}
+              id="targetAmount"
+              name="targetAmount"
+              size="small"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="minInvestmentAmount" className="text-sm text-blue-950 block  mb-4">
+              Minimum amount that anyone can invest :-
+            </label>
+            <TextField
+              className="w-full"
+              type="number"
+              label="Minimum Investment"
+              onChange={handleChange}
+              id="minInvestmentAmount"
+              name="minInvestmentAmount"
+              value={formData.minInvestmentAmount}
+              size="small"
+              required
+            />
+          </div>
+          <div className="datePicker">
+            <label htmlFor="interestRate" className="text-sm text-blue-950 block  mb-4">
+              Date when deal will be freezed:-
+            </label>
+            <BasicDatePicker 
+              label="Start Date"
+              handler={handleDateChange}
+              id="completionDate"
+              name="completionDate"
+            />
+          </div>
+          <div className="datePicker">
+            <label htmlFor="interestRate" className="text-sm text-blue-950 block  mb-4">
+              Date before which money has to be returned back to investors:-
+            </label>
+            <BasicDatePicker 
+              label="End Date"
+              handler={handleDateChange}
+              id="freezingDate"
+              name="freezingDate"
+            />
+          </div>
+          <div>
+            <label htmlFor="interestRate" className="block text-gray-600 mb-4">
+              Interest rate per year (%)
+            </label>
 
-          <TextField
-            className="w-full"
-            type="number"
-            label="Interest Rate (%)"
-            onChange={handleChange}
-            id="interestRate"
-            name="interestRate"
-            value={formData.interestRate}
-            size="small"
-            required
-          />
+            <TextField
+              className="w-full"
+              type="number"
+              label="Interest Rate (%)"
+              onChange={handleChange}
+              id="interestRate"
+              name="interestRate"
+              value={formData.interestRate}
+              size="small"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="unpaidInvoices" className="block text-gray-600 mb-4">
+              Invoices at Stake
+            </label>
+            <div className="flex gap-6 items-center">
+              <PDFUpload loading={loading} billFile={billFile} handleFileChange={handleFileChange} />
+              {billFile && <IconButton className='w-fit' onClick={()=>{window.open(URL.createObjectURL(billFile))}}><DescriptionIcon className='text-3xl text-blue-950' /></IconButton>}          </div>
+          </div>
         </div>
-        <div>
-          <label htmlFor="unpaidInvoices" className="block text-gray-600 mb-4">
-            Invoices at Stake
+
+        <div className="col-span-2">
+          <label htmlFor="dealAim" className="block text-gray-600 mb-4">
+            Select NFT for Collateral
           </label>
-          <div className="flex gap-6 items-center">
-            <PDFUpload loading={loading} billFile={billFile} handleFileChange={handleFileChange} />
-            {billFile && <IconButton className='w-fit' onClick={()=>{window.open(URL.createObjectURL(billFile))}}><DescriptionIcon className='text-3xl text-blue-950' /></IconButton>}          </div>
+          <div className="flex gap-8">
+            {nfts.map((nft) => (
+              <div
+                key={nft.tokenId}
+                className={`border rounded-lg hover:opacity-80 hover:border-blue-900 cursor-pointer ${formData.tokenId === nft.id.tokenId ? 'border-blue-900 bg-blue-200' : ''}`}
+                onClick={() => {
+                  setFormData({
+                    ...formData,
+                    tokenId: nft.id.tokenId,
+                  });
+                }}
+              >
+                <Image className="rounded-lg" src={logo} width={100} height={150} alt={nft.name} />
+                <h3 className="text-center text-sm text-blue-900 mt-1">{shortenAddress(nft.id.tokenId)}</h3>
+              </div>
+            ))}
+          </div>
         </div>
-        {/* <div className="col-span-2">
-          <label htmlFor="dealAim" className="block text-gray-600">
-            Deal Description
-          </label>
-          <textarea
-            id="dealAim"
-            name="dealAim"
-            value={formData.dealAim}
-            onChange={handleChange}
-            className="w-full border-gray-300 border shadow rounded-md py-2 px-4 mt-1"
-            rows="3"
-          />
-        </div> */}
+        
       </div>
+      
       <section className="flex justify-between">
         <ColorLoadingButton
           loadingPosition="end"

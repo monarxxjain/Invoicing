@@ -1,21 +1,40 @@
+# Stage 1: Base setup
 FROM node:lts-alpine AS base
+
+# Set environment for pnpm
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-COPY . /app
-COPY ./apps/api/.env /app/apps/api/.env
+
+# Install curl and pnpm via corepack
+RUN apk add --no-cache curl && \
+    corepack enable && \
+    corepack prepare pnpm@9.15.4 --activate
+
+# Set working directory
 WORKDIR /app
 
-# FROM base AS prod-deps
-# RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
-#
-# FROM base AS build
-# RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-# RUN pnpm run build
+# Copy root config files
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 
-FROM base
-RUN pnpm install --frozen-lockfile
-RUN pnpm run db:generate
-# RUN pnpm run db:push
+# Copy only package.json files for caching layer
+COPY apps/api/package.json ./apps/api/package.json
+COPY apps/web/package.json ./apps/web/package.json
+COPY packages/eslint-config/package.json ./packages/eslint-config/package.json
+COPY packages/typescript-config/package.json ./packages/typescript-config/package.json
+COPY packages/ui/package.json ./packages/ui/package.json
+
+# Install all dependencies (will be cached if package.jsons haven't changed)
+RUN pnpm install
+
+
+# Now copy the full source code
+COPY apps ./apps
+COPY turbo.json tsconfig.json ./
+COPY packages ./packages
+
+
+# Expose frontend (3000) and backend (3001)
 EXPOSE 3000 3001
-CMD [ "pnpm", "dev" ]
+
+# Default command to run both frontend and backend servers
+CMD ["pnpm", "start"]

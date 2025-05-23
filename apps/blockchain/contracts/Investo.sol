@@ -43,7 +43,7 @@ contract Investo is Ownable {
     mapping(uint256 => Investment[]) public dealInvestments; // dealID -> list of investments
 
     /// Seller creates a deal and transfers NFT as collateral
-    function createDeal(
+    function addDeal(
         uint256 _minAmt,
         uint256 _targetAmount,
         uint256 _interestRate,

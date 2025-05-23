@@ -1,20 +1,19 @@
-// https://lime-adjacent-gamefowl-120.mypinata.cloud/ipfs/
-
 const axios = require("axios");
 const FormData = require("form-data");
-// const fs = require("fs");
+import dotenv from "dotenv";
+dotenv.config();
 
 const JWT = process.env.PINATA_KEY
-const PINATA_BASE_URL = process.env.PINATA_BASE_URL
+const GATEWAY = process.env.PINATA_BASE_URL
 
-const pinFileToIPFS = async (file) => {
+const pinFileToIPFS = async (file, sellerAddress) => {
   console.log("JWT ",JWT);
   const formData = new FormData();
 
   formData.append("file", file);
 
   const pinataMetadata = JSON.stringify({
-    name: "File name",
+    name: `invoice-${Date.now()}-${sellerAddress}`,
   });
   formData.append("pinataMetadata", pinataMetadata);
 
@@ -24,7 +23,7 @@ const pinFileToIPFS = async (file) => {
   formData.append("pinataOptions", pinataOptions);
 
   try {
-    const res = await axios.post(
+    const fileUploadRes = await axios.post(
       "https://api.pinata.cloud/pinning/pinFileToIPFS",
       formData,
       {
@@ -35,39 +34,22 @@ const pinFileToIPFS = async (file) => {
         },
       }
     );
-    // console.log("File uploaded to IPFS:", res.data);
+    console.log("File uploaded to IPFS");
 
-    const sellerAddress = "0xu3289483242";
-    const metadataObj = {
-      description: "The NFT to the Bill uploaded by the Company",
-      external_url: `${PINATA_BASE_URL}/ipfs/${res.data.IpfsHash}`,
-      image: "https://i1.sndcdn.com/avatars-000672907826-20999i-t240x240.jpg",
-      name: `Company Bill NFT ${sellerAddress}`,
-      attributes: [
-        {
-          trait_type: "sellerAddress",
-          value: sellerAddress
-        },
-        {
-          display_type: "date",
-          trait_type: "createdAt",
-          value: Date().toString()
-        },
-        {
-          trait_type: "systemAddress",
-          value: "0x876876876876876"
-        },
-        {
-          trait_type: "billAddress",
-          value: `${PINATA_BASE_URL}/ipfs/${res.data.IpfsHash}`
-        }
-      ]
+    const fileHash = fileUploadRes.data.IpfsHash;
+    const fileUrl = `${GATEWAY}/${fileHash}`;
+
+    const metadata = {
+      seller: sellerAddress,
+      uploaded_at: new Date().toISOString(),
+      file_url: fileUrl,
+      file_cid: fileHash,
+      file_type: "application/pdf",
+      notes: "This file contains a collection of invoices submitted by the seller for funding evaluation.",
     };
 
-    const metadata = JSON.stringify(metadataObj);
 
-    try {
-      const metadataRes = await axios.post(
+      const metadataUploadRes = await axios.post(
         "https://api.pinata.cloud/pinning/pinJSONToIPFS",
         metadata,
         {
@@ -78,13 +60,22 @@ const pinFileToIPFS = async (file) => {
           },
         }
       );
-    //   console.log("Metadata pinned to IPFS:", metadataRes.data);
-      return metadataRes.data;
-    } catch (error) {
-      console.error("Error pinning metadata to IPFS:", error.message, JSON.stringify(error));
-    }
+
+      console.log("Metadata pinned to IPFS");
+      const metadataCID = metadataUploadRes.data.IpfsHash;
+      const metadataURL = `${GATEWAY}/${metadataCID}`;
+
+      return {
+        fileCID: fileHash,
+        fileURL: fileUrl,
+        metadataCID,
+        metadataURL,
+      };
+
+
   } catch (error) {
-    console.error("Error uploading file to IPFS:", error.message);
+    console.error("Error uploading invoice to IPFS:", error?.response?.data || error.message);
+    throw new Error("IPFS upload failed");
   }
 };
 

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "hardhat compile",
-    "deploy:sepolia": "hardhat ignition deploy ./ignition/modules/Investo.js --network sepolia"
+    "deploy:sepolia": "hardhat ignition deploy ./ignition/modules/Investo.js --network sepolia",
+    "deploy:nft": "hardhat run scripts/deploy-nft.js --network sepolia",
+    "mint:nft": "hardhat run scripts/mint-nft.js --network sepolia"
   },
   "keywords": [],
   "author": "",

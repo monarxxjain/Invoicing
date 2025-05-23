@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { ABI } from "./contract_abi";
 
 const NETWORK = "sepolia";
-const NFTContractAddress = "0x590948DF40fFE7321556B3ff39765f339681Fc93";
+const NFTContractAddress = "0xc17b6F560dF2a161684357eAacaC85154103d87b";
 const NFT_ABI = ABI.abi;
 
 export { NFT_ABI, NFTContractAddress };
@@ -39,7 +39,34 @@ export const addDeal = async (contract, minAmt, targetAmount, interestRate, star
     return;
   }
 
-  const tx = await contract.addDeal(minAmt, targetAmount, interestRate, startDate, endDate, tokenID);
+
+  const minAmtInWei = BigInt(ethers.parseEther(minAmt.toString()));
+  const targetAmtInWei = BigInt(ethers.parseEther(targetAmount.toString()));
+  const parsedInterestRate = BigInt(interestRate);
+  const startTimestamp = BigInt(Math.floor(new Date(startDate).getTime() / 1000));
+  const endTimestamp = BigInt(Math.floor(new Date(endDate).getTime() / 1000));
+  const parsedTokenID = BigInt(tokenID); 
+
+  console.log({
+    minAmtInWei,
+    targetAmtInWei,
+    parsedInterestRate,
+    startTimestamp,
+    endTimestamp,
+    parsedTokenID
+  })
+  console.log(contract.interface.fragments.map(f => f.name));
+
+
+
+  const tx = await contract.addDeal(
+    minAmtInWei,
+    targetAmtInWei,
+    parsedInterestRate,
+    startTimestamp,
+    endTimestamp,
+    parsedTokenID
+  );
   await tx.wait();
   return tx;
 
