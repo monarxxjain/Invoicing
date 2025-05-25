@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index",
     "start": "node index",
-    "db:generate": "prisma generate && prisma migrate --name=dev",
+    "db:generate": "prisma generate && prisma migrate dev --name dev",
     "db:push": "prisma db push --skip-generate",
     "lint": "eslint . --max-warnings 0",
     "build": "echo hi",

@@ -6,7 +6,7 @@ import logo from "@/assets/logo.png";
 import React, { useState } from "react";
 import Snackbar from '@mui/joy/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { initWallet, mintAndTransferToSystem, transferNFTtoInvesto } from "@/utils/etherInterface";
+import { initWallet } from "@/utils/blockchain";
 import { CircularProgress, IconButton, TextField } from "@mui/material";
 import PDFUpload from "@/components/atoms/PDFUpload";
 import { styled } from '@mui/material/styles';
@@ -26,11 +26,12 @@ const CreateDealForm = ({ sellerId }) => {
   const [formData, setFormData] = useState({
     minInvestmentAmount: 0,
     targetAmount: 0,
-    freezingDate: null,
-    completionDate: null,
+    endDate: null,
+    startDate: null,
     interestRate: 0,
     bill: "",
-    tokenId: null
+    tokenId: null,
+    nft_address: null,
   });
 
   const [loading, setLoading] = useState(false)
@@ -137,17 +138,20 @@ function pad(number) {
         formData.minInvestmentAmount,
         formData.targetAmount,
         formData.interestRate,
-        formData.freezingDate,
-        formData.completionDate,
-        1
+        formData.startDate,
+        formData.endDate,
+        formData.tokenId,
+        formData.nft_address
       )
+      console.log(nft)
+      setMessage("Deal is being created, please wait...")
       
       // Adding the Deal to the Database
       await axios.post(BACKEND_URL + '/deal/postDeal', {
         ...formData,
         sellerId: Number(sellerId.value),
-        nftTokenId: (nft.tokenID).toString(),
-        nftAddress: nft.nftAddress
+        nftTokenId: formData.tokenId,
+        nftAddress: formData.nft_address
       }, {
         withCredentials: true
       })
@@ -165,8 +169,8 @@ function pad(number) {
       setLoading(false)
       setFormData({
         targetAmount: "",
-        completionDate: null,
-        freezingDate: null,
+        startDate: null,
+        endDate: null,
         interestRate: "",
         dealAim: "",
         minInvestmentAmount: ""
@@ -211,8 +215,8 @@ function pad(number) {
           ...formData,
           bill: link,
           sellerId: Number(sellerId.value),
-          completionDate: formData.completionDate,
-          freezingDate: formData.freezingDate,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
           minInvestmentAmount: Number(formData.minInvestmentAmount),
           targetAmount: Number(formData.targetAmount),
         },
@@ -225,8 +229,8 @@ function pad(number) {
         setLoading(false)
         setFormData({
           targetAmount: "",
-          completionDate: null,
-          freezingDate: null,
+          startDate: null,
+          endDate: null,
           interestRate: "",
           dealAim: "",
           minInvestmentAmount: ""
@@ -290,8 +294,8 @@ function pad(number) {
             <BasicDatePicker 
               label="Start Date"
               handler={handleDateChange}
-              id="completionDate"
-              name="completionDate"
+              id="startDate"
+              name="startDate"
             />
           </div>
           <div className="datePicker">
@@ -301,8 +305,8 @@ function pad(number) {
             <BasicDatePicker 
               label="End Date"
               handler={handleDateChange}
-              id="freezingDate"
-              name="freezingDate"
+              id="endDate"
+              name="endDate"
             />
           </div>
           <div>
@@ -345,6 +349,7 @@ function pad(number) {
                   setFormData({
                     ...formData,
                     tokenId: nft.id.tokenId,
+                    nft_address: nft.contract.address
                   });
                 }}
               >

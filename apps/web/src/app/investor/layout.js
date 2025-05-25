@@ -9,7 +9,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import { initWallet } from "@/utils/etherInterface";
+import { initWallet } from "@/utils/blockchain";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import jwt from "jsonwebtoken";

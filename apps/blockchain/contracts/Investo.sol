@@ -1,17 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Investo is Ownable {
     IERC721 public nftContract;
 
     constructor(address _nftAddress) Ownable(msg.sender) {
-        nftContract = IERC721(_nftAddress);
+        nftContract = ERC721(_nftAddress);
     }
 
     event DealRepaid(uint256 indexed dealID, address indexed seller, uint256 totalRepaid);
+    event DealCreated(uint256 dealId, address seller, uint256 tokenID);
 
     // Represents a deal between the seller and the platform
     struct Deal {
@@ -49,12 +50,14 @@ contract Investo is Ownable {
         uint256 _interestRate,
         uint256 _startDate,
         uint256 _endDate,
-        uint256 _tokenID
+        uint256 _tokenID,
+        address _nftAddress
     ) external returns (uint256) {
         require(_endDate > _startDate, "End date must be after start date");
 
         // Transfer NFT from seller to Investo contract (as collateral)
-        nftContract.transferFrom(msg.sender, address(this), _tokenID);
+        // nftContract.transferFrom(msg.sender, address(this), _tokenID);
+        IERC721(_nftAddress).transferFrom(msg.sender, address(this), _tokenID);
 
         dealCounter++;
         deals[dealCounter] = Deal({
@@ -73,6 +76,7 @@ contract Investo is Ownable {
             active: true
         });
 
+        emit DealCreated(dealCounter, msg.sender, _tokenID); // emit event
         return dealCounter; // Return the ID of the newly created deal
     }
 

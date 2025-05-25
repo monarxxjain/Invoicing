@@ -9,7 +9,7 @@ import AddCardIcon from '@mui/icons-material/AddCard';
 import BusinessIcon from '@mui/icons-material/Business';
 import InsertChartIcon from '@mui/icons-material/InsertChart';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
-import { initWallet } from "@/utils/etherInterface";
+import { initWallet } from "@/utils/blockchain";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import jwt from "jsonwebtoken";

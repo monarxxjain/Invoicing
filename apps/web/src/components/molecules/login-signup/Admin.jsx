@@ -11,7 +11,7 @@ import { BACKEND_URL } from "@/content/values";
 import { useRouter } from "next/navigation";
 import Snackbar from '@mui/joy/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { initWallet } from "@/utils/etherInterface";
+import { initWallet } from "@/utils/blockchain";
 
 const Admin = ({email}) => {
 

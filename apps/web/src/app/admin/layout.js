@@ -10,7 +10,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import BusinessIcon from '@mui/icons-material/Business';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import { useEffect } from "react";
-import { initWallet } from "@/utils/etherInterface";
+import { initWallet } from "@/utils/blockchain";
 import { useRouter } from "next/navigation";
 import jwt from "jsonwebtoken";
 const inter = Inter({ subsets: ["latin"] });

@@ -14,7 +14,7 @@ import axios from "axios";
 import { useRouter } from 'next/navigation'
 import LoadingButton from '@mui/lab/LoadingButton';
 import { supabase } from "@/utils/supabase";
-import { initWallet } from "@/utils/etherInterface";
+import { initWallet } from "@/utils/blockchain";
 import Link from "next/link";
 
 const FormSignUp = ({ setIsSnackbarOpen, userData, setUserData, view, setView }) => {
