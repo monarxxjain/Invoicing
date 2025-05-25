@@ -69,28 +69,28 @@ const FreezedDeal = ({ deal, updateDeals }) => {
     },
     {
       title: "Return On",
-      value: formattedDate(deal.completionDate),
+      value: formattedDate(deal.endDate),
       color: "text-black"
     },
   ]
 
-  useEffect(()=>{
+  useEffect(() => {
     console.log(snackbar)
-  },[snackbar])
+  }, [snackbar])
 
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      
+
       const res = await axios.put(`${BACKEND_URL}/deal/sellerDealDecision`,
         {
           id: Number(deal.id),
           status: openModal,
         },
-        {withCredentials: true}
+        { withCredentials: true }
       )
 
-      if(res.data.message) {
+      if (res.data.message) {
         setSnackbar({
           open: true,
           message: res.data.message,
@@ -102,7 +102,7 @@ const FreezedDeal = ({ deal, updateDeals }) => {
           updateDeals(deal)
         }, 1000);
       }
-      else if(res.data.error) {
+      else if (res.data.error) {
         console.log(res.data.error)
         setSnackbar({
           open: true,
@@ -120,7 +120,7 @@ const FreezedDeal = ({ deal, updateDeals }) => {
 
   return (
     <div className='relative h-full'>
-      <div  onClick={() => {router.push(`/seller/deals/${deal.id}`)}} className={`absolute cursor-pointer left-8 z-10 -top-3 border  rounded px-10 text-sm  border-blue-500 bg-blue-200 text-blue-700`}>
+      <div onClick={() => { router.push(`/seller/deals/${deal.id}`) }} className={`absolute cursor-pointer left-8 z-10 -top-3 border  rounded px-10 text-sm  border-blue-500 bg-blue-200 text-blue-700`}>
         ICT{deal.id}
       </div>
       <div className={`border h-full border-blue-500 bg-white rounded p-6 flex flex-col gap-5`}>
@@ -137,7 +137,7 @@ const FreezedDeal = ({ deal, updateDeals }) => {
 
 
         <section className='w-full flex justify-between items-center ps-2'>
-          <div className={`w-[90%] h-2 ${progressPercent<5 ? "border border-gray-400 h-3 rounded" : ""}`}>
+          <div className={`w-[90%] h-2 ${progressPercent < 5 ? "border border-gray-400 h-3 rounded" : ""}`}>
             <div className="progressBar">
               <motion.div
                 className={`bar ${progressPercent < 50 ? "bg-red-500" : "bg-green-500"}`}
@@ -160,7 +160,7 @@ const FreezedDeal = ({ deal, updateDeals }) => {
         <section className='grid grid-cols-3 gap-y-3 px-2 gap-x-6 '>
           <div className='flex flex-col'>
             <div className='text-gray-500 font-semibold text-sm'>Invoices</div>
-            <IconButton className='w-fit' onClick={()=>{window.open(deal.bill)}}><DescriptionIcon className='text-3xl text-blue-950' /></IconButton>
+            <IconButton className='w-fit' onClick={() => { window.open(deal.bill) }}><DescriptionIcon className='text-3xl text-blue-950' /></IconButton>
           </div>
           <div className='flex flex-col gap-1 -ms-6'>
             <div className='text-gray-500 font-semibold text-sm'>Total Money</div>
@@ -168,14 +168,14 @@ const FreezedDeal = ({ deal, updateDeals }) => {
           </div>
           <div className='flex flex-col gap-1'>
             <div className='text-gray-500 font-semibold text-sm'>Freezing Point</div>
-            <div className={`font-bold text-xl `}>{formattedDate(deal.freezingDate)}</div>
+            <div className={`font-bold text-xl `}>{formattedDate(deal.startDate)}</div>
           </div>
         </section>
 
         <section className='grid grid-cols-3 px-2 gap-x-6 gap-y-4'>
           {details.map((detail, id) => {
             return (
-              <div key={id} className={`flex flex-col gap-1 ${id==1 && "-ms-6"}`}>
+              <div key={id} className={`flex flex-col gap-1 ${id == 1 && "-ms-6"}`}>
                 <div className='text-gray-500 font-semibold text-sm'>{detail.title}</div>
                 <div className={`font-bold text-xl ${detail.color}`}>{detail.value}</div>
               </div>
@@ -194,10 +194,10 @@ const FreezedDeal = ({ deal, updateDeals }) => {
           </div>
 
           <div className='flex justify-between gap-6'>
-            <Button onClick={() => {setOpenModal("CANCELLED")}} color='error' variant='contained'>
+            <Button onClick={() => { setOpenModal("CANCELLED") }} color='error' variant='contained'>
               <div>Cancel Deal</div>
             </Button>
-            <Button onClick={() => {setOpenModal("ACCEPTED")}} color='success' variant='contained'>
+            <Button onClick={() => { setOpenModal("ACCEPTED") }} color='success' variant='contained'>
               <div>Accept Deal</div>
             </Button>
           </div>
@@ -208,41 +208,41 @@ const FreezedDeal = ({ deal, updateDeals }) => {
       {openModal == "CANCELLED" && <Modal
         className='fade-in text-white'
         open={openModal}
-        onClose={() => {setOpenModal(false);}}
+        onClose={() => { setOpenModal(false); }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-         <div style={style} className='flex flex-col bg-white rounded'>
-            <p className='px-5 text-lg py-3 bg-[#061c37] rounded-t '>Are you Sure ?</p>
-            <p className='px-5 py-3 text-[#061c37]'>Do you want to CANCEL this deal ?</p>
-            <div className='flex gap-6 px-5 py-3 justify-between'>
-              <Button onClick={() => {setOpenModal(false); setLoading(false)}}>Cancel</Button>
-              <LoadingButton className='loading-button' loadingPosition='end' loading={loading} color='error' variant='outlined' onClick={() => handleSubmit()} ><div className={`${loading && "me-3"}`}>REJECT</div></LoadingButton>
-            </div>
+        <div style={style} className='flex flex-col bg-white rounded'>
+          <p className='px-5 text-lg py-3 bg-[#061c37] rounded-t '>Are you Sure ?</p>
+          <p className='px-5 py-3 text-[#061c37]'>Do you want to CANCEL this deal ?</p>
+          <div className='flex gap-6 px-5 py-3 justify-between'>
+            <Button onClick={() => { setOpenModal(false); setLoading(false) }}>Cancel</Button>
+            <LoadingButton className='loading-button' loadingPosition='end' loading={loading} color='error' variant='outlined' onClick={() => handleSubmit()} ><div className={`${loading && "me-3"}`}>REJECT</div></LoadingButton>
+          </div>
         </div>
-            
+
       </Modal>}
 
       {openModal == "ACCEPTED" && <Modal
         className='fade-in text-white'
         open={openModal}
-        onClose={() => {setOpenModal(false);}}
+        onClose={() => { setOpenModal(false); }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-         <div style={style} className='flex flex-col bg-white rounded'>
-            <p className='px-5 text-lg py-3 bg-[#061c37] rounded-t '>Are you Sure ?</p>
-            <div className='px-5 py-3 text-[#061c37]'>
-              <p>Do you want to ACCEPT this deal ?</p>
-              <p className='text-sm text-gray-500 mt-1'>After accepting, you will receive {deal.currentAmount} ETH.</p>
-            </div>
-            
-            <div className='flex gap-6 px-5 py-3 justify-between'>
-              <Button onClick={() => {setOpenModal(false); setLoading(false)}}>Cancel</Button>
-              <LoadingButton className='loading-button' loadingPosition='end' loading={loading} color='success' variant='outlined' onClick={() => handleSubmit()} ><div className={`${loading && "me-3"}`}>APPROVE</div></LoadingButton>
-            </div>
+        <div style={style} className='flex flex-col bg-white rounded'>
+          <p className='px-5 text-lg py-3 bg-[#061c37] rounded-t '>Are you Sure ?</p>
+          <div className='px-5 py-3 text-[#061c37]'>
+            <p>Do you want to ACCEPT this deal ?</p>
+            <p className='text-sm text-gray-500 mt-1'>After accepting, you will receive {deal.currentAmount} ETH.</p>
+          </div>
+
+          <div className='flex gap-6 px-5 py-3 justify-between'>
+            <Button onClick={() => { setOpenModal(false); setLoading(false) }}>Cancel</Button>
+            <LoadingButton className='loading-button' loadingPosition='end' loading={loading} color='success' variant='outlined' onClick={() => handleSubmit()} ><div className={`${loading && "me-3"}`}>APPROVE</div></LoadingButton>
+          </div>
         </div>
-            
+
       </Modal>}
 
       <Snackbar
@@ -254,7 +254,7 @@ const FreezedDeal = ({ deal, updateDeals }) => {
           if (reason === 'clickaway') {
             return;
           }
-          setSnackbar((prev) => ({ ...prev, open: false}));
+          setSnackbar((prev) => ({ ...prev, open: false }));
         }}
       >
         {snackbar.message}

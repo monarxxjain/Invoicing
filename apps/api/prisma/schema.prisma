@@ -84,9 +84,8 @@ model Deal {
   bill                String          @default("")
   status              DealStatus
   tags                DealTags[]
-  dealAim             String
-  completionDate      DateTime
-  freezingDate        DateTime
+  startDate           DateTime
+  endDate             DateTime
   nftTokenId          String
   nftAddress          String
   profitPercent       Float

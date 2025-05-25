@@ -12,17 +12,18 @@ const addDeal = async (req, res) => {
     return;
   }
   console.log("Deal ", data);
+  console.log(data.id)
   try {
     let deal = await prisma.deal.create({
       data: {
+        id: Number(data.id),
         seller: { connect: { id: data.sellerId } },
-        targetAmount: data.targetAmount,
+        targetAmount: parseFloat(data.targetAmount),
         bill: data.bill,
-        minInvestmentAmount: data.minInvestmentAmount,
+        minInvestmentAmount: parseFloat(data.minInvestmentAmount),
         status: "PENDING",
-        dealAim: data.dealAim,
-        completionDate: data.completionDate,
-        freezingDate: data.freezingDate,
+        startDate: data.startDate,
+        endDate: data.endDate,
         profitPercent: Number(data.interestRate),
         nftTokenId: data.nftTokenId,
         nftAddress: data.nftAddress,

@@ -134,7 +134,7 @@ function pad(number) {
       setMessage(null)
       let wallet = await initWallet();
 
-      const nft = await addDeal(wallet.contractInstance, 
+      const deal = await addDeal(wallet.contractInstance, 
         formData.minInvestmentAmount,
         formData.targetAmount,
         formData.interestRate,
@@ -143,13 +143,14 @@ function pad(number) {
         formData.tokenId,
         formData.nft_address
       )
-      console.log(nft)
+      console.log(deal)
       setMessage("Deal is being created, please wait...")
       
       // Adding the Deal to the Database
       await axios.post(BACKEND_URL + '/deal/postDeal', {
         ...formData,
-        sellerId: Number(sellerId.value),
+        id: (deal.toString()),
+        sellerId: Number(sellerId),
         nftTokenId: formData.tokenId,
         nftAddress: formData.nft_address
       }, {

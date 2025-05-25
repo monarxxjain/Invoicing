@@ -6,7 +6,7 @@ export default function Home( ) {
   // const sellerId = cookieStore.get('SELLER_ID')
     return (
       <div className="h-[90vh] overflow-y-scroll bg-gray-100 px-6 py-8">
-        <CreateDealForm sellerId={2} />
+        <CreateDealForm sellerId={3} />
       </div>
     );
 }

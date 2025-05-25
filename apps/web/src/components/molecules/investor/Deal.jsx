@@ -48,7 +48,7 @@ const Deal = ({ deal, investedDeals, role }) => {
     },
     {
       title: "Return in",
-      value: `${calcNoOfDays(deal.completionDate)} days`,
+      value: `${calcNoOfDays(deal.endDate)} days`,
       color: "text-green-600"
     },
     {
@@ -78,18 +78,18 @@ const Deal = ({ deal, investedDeals, role }) => {
   const { wolleteInfo } = useContext(ThemeContext)
 
   useEffect(() => {
-    
-    if((availableAmount * 1e18) <= (deal.minInvestmentAmount * 1e18)) {
+
+    if ((availableAmount * 1e18) <= (deal.minInvestmentAmount * 1e18)) {
       setLastTransaction(((deal.targetAmount * 1e18) - (deal.currentAmount * 1e18)) / 1e18)
       setAmount(((deal.targetAmount * 1e18) - (deal.currentAmount * 1e18)) / 1e18)
     }
 
-    for(let i=0; i<investedDeals?.length; i++){
-      if(deal.id == investedDeals[i].dealId){
-         setInvestedAmount(investedDeals[i].investmentAmount)
-         break;
+    for (let i = 0; i < investedDeals?.length; i++) {
+      if (deal.id == investedDeals[i].dealId) {
+        setInvestedAmount(investedDeals[i].investmentAmount)
+        break;
       }
-  
+
     }
   }, [])
 
@@ -108,11 +108,11 @@ const Deal = ({ deal, investedDeals, role }) => {
 
   const invest = async (amount) => {
 
-  
+
     try {
       setLoading(true)
       const dealId = deal.id
-      
+
       // Type Casting
       deal.id = Number(deal.id);
       deal.investors = deal.investors?.map((v) => {
@@ -121,8 +121,8 @@ const Deal = ({ deal, investedDeals, role }) => {
 
       const isTransactionSuccess = await addInvestment(wolleteInfo.contractInstance, wolleteInfo.walletAddress, `${dealId}`, (Number(Math.abs(amount))) * 1e18)
       console.log("isTransactionSuccess: ", isTransactionSuccess)
-      
-      
+
+
       // Updating DB after Transaction
       const res = await axios.post(`${BACKEND_URL}/deal/investDeal`,
         {
@@ -140,15 +140,15 @@ const Deal = ({ deal, investedDeals, role }) => {
         setLoading(false)
       }
       else if (res.data.message) {
-        
-        if(res.data.lastTransaction) {
+
+        if (res.data.lastTransaction) {
           setLastTransaction(res.data.lastTransaction)
           setAmount(res.data.lastTransaction)
         }
-        setInvestedAmount(investedAmount+amount)
+        setInvestedAmount(investedAmount + amount)
         setError(false)
-        setProgressPercent(Math.floor((Number(amount)+Number(deal.currentAmount))/Number(deal.targetAmount) *100))
-        setAvailableAmount(((availableAmount*1e18)-(Number(amount)*1e18)) / 1e18)
+        setProgressPercent(Math.floor((Number(amount) + Number(deal.currentAmount)) / Number(deal.targetAmount) * 100))
+        setAvailableAmount(((availableAmount * 1e18) - (Number(amount) * 1e18)) / 1e18)
         setSuccess(res.data.message)
         setOpen(true)
         setAmount(null)
@@ -170,7 +170,7 @@ const Deal = ({ deal, investedDeals, role }) => {
 
   return (
     <div className='relative h-full'>
-      <div  onClick={() => {role == "SELLER" && router.push(`/seller/deals/${deal.id}`)}}  className={`absolute cursor-pointer left-8 z-10 -top-3 border  rounded px-10 text-sm  border-green-400 bg-green-200 text-green-700`}>
+      <div onClick={() => { role == "SELLER" && router.push(`/seller/deals/${deal.id}`) }} className={`absolute cursor-pointer left-8 z-10 -top-3 border  rounded px-10 text-sm  border-green-400 bg-green-200 text-green-700`}>
         ICT{deal.id}
       </div>
       <div className={`border h-full border-green-400 bg-white rounded px-3 pt-5 pb-3 flex flex-col gap-5`}>
@@ -186,7 +186,7 @@ const Deal = ({ deal, investedDeals, role }) => {
         </section>
 
         <section className='w-full flex justify-between items-center ps-2'>
-          <div className={`w-[90%] h-2 ${progressPercent<5 ? "border border-gray-400 h-2 rounded mt-[1px]" : ""}`}>
+          <div className={`w-[90%] h-2 ${progressPercent < 5 ? "border border-gray-400 h-2 rounded mt-[1px]" : ""}`}>
             <div className="progressBar">
               <motion.div
                 className={`bar ${progressPercent < 50 ? "bg-green-500" : "bg-red-500"}`}
@@ -208,7 +208,7 @@ const Deal = ({ deal, investedDeals, role }) => {
         <section className='grid grid-cols-3 gap-y-3 px-2 gap-x-6 items-center'>
           <div className='flex flex-col'>
             <div className='text-gray-500 font-semibold text-sm'>Invoices</div>
-            <IconButton className='w-fit' onClick={()=>{window.open(deal.bill)}}><DescriptionIcon className='text-3xl text-blue-950' /></IconButton>
+            <IconButton className='w-fit' onClick={() => { window.open(deal.bill) }}><DescriptionIcon className='text-3xl text-blue-950' /></IconButton>
           </div>
           <div className='flex flex-col gap-1 -ms-6'>
             <div className='text-gray-500 font-semibold text-sm'>Total Money</div>
@@ -216,7 +216,7 @@ const Deal = ({ deal, investedDeals, role }) => {
           </div>
           <div className='flex flex-col gap-1'>
             <div className='text-gray-500 font-semibold text-sm'>Freezing Point</div>
-            <div className={`font-bold text-xl `}>{calcNoOfDays(deal.freezingDate)} days</div>
+            <div className={`font-bold text-xl `}>{calcNoOfDays(deal.startDate)} days</div>
           </div>
 
         </section>
@@ -224,7 +224,7 @@ const Deal = ({ deal, investedDeals, role }) => {
         <section className='grid grid-cols-3 px-2 gap-x-6 gap-y-4 -mt-3'>
           {details.map((detail, id) => {
             return (
-              <div key={id} className={`flex flex-col gap-1 ${id==1 && "-ms-6"}`}>
+              <div key={id} className={`flex flex-col gap-1 ${id == 1 && "-ms-6"}`}>
                 <div className='text-gray-500 font-semibold text-sm'>{detail.title}</div>
                 <div className={`font-bold text-xl ${detail.color}`}>{detail.value}</div>
               </div>
@@ -234,31 +234,31 @@ const Deal = ({ deal, investedDeals, role }) => {
 
 
         {availableAmount ? <>
-        {lastTransaction ?
-          <form id='investForm' onSubmit={(e) => { handleBuy(e) }} className='grid grid-cols-2 gap-4'>
-            <div name='amount' className='text-right outline-gray-600 border border-gray-600 rounded p-2'>{lastTransaction}</div>
-            <ColorLoadingButton loadingPosition='end' loading={loading} disabled={( !investedAmount && balance < deal.minInvestmentAmount ) || !amount ? true : false} variant='contained' type='submit' >
-              <div className='me-3'>BUY</div>
-            </ColorLoadingButton>
-          </form>
-        :
-          <form id='investForm' onSubmit={(e) => { handleBuy(e) }} className='grid grid-cols-2 gap-4'>
-            <input type='number' onChange={(e) => { setAmount(Math.abs(e.target.value).toString().replace(/^0+/, '')) }} value={amount || 0} name='amount' className='text-right outline-gray-600 border border-gray-600 rounded p-2' />
-            <ColorLoadingButton loadingPosition='end' loading={loading} disabled={( !investedAmount && balance < deal.minInvestmentAmount) || !amount ? true : false} variant='contained' type='submit' >
-              <div className='me-3'>BUY</div>
-            </ColorLoadingButton>
-          </form>
-        }
+          {lastTransaction ?
+            <form id='investForm' onSubmit={(e) => { handleBuy(e) }} className='grid grid-cols-2 gap-4'>
+              <div name='amount' className='text-right outline-gray-600 border border-gray-600 rounded p-2'>{lastTransaction}</div>
+              <ColorLoadingButton loadingPosition='end' loading={loading} disabled={(!investedAmount && balance < deal.minInvestmentAmount) || !amount ? true : false} variant='contained' type='submit' >
+                <div className='me-3'>BUY</div>
+              </ColorLoadingButton>
+            </form>
+            :
+            <form id='investForm' onSubmit={(e) => { handleBuy(e) }} className='grid grid-cols-2 gap-4'>
+              <input type='number' onChange={(e) => { setAmount(Math.abs(e.target.value).toString().replace(/^0+/, '')) }} value={amount || 0} name='amount' className='text-right outline-gray-600 border border-gray-600 rounded p-2' />
+              <ColorLoadingButton loadingPosition='end' loading={loading} disabled={(!investedAmount && balance < deal.minInvestmentAmount) || !amount ? true : false} variant='contained' type='submit' >
+                <div className='me-3'>BUY</div>
+              </ColorLoadingButton>
+            </form>
+          }
         </> : <></>}
-      
+
         <div className='-mt-3'>
           {investedAmount ? <section className='text-sm text-[#061c37] border border-[#061c37] rounded bg-blue-100 w-full text-center px-3 py-1 '>
-            You have invested ETH <span>{investedAmount }</span> on this Deal
+            You have invested ETH <span>{investedAmount}</span> on this Deal
           </section>
-            : 
-          <section className='text-sm text-yellow-600 border border-yellow-600 rounded bg-yellow-100 w-full text-center px-3 py-1 '>
-            Let's make a bond and earn
-          </section>
+            :
+            <section className='text-sm text-yellow-600 border border-yellow-600 rounded bg-yellow-100 w-full text-center px-3 py-1 '>
+              Let's make a bond and earn
+            </section>
           }
         </div>
 
@@ -281,7 +281,7 @@ const Deal = ({ deal, investedDeals, role }) => {
 
       <DealSummary role={role} showMore={showMore} setShowMore={setShowMore} />
 
-      <DealRisks showMore={showMore} setShowMore={setShowMore}/>
+      <DealRisks showMore={showMore} setShowMore={setShowMore} />
 
       {error && <Snackbar
         autoHideDuration={3000}
@@ -297,7 +297,7 @@ const Deal = ({ deal, investedDeals, role }) => {
       >
         {error}
       </Snackbar>}
-      { success && <Snackbar
+      {success && <Snackbar
         autoHideDuration={3000}
         open={open}
         variant="outlined"

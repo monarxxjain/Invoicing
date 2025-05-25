@@ -123,7 +123,7 @@ export const addDeal = async (
     console.log("Deal created with ID:", dealId.toString());
     return dealId;
   } else {
-    console.warn("DealCreated event not found.");
+    console.error("DealCreated event not found.");
     return null;
   }
 };

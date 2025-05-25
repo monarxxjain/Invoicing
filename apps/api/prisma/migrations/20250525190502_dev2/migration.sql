@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Deal" ALTER COLUMN "id" DROP DEFAULT;
+DROP SEQUENCE "Deal_id_seq";

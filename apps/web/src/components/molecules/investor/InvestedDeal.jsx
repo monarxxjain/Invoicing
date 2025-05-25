@@ -15,7 +15,7 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import Snackbar from '@mui/joy/Snackbar';
 
 const InvestedDeal = ({ deal }) => {
-  console.log("Invested Deals ",deal);
+  console.log("Invested Deals ", deal);
   const balance = 100000
   const tags = [
     {
@@ -40,7 +40,7 @@ const InvestedDeal = ({ deal }) => {
     },
     {
       title: "Return in",
-      value: `${deal.completionDate} days`,
+      value: `${deal.endDate} days`,
       color: "text-blue-900"
     },
     {
@@ -94,7 +94,7 @@ const InvestedDeal = ({ deal }) => {
         setOpen(true)
       }
       else if (res.data.message) {
-        setProgressPercent(Math.floor((amount+deal.currentAmount)/deal.targetAmount *100))
+        setProgressPercent(Math.floor((amount + deal.currentAmount) / deal.targetAmount * 100))
         setSuccess(res.data.message)
         setOpen(true)
         setAmount(null)
@@ -109,7 +109,7 @@ const InvestedDeal = ({ deal }) => {
 
 
 
-  return (  
+  return (
     <div className='relative h-full'>
       <div className='absolute left-8 z-10 -top-3 border border-green-400 bg-green-200 rounded px-10 text-sm text-green-700'>
         ICT{deal.id}
@@ -166,10 +166,10 @@ const InvestedDeal = ({ deal }) => {
         {deal?.investmentAmount ? <section className='text-sm text-[#061c37] border border-[#061c37] rounded bg-blue-100 w-full text-center px-3 py-1 '>
           You have invested ETH <span>{deal?.investmentAmount}</span> on this Deal
         </section>
-          : 
-        <section className='text-sm text-yellow-600 border border-yellow-600 rounded bg-yellow-100 w-full text-center px-3 py-1 '>
-          Let's make a bond and earn
-        </section>
+          :
+          <section className='text-sm text-yellow-600 border border-yellow-600 rounded bg-yellow-100 w-full text-center px-3 py-1 '>
+            Let's make a bond and earn
+          </section>
         }
 
         <section className='self-end -mt-3'>
@@ -191,7 +191,7 @@ const InvestedDeal = ({ deal }) => {
 
       <DealSummary showMore={showMore} setShowMore={setShowMore} />
 
-      <DealRisks showMore={showMore} setShowMore={setShowMore}/>
+      <DealRisks showMore={showMore} setShowMore={setShowMore} />
 
       {error && <Snackbar
         autoHideDuration={3000}
@@ -207,7 +207,7 @@ const InvestedDeal = ({ deal }) => {
       >
         {error}
       </Snackbar>}
-      { success && <Snackbar
+      {success && <Snackbar
         autoHideDuration={3000}
         open={open}
         variant="outlined"
