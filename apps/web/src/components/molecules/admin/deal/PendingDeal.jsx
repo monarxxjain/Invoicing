@@ -1,13 +1,8 @@
 import React, { useRef, useState } from 'react'
-import logo from '@/assets/logo.png'
-import { motion } from "framer-motion";
 import Image from 'next/image'
 import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-import Warning from '@/components/atoms/Warning';
 import Tag from '@/components/atoms/Tag';
 import DealSummary from '@/components/atoms/DealSummary';
-import DealRisks from '@/components/atoms/DealRisks';
 import axios from 'axios';
 import { BACKEND_URL } from '@/content/values';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -18,7 +13,8 @@ import Modal from '@mui/material/Modal';
 import { LoadingButton } from '@mui/lab';
 import { useContext } from 'react';
 import ThemeContext from '@/components/context/ThemeContext';
-import { systemApprovesDeal } from '@/utils/etherInterface';
+import { approveDeal, rejectDeal } from '@/utils/blockchain';
+import { ethers } from 'ethers';
 
 const PendingDeal = ({ deal, updateDeals }) => {
   const router = useRouter()
@@ -85,22 +81,27 @@ const PendingDeal = ({ deal, updateDeals }) => {
 
     try {
       if (openModal == "REJECTED") {
-        await systemApprovesDeal(wolleteInfo.contractInstance, false, {
-          actorAddress: deal.seller.wolleteAddr,
-          tokenID: deal.nftTokenId
-        })
+
+        await rejectDeal(wolleteInfo.contractInstance, BigInt(deal.id), false)
+
       }
       else {
-        await systemApprovesDeal(wolleteInfo.contractInstance, true, {
-          dealID: deal.id,
-          minAmt: deal.minInvestmentAmount * 1e18,
-          targetAmt: deal.targetAmount * 1e18,
-          floatingEndTimestamp: Date.parse(deal.startDate),
-          expirationTimestamp: Date.parse(deal.endDate),
-          tokenID: deal.nftTokenId,
-          interestRate: Math.floor(deal.profitPercent),
-          companyAddress: deal.seller.wolleteAddr
-        })
+        const provider = new ethers.BrowserProvider(window.ethereum);
+
+        // MetaMask requires requesting permission to connect users accounts
+        await provider.send("eth_requestAccounts", []);
+        const balance = await provider.getBalance(wolleteInfo.walletAddress);
+        console.log("Contract balance:", ethers.formatEther(balance));
+
+
+        const ds = await wolleteInfo.contractInstance.deals(BigInt(deal.id));
+        console.log("Target:", ethers.formatEther(ds.targetAmount));
+        console.log("Upfront:", ethers.formatEther(ds.targetAmount * BigInt(30) / BigInt(100)));
+
+        const upFront = (ds.targetAmount * BigInt(30) / BigInt(100));
+
+        await approveDeal(wolleteInfo.contractInstance, BigInt(deal.id), true, upFront)
+
       }
       const res = await axios.put(`${BACKEND_URL}/deal/updateDealStatus`,
         {

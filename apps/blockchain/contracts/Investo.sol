@@ -17,7 +17,7 @@ contract Investo is Ownable {
     // Represents a deal between the seller and the platform
     struct Deal {
         uint256 dealID;
-        address seller; // the company/seller who initiated the deal
+        address payable seller; // the company/seller who initiated the deal
         uint256 minAmt; // minimum investment allowed per investor
         uint256 targetAmount; // total amount seller wants to raise
         uint256 amountRaised; // total amount raised by investors
@@ -62,7 +62,7 @@ contract Investo is Ownable {
         dealCounter++;
         deals[dealCounter] = Deal({
             dealID: dealCounter,
-            seller: msg.sender,
+            seller: payable(msg.sender),
             minAmt: _minAmt,
             targetAmount: _targetAmount,
             amountRaised: 0,
@@ -81,7 +81,7 @@ contract Investo is Ownable {
     }
 
     /// Admin either accepts and pays 30% upfront or rejects and returns NFT
-    function approveOrRejectDeal(uint256 _dealID, bool approve) external onlyOwner {
+    function approveOrRejectDeal(uint256 _dealID, bool approve) external payable onlyOwner {
         Deal storage deal = deals[_dealID];
         require(deal.active, "Inactive deal");
         require(!deal.accepted, "Already approved");
@@ -91,9 +91,10 @@ contract Investo is Ownable {
 
             // Pay 30% upfront to the seller as initial liquidity
             uint256 upfront = (deal.targetAmount * 30) / 100;
-            if (upfront > 0) {
-                payable(deal.seller).transfer(upfront);
-            }
+            require(msg.value >= upfront, "Not enough ETH sent");
+
+            (bool success, ) = payable(deal.seller).call{value: upfront}("");
+            require(success, "Transfer failed");
         } else {
             // Rejected: return NFT back to seller and deactivate deal
             nftContract.transferFrom(address(this), deal.seller, deal.tokenID);

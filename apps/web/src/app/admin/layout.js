@@ -73,11 +73,6 @@ export default function RootLayout({ children }) {
   ]
 
   const menu = [
-    // {
-    //   name: "Dashboard",
-    //   icon: <WindowIcon />,
-    //   url: "/admin/dashboard",
-    // },
     {
       name: "Sellers",
       icon: <AccountBoxIcon />,
@@ -116,7 +111,7 @@ export default function RootLayout({ children }) {
 
 
 
-  return (
+  if(render) return (
     <ThemeContext.Provider value={{user, notifications, wolleteInfo}}>
         <div className="absolute w-screen h-[0.5px] z-10 top-20 bg-gray-300"></div>
         <div className="flex overflow-y-hidden h-screen">
@@ -128,4 +123,5 @@ export default function RootLayout({ children }) {
         </div>
     </ThemeContext.Provider>
   );
+  else return null;
 }
