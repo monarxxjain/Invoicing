@@ -19,6 +19,7 @@ import ThemeContext from '@/components/context/ThemeContext';
 import Snackbar from '@mui/joy/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useEffect } from 'react';
+import { investInDeal } from '@/utils/blockchain';
 
 const Deal = ({ deal, investedDeals, role }) => {
   const router = useRouter()
@@ -119,9 +120,8 @@ const Deal = ({ deal, investedDeals, role }) => {
         return { dealId: Number(v.dealId), investorId: Number(v.investorId) };
       });
 
-      const isTransactionSuccess = await addInvestment(wolleteInfo.contractInstance, wolleteInfo.walletAddress, `${dealId}`, (Number(Math.abs(amount))) * 1e18)
-      console.log("isTransactionSuccess: ", isTransactionSuccess)
-
+      await investInDeal(wolleteInfo.contractInstance, BigInt(dealId), (amount));
+      console.log("Invested Successfully!!")
 
       // Updating DB after Transaction
       const res = await axios.post(`${BACKEND_URL}/deal/investDeal`,
