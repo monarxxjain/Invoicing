@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.2",
+    "fx": "file:",
     "web3": "^4.7.0"
   }
 }
