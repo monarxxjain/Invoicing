@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { CONTRACT_ABI } from "./contract_abi";
 
 const NETWORK = "sepolia";
-const CONTRACT_ADDRESS = "0x787E078bDb922737C637984e6ed2529792126e53";
+const CONTRACT_ADDRESS = "0x0e7D95D2Fde03365F5Ce1e95eE49EA44220Bf0c5";
 const ABI = CONTRACT_ABI.abi;
 
 const NFT_ABI = [
@@ -129,10 +129,19 @@ export const addDeal = async (
 };
 
 // 1. Admin: Approve or Reject a deal
-export const approveOrRejectDeal = async (contract, dealID, approve) => {
+export const approveDeal = async (contract, dealID, approve, upFront) => {
 
   if (!contract) return console.log("approveOrRejectDeal: Contract not found!");
+  console.log(`approveOrRejectDeal: dealID: ${dealID}, approve: ${approve}`);
+  const tx = await contract.approveOrRejectDeal(dealID, approve ,{value: upFront});
+  await tx.wait();
+  return tx;
 
+};
+export const rejectDeal = async (contract, dealID, approve) => {
+
+  if (!contract) return console.log("approveOrRejectDeal: Contract not found!");
+  console.log(`approveOrRejectDeal: dealID: ${dealID}, approve: ${approve}`);
   const tx = await contract.approveOrRejectDeal(dealID, approve);
   await tx.wait();
   return tx;

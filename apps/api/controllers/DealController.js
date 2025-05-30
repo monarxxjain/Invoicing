@@ -11,7 +11,7 @@ const getAllDeals = async (req, res) => {
             deals = await prisma.deal.findMany({
                 where: {
                     status: "OPEN",
-                    freezingDate: {
+                    startDate: {
                         gt: today
                     }
                 },
@@ -25,7 +25,7 @@ const getAllDeals = async (req, res) => {
             deals = await prisma.deal.findMany({
                 where: {
                     status: "OPEN",
-                    freezingDate: {
+                    startDate: {
                         lte: today
                     }
                 },

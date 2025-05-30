@@ -21,6 +21,14 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({ children }) {
   const router = useRouter();
 
+  const [user, setUser] = useState({
+    name: "",
+    role: "SELLER",
+    email: "",
+    sellerId: "",
+    wolleteAddress: "",
+  });
+
   const [render, setRender] = useState(false);
   useEffect(() => {
     const token = sessionStorage.getItem("TOKEN");
@@ -33,11 +41,20 @@ export default function RootLayout({ children }) {
     }
   }, [router]);
 
+  useEffect(() => {
+    setUser((prev) => ({
+      ...prev,
+      name: localStorage.getItem("NAME") || "",
+      role: localStorage.getItem("ROLE") || "SELLER",
+      email: localStorage.getItem("EMAIL") || "",
+      sellerId: localStorage.getItem("SELLER_ID") || "",
+      wolleteAddress: localStorage.getItem("WOLLETEADDR") || ""
+    }));
+    
+  }, []);
 
-  const [user, setUser] = useState({
-    name: "Monark Jain",
-    role: "SELLER"
-  });
+
+
   const [isFull, setIsFull] = useState(true);
 
 
