@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.3.0",
+    "blockchain": "file:",
     "dotenv": "^16.5.0",
     "ethers": "^6.4.0",
     "web3": "^4.16.0"

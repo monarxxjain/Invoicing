@@ -1,8 +1,11 @@
+"use client";
+
+import ChatBot from "@/components/molecules/chatBot/chatBot";
+
 export default function Home() {
-    return (
-      <div>
-        Admin Dashboard
-      </div>
-    );
+  return (
+    <div>
+      <ChatBot />
+    </div>
+  );
 }
-  
