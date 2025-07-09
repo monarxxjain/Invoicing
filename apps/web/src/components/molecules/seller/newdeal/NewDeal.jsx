@@ -123,8 +123,8 @@ function pad(number) {
     try {
 
       setMessage("Uploading Invoices")
-      const ipfshash = await pinata(billFile);
-      const link = 'https://ipfs.io/ipfs/' + (ipfshash).IpfsHash;
+      // const ipfshash = await pinata(billFile);
+      const link = 'https://ipfs.io/ipfs/';
 
       setFormData({
         ...formData,
